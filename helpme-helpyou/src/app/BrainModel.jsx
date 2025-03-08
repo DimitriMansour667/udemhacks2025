@@ -1,5 +1,6 @@
 "use client";
 
+import { useGLTF } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
 import { useSpring, a } from "@react-spring/three";
 import * as THREE from "three";
