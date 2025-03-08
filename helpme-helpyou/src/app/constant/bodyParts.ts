@@ -1,9 +1,9 @@
 
-enum BodyParts{
+export enum BodyParts{
     Brain = "Brain"
 }
 
-enum BrainParts {
+export enum BrainParts {
     Cerebrum = "Cerebrum",
     Cerebellum = "Cerebellum",
     Brainstem = "Brainstem",
