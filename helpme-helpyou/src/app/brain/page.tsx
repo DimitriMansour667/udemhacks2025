@@ -1,20 +1,17 @@
 'use client'
-import { TerminalLogging } from "@/components/ourstuff/terminalLogging";
-import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
-import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {GenAIUtils} from "@/app/utils/gemini_gateway"
 import { Send } from "lucide-react";
-import { SparklesText } from "@/components/magicui/sparkles-text";
 import { useState, useRef } from "react";
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Bounds } from '@react-three/drei';
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer } from "../class/answer";
 
 export default function Brain() {
-    const genAi = new GenAIUtils("AIzaSyBPt1DlKd9EjlRidMsmqe2W4LGuc2pZexI")
+    if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
+        return <div>No api key erro</div>
+    }
+    const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
 
     const [isTyping, setIsTyping] = useState(false)
     const [input, setInput] = useState("")
