@@ -1,20 +1,17 @@
 'use client'
-import { TerminalLogging } from "@/components/ourstuff/terminalLogging";
-import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-button";
-import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {GenAIUtils} from "@/app/utils/gemini_gateway"
 import { Send } from "lucide-react";
-import { SparklesText } from "@/components/magicui/sparkles-text";
 import { useState, useRef } from "react";
-import { Canvas } from '@react-three/fiber';
-import { OrbitControls, useGLTF, Bounds } from '@react-three/drei';
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer } from "../class/answer";
 
 export default function Brain() {
-    const genAi = new GenAIUtils("AIzaSyBPt1DlKd9EjlRidMsmqe2W4LGuc2pZexI")
+    if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
+        return <div>No api key erro</div>
+    }
+    const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
 
     const [isTyping, setIsTyping] = useState(false)
     const [input, setInput] = useState("")
@@ -53,11 +50,10 @@ export default function Brain() {
     }
 
     return (
-        <div className="flex flex-col items-center justify-center min-h-screen p-4">
-          <div className="w-full max-w-2xl">
-            <div className="w-full aspect-square bg-gray-200 rounded-lg shadow-md">
-              {/* Replace with your actual BrainModel */}
-
+        <div className="relative h-screen w-full">
+            {/* Brain model container taking full screen */}
+            <div className="absolute inset-0">
+  
               <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
                 <ambientLight intensity={1} />
                 <directionalLight position={[5, 5, 5]} intensity={2} />
@@ -66,44 +62,23 @@ export default function Brain() {
                 <BrainModel points={points} />
               </Canvas>
             </div>
-          </div>
-          
-          <div className="w-full max-w-2xl mt-4">
-            <form onSubmit={handleSubmit} className="flex w-full space-x-2">
-              <Input
-                value={input}
-                onChange={handleInputChange}
-                placeholder="Type your message..."
-                className="flex-grow"
-                disabled={isTyping}
-              />
-              <Button type="submit" disabled={isTyping} size="icon">
-                <Send className="h-4 w-4" />
-              </Button>
-            </form>
-          </div>
-    
-          {/* Conditional rendering for AiAnswer */}
-          {answer && answer.error && (
-            <div className="mt-4 p-4 bg-red-100 text-red-800 rounded-lg">
-              <p>Error fetching data. Please try again.</p>
+
+            {/* Floating chat box positioned lower and wider */}
+            <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+                <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
+                    <Input
+                        value={input}
+                        onChange={handleInputChange}
+                        placeholder="Type your message..."
+                        className="flex-grow text-lg"
+                        disabled={isTyping}
+                        style={{ height: '50px' }}
+                    />
+                    <Button type="submit" disabled={isTyping} size="icon" className="h-12 w-12">
+                        <Send className="h-6 w-6" />
+                    </Button>
+                </form>
             </div>
-          )}
-    
-          {/* Render answers */}
-          {answer && !answer.error && answer.parts.length > 0 && (
-            <div className="mt-4 w-full max-w-2xl">
-              {answer.parts.map((item, index) => (
-                <div key={index} className="mt-4 p-4 bg-gray-100 rounded-lg shadow-sm">
-                  <h3 className="text-lg font-semibold">Answer {index + 1}:</h3>
-                  <p>{item.part}</p>
-                  <p className="text-sm text-gray-600">Description: {item.description}</p>
-                  <p className="text-sm text-gray-600">Impact: {item.impact}</p>
-                  <p className="text-sm text-gray-600">Symptoms: {item.symptoms}</p>
-                </div>
-              ))}
-            </div>
-          )}
         </div>
-      );
-    }
+    );
+}
