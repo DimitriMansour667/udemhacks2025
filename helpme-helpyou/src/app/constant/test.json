@@ -1,0 +1,23 @@
+{
+    "parts": [    
+        {
+            "part": "Cerebrum",
+            "description":"The cerebrum is the largest part of the brain, responsible for higher-level cognitive functions. It's divided into two hemispheres and four lobes: frontal, parietal, temporal, and occipital. Cocaine disrupts the cerebrum's normal activity.",
+            "impact" : "Cocaine significantly impacts the cerebrum by flooding it with dopamine, a neurotransmitter associated with pleasure and reward. This surge leads to intense feelings of euphoria, which reinforces drug-seeking behavior and can lead to addiction.",
+            "symptoms": ["Impaired judgment", "Risky decision-making"],
+        },
+        {
+            "part": "Limbic System",
+            "description":"The limbic system is a group of brain structures involved in emotions, motivation, and memory. Key components include the amygdala and hippocampus.Cocaine disrupts the Limbic System.",
+            "impact" : "Cocaine's effect on the limbic system is significant, causing intense cravings and emotional disturbances. The drug hijacks the reward pathways, making it difficult to experience pleasure from natural rewards.",
+            "symptoms": ["Anxiety", "Aggression"],
+        },
+        {
+            "part": "Brainstem",
+            "description":"The brainstem is a vital structure connecting the cerebrum and cerebellum to the spinal cord. It controls essential functions like breathing, heart rate, and blood pressure. Cocaine affects the Brainstem.",
+            "impact" : "Cocaine's impact on the brainstem can be life-threatening. By disrupting the brainstem's control over cardiovascular and respiratory functions, cocaine can lead to irregular heartbeat, increased blood pressure, and respiratory failure.",
+            "symptoms": ["Increased heart rate", "Respiratory distress"],
+        }
+    ],
+    "affected_parts": ["Heart", "Lungs"]
+}
