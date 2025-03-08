@@ -1,7 +1,5 @@
 "use client";
 
-import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
 import { useSpring, a } from "@react-spring/three";
 import * as THREE from "three";

@@ -6,6 +6,8 @@ import { Send } from "lucide-react";
 import { useState, useRef } from "react";
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer } from "../class/answer";
+import { Canvas } from "@react-three/fiber";
+import { OrbitControls, useGLTF } from "@react-three/drei";
 
 export default function Brain() {
     if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
@@ -53,7 +55,6 @@ export default function Brain() {
         <div className="relative h-screen w-full">
             {/* Brain model container taking full screen */}
             <div className="absolute inset-0">
-  
               <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
                 <ambientLight intensity={1} />
                 <directionalLight position={[5, 5, 5]} intensity={2} />
