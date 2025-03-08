@@ -4,10 +4,13 @@ import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-b
 import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {GenAIUtils} from "@/app/utils/gemini_gateway"
 import { Send } from "lucide-react";
 import { useState } from "react";
 
 export default function Brain() {
+    const genAi = new GenAIUtils("AIzaSyBPt1DlKd9EjlRidMsmqe2W4LGuc2pZexI")
+
     const [isTyping, setIsTyping] = useState(false)
     const [input, setInput] = useState("")
     
@@ -22,6 +25,8 @@ export default function Brain() {
         // Here you would typically send the message to your backend
         console.log("Sending message:", input)
         setInput("")
+        console.log(await genAi.parseResponse(input))
+
     }
 
     return (
