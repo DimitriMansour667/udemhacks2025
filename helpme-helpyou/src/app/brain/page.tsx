@@ -5,9 +5,10 @@ import {GenAIUtils} from "@/app/utils/gemini_gateway"
 import { Send } from "lucide-react";
 import { useState, useRef } from "react";
 import BrainModel from '@/app/BrainModel'
-import { AiAnswer } from "../class/answer";
+import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls, useGLTF } from "@react-three/drei";
+import * as THREE from 'three';
 
 export default function Brain() {
     if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
@@ -51,16 +52,124 @@ export default function Brain() {
 
     }
 
+    function SpriteComponent({data}) {
+
+        const canvas = document.createElement('canvas');
+        const ctx: CanvasRenderingContext2D|null  = canvas.getContext('2d');
+        console.log(data)
+        if(!ctx || !data){
+            return;
+        }
+        // Set canvas size
+        canvas.width = 256;
+        canvas.height = 256;
+    
+        const cornerRadius = 20; // Radius for the rounded corners
+        const padding = 20; // Padding for text inside the rectangle
+    
+        // Set the background color to semi-transparent gray
+        ctx.fillStyle = 'rgba(128, 128, 128, 0.5)'; // Semi-transparent gray
+    
+        // Draw a rectangle with rounded corners
+        ctx.beginPath();
+        ctx.moveTo(padding + cornerRadius, padding); // Start at the top-left corner
+        ctx.arcTo(canvas.width - padding, padding, canvas.width - padding, canvas.height - padding, cornerRadius); // Top-right corner
+        ctx.arcTo(canvas.width - padding, canvas.height - padding, padding, canvas.height - padding, cornerRadius); // Bottom-right corner
+        ctx.arcTo(padding, canvas.height - padding, padding, padding, cornerRadius); // Bottom-left corner
+        ctx.arcTo(padding, padding, canvas.width - padding, padding, cornerRadius); // Top-left corner
+        ctx.closePath();
+        ctx.fill();
+    
+        // Set text properties
+        ctx.font = '12px Arial';
+        ctx.fillStyle = 'black';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';
+    
+        // Create dynamic text
+        const textPadding = 10;
+        const lineHeight = 24;
+        let currentY = padding + textPadding;
+        
+        // Draw the 'part' text
+        ctx.font = 'bold 10px Arial';
+        ctx.fillText(data.part, canvas.width / 2, currentY);
+        currentY += lineHeight;
+    
+        // Draw the 'description' text
+        ctx.font = '12px Arial';
+        const descriptionLines = wrapText(data.description, canvas.width - padding * 2, ctx);
+        descriptionLines.forEach(line => {
+            ctx.fillText(line, canvas.width / 2, currentY);
+            currentY += lineHeight;
+        });
+    
+        // Draw the 'impact' text
+        ctx.font = '12px Arial';
+        if (data.impact.length > 0) {
+            ctx.fillText('Impact:', canvas.width / 2, currentY);
+            currentY += lineHeight;
+            const impactLines = wrapText(data.impact, canvas.width - padding * 2, ctx);
+            impactLines.forEach(line => {
+                ctx.fillText(line, canvas.width / 2, currentY);
+                currentY += lineHeight;
+            });
+        }
+    
+        // Draw the 'symptoms' text
+        ctx.font = '12px Arial';
+        if (data.symptoms.length > 0) {
+            ctx.fillText('Symptoms:', canvas.width / 2, currentY);
+            currentY += lineHeight;
+            data.symptoms.forEach(line => {
+                ctx.fillText(line, canvas.width / 2, currentY);
+                currentY += lineHeight;
+            });
+        }
+    
+        // Create a texture from the canvas
+        const texture = new THREE.CanvasTexture(canvas);
+        // Create the sprite material with the texture
+        const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
+      
+        // Create the sprite and position it
+        const sprite = new THREE.Sprite(spriteMaterial);
+        sprite.position.set(2, 0, 0); // Set the position of the sprite next to the brain model
+        sprite.scale.set(1, 1, 1); // Adjust the scale of the sprite
+      
+        return (
+          <primitive object={sprite} />
+        );
+      };
+    function wrapText(text:string, maxWidth:number, ctx: CanvasRenderingContext2D) {
+        const words = text.split(' ');
+        let line = '';
+        const lines = [];
+        
+        for (let i = 0; i < words.length; i++) {
+            const testLine = line + words[i] + ' ';
+            const testWidth = ctx.measureText(testLine).width;
+            
+            if (testWidth > maxWidth && i > 0) {
+                lines.push(line);
+                line = words[i] + ' ';
+            } else {
+                line = testLine;
+            }
+        }
+        
+        lines.push(line); // Push the last line
+        return lines;
+    }
     return (
         <div className="relative h-screen w-full">
-            {/* Brain model container taking full screen */}
             <div className="absolute inset-0">
               <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
                 <ambientLight intensity={1} />
                 <directionalLight position={[5, 5, 5]} intensity={2} />
-                {/* <directionalLight position={[-5, -5, -5]} intensity={0.5} color="orange" /> */}
                 <OrbitControls enableZoom={true} />
                 <BrainModel points={points} />
+                <SpriteComponent data={answer?.parts[0]} />
               </Canvas>
             </div>
 

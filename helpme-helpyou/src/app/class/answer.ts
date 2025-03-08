@@ -3,10 +3,10 @@ import { error } from "console"
 export class Answer {
     part: string
     description: string
-    impact: string[]
+    impact: string
     symptoms: string[]
 
-    constructor(part:string, description:string, impact:[string], symptoms:[string]){
+    constructor(part:string, description:string, impact:string, symptoms:string[]){
         this.part = part
         this.description = description
         this.impact = impact
