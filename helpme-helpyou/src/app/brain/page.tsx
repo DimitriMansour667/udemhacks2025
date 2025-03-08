@@ -7,7 +7,7 @@ import { useState, useRef } from "react";
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 
 export default function Brain() {
     if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
