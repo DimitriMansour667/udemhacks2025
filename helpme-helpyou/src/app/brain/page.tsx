@@ -56,7 +56,7 @@ export default function Brain() {
         <div className="relative h-screen w-full">
             {/* Brain model container taking full screen */}
             <div className="absolute inset-0">
-                <BrainModel />
+                <BrainModel points={points} />
             </div>
 
             {/* Floating chat box positioned lower and wider */}
