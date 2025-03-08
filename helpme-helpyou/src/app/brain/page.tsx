@@ -6,20 +6,17 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import {GenAIUtils} from "@/app/utils/gemini_gateway"
 import { Send } from "lucide-react";
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Canvas } from '@react-three/fiber';
 import { OrbitControls, useGLTF, Bounds } from '@react-three/drei';
-
-function BrainModel() {
-    const { scene } = useGLTF('/Brain.gltf');
-    return <primitive object={scene} />;
-}
+import BrainModel from '@/app/BrainModel'
 
 export default function Brain() {
     const genAi = new GenAIUtils("AIzaSyBPt1DlKd9EjlRidMsmqe2W4LGuc2pZexI")
 
     const [isTyping, setIsTyping] = useState(false)
     const [input, setInput] = useState("")
+    const controlsRef = useRef(null);
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
@@ -39,19 +36,7 @@ export default function Brain() {
         <div className="flex flex-col items-center justify-center min-h-screen p-4">
             <div className="w-full max-w-2xl">
                 <div className="w-full aspect-square bg-gray-200 rounded-lg shadow-md">
-                    <Canvas camera={{ position: [0, 1, 2], fov: 50 }}>
-                        <OrbitControls 
-                            enablePan={false} 
-                            enableZoom={true} 
-                            enableRotate={true} 
-                            target={[0, 0, 0]} 
-                        />
-                        <ambientLight intensity={0.5} />
-                        <directionalLight position={[10, 10, 5]} intensity={1} />
-                        <Bounds fit clip observe margin={1}>
-                            <BrainModel />
-                        </Bounds>
-                    </Canvas>
+                    <BrainModel />
                 </div>
             </div>
             <div className="w-full max-w-2xl mt-4">
