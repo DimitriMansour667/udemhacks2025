@@ -61,15 +61,15 @@ export default function Brain() {
             return;
         }
         // Set canvas size
-        canvas.width = 256;
-        canvas.height = 256;
+        canvas.width = 350;
+        canvas.height = 350;
     
         const cornerRadius = 20; // Radius for the rounded corners
         const padding = 20; // Padding for text inside the rectangle
         const padding_left = 30;
     
         // Set the background color to semi-transparent gray
-        ctx.fillStyle = 'rgba(128, 128, 128, 0.75)'; // Semi-transparent gray
+        ctx.fillStyle = 'rgba(128, 128, 128, 0.85)'; // Semi-transparent gray
         ctx.beginPath();
         ctx.moveTo(padding + cornerRadius, padding); // Start at the top-left corner
         ctx.arcTo(canvas.width - padding, padding, canvas.width - padding, canvas.height - padding, cornerRadius); // Top-right corner
@@ -105,13 +105,14 @@ export default function Brain() {
         // });
     
         // Draw the 'impact' text
-        ctx.font = 'bold 12px Arial';
+        ctx.font = 'bold 16px Arial';
         ctx.textAlign = 'left';
         ctx.textBaseline = 'top';    
         if (data.impact.length > 0) {
             ctx.fillText('Impact:', padding_left, currentY);
             currentY += lineHeight;
-            const impactLines = wrapText(data.impact, canvas.width / 1.5, ctx);
+            ctx.font = ' bold 12px Arial';
+            const impactLines = wrapText(data.impact, canvas.width / 1.2, ctx);
             impactLines.forEach(line => {
                 ctx.fillText(line, padding_left, currentY);
                 currentY += lineHeight;
@@ -119,10 +120,12 @@ export default function Brain() {
         }
     
         // Draw the 'symptoms' text
-        ctx.font = ' bold 12px Arial';
+        currentY += 10
+        ctx.font = ' bold 16px Arial';
         if (data.symptoms.length > 0) {
-            ctx.fillText('Symptoms:', canvas.width, currentY);
+            ctx.fillText('Symptoms:', padding_left, currentY);
             currentY += lineHeight;
+            ctx.font = ' bold 12px Arial';
             data.symptoms.forEach(line => {
                 ctx.fillText(line, padding_left, currentY);
                 currentY += lineHeight;
