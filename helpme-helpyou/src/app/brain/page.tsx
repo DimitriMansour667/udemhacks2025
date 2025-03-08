@@ -4,13 +4,20 @@ import { InteractiveHoverButton } from "@/components/magicui/interactive-hover-b
 import { useRouter } from 'next/navigation';
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import {GenAIUtils} from "@/app/utils/gemini_gateway"
 import { Send } from "lucide-react";
-import { useState } from "react";
 import { SparklesText } from "@/components/magicui/sparkles-text";
+import { useState, useRef } from "react";
+import { Canvas } from '@react-three/fiber';
+import { OrbitControls, useGLTF, Bounds } from '@react-three/drei';
+import BrainModel from '@/app/BrainModel'
 
 export default function Brain() {
+    const genAi = new GenAIUtils("AIzaSyBPt1DlKd9EjlRidMsmqe2W4LGuc2pZexI")
+
     const [isTyping, setIsTyping] = useState(false)
     const [input, setInput] = useState("")
+    const controlsRef = useRef(null);
     
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
@@ -20,18 +27,17 @@ export default function Brain() {
         e.preventDefault()
         if (!input.trim()) return
         
-        // Here you would typically send the message to your backend
         console.log("Sending message:", input)
+        console.log(await genAi.parseResponse(input))
         setInput("")
+
     }
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-4">
-            <SparklesText text="Brain 🧠" />
-            <div className="h-8"></div>
-            <div className="w-full max-w-xl">
-                <div className="w-full aspect-square bg-gray-200/80 rounded-lg shadow-md">
-                    {/* Content for the square can go here */}
+            <div className="w-full max-w-2xl">
+                <div className="w-full aspect-square bg-gray-200 rounded-lg shadow-md">
+                    <BrainModel />
                 </div>
             </div>
             <div className="w-full max-w-2xl mt-4">

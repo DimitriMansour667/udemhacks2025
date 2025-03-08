@@ -1,9 +1,9 @@
 
-Parts of the brain that you know: Cerebrum, Cerebellum, Brainstem, Frontal Lobe, Parietal Lobe, Temporal Lobe, Occipital Lobe, Corpus Callosum, Medulla oblongata, Limbic System, Amygdala
+import { BodyParts,BrainParts } from "@/app/constant/bodyParts"
 
-Only answer if the question is about the brain.
-Give a detail answer about each parts of the brain that you know that is relevant to the question.
+export class SytemPrompt{
 
+    static system_prompt:string = `
 Give me the impact and symptoms with a short 3 sentence description on the appropriate body part. 
 In the answer give a list of the most relevant affected parts of the body, give atleast 2 affected parts of the body part but not all of them.
 
@@ -25,5 +25,10 @@ If the question is not about the brain reply with an error using this json templ
 }
 
 Give your response based on this question:
+USER:`
 
-what is the effect of alzeimer
+    static getSystemPrompt(){
+        const brainStructureString = Object.values(BrainParts).join(", ");
+        return brainStructureString + this.system_prompt;
+    }
+}

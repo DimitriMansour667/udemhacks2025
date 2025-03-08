@@ -1,0 +1,70 @@
+{
+    "brain_effects": [
+        {
+            "part": "Cerebrum",
+            "description": "The cerebrum is the largest part of the brain, responsible for higher-level cognitive functions such as thinking, perceiving, and understanding language.",
+            "impact": "Alcohol disrupts communication between neurons in the cerebrum, leading to impaired judgment, reduced inhibitions, and difficulty with decision-making. It also affects motor coordination and sensory perception.",
+            "symptoms": ["Impaired judgment", "Reduced coordination", "Slurred speech"]
+        },
+        {
+            "part": "Cerebellum",
+            "description": "The cerebellum is crucial for motor control, coordination, and balance.",
+            "impact": "Alcohol significantly impairs cerebellar function, resulting in poor balance, unsteady gait, and difficulty with fine motor skills. This is why field sobriety tests often assess balance and coordination.",
+            "symptoms": ["Loss of balance", "Uncoordinated movements", "Tremors"]
+        },
+        {
+            "part": "Brainstem",
+            "description": "The brainstem controls essential bodily functions like breathing, heart rate, and consciousness.",
+            "impact": "High levels of alcohol can depress the brainstem's function, potentially leading to slowed breathing, decreased heart rate, and even loss of consciousness. In extreme cases, this can be fatal.",
+            "symptoms": ["Slowed breathing", "Decreased heart rate", "Loss of consciousness"]
+        },
+        {
+            "part": "Frontal Lobe",
+            "description": "The frontal lobe is responsible for executive functions, including planning, decision-making, and impulse control.",
+            "impact": "Alcohol impairs the frontal lobe's ability to regulate behavior, leading to impulsive actions, poor judgment, and difficulty controlling emotions. It also affects short term memory.",
+            "symptoms": ["Impulsive behavior", "Poor judgment", "Memory problems"]
+        },
+        {
+            "part": "Parietal Lobe",
+            "description": "The parietal lobe processes sensory information, including touch, temperature, and pain.",
+            "impact": "Alcohol can distort sensory perception in the parietal lobe, leading to altered sensations and impaired spatial awareness. This can affect reaction time.",
+            "symptoms": ["Altered sensations", "Impaired spatial awareness", "Slow reaction time"]
+        },
+        {
+            "part": "Temporal Lobe",
+            "description": "The temporal lobe is involved in auditory processing, memory, and language comprehension.",
+            "impact": "Alcohol can affect auditory processing and memory formation in the temporal lobe, leading to difficulty understanding speech and memory blackouts. It can also disrupt emotional regulation.",
+            "symptoms": ["Memory blackouts", "Difficulty understanding speech", "Emotional changes"]
+        },
+        {
+            "part": "Occipital Lobe",
+            "description": "The occipital lobe processes visual information.",
+            "impact": "Alcohol can affect visual processing in the occipital lobe, leading to blurred vision, double vision, and impaired depth perception. This can also cause light sensitivity.",
+            "symptoms": ["Blurred vision", "Double vision", "Light sensitivity"]
+        },
+        {
+            "part": "Corpus Callosum",
+            "description": "The corpus callosum connects the two hemispheres of the brain, facilitating communication between them.",
+            "impact": "Alcohol disrupts communication between the brain hemispheres, affecting coordination and cognitive processing. This can result in delayed reaction times and difficulty with complex tasks.",
+            "symptoms": ["Delayed reaction times", "Difficulty with complex tasks", "Poor coordination"]
+        },
+        {
+            "part": "Medulla oblongata",
+            "description": "The medulla oblongata, part of the brainstem, controls involuntary functions like breathing and heart rate.",
+            "impact": "High doses of alcohol can depress the medulla oblongata, leading to dangerously slowed breathing and heart rate, which can be fatal. It also affects gag reflex.",
+            "symptoms": ["Slowed breathing", "Decreased heart rate", "Suppressed gag reflex"]
+        },
+        {
+            "part": "Limbic System",
+            "description": "The limbic system is involved in emotions, memory, and motivation.",
+            "impact": "Alcohol disrupts the limbic system, leading to exaggerated emotions, mood swings, and impaired memory formation. It can also affect the feeling of pleasure.",
+            "symptoms": ["Mood swings", "Impaired memory", "Changes in pleasure response"]
+        },
+        {
+            "part": "Amygdala",
+            "description": "The amygdala, part of the limbic system, is involved in processing emotions, particularly fear and aggression.",
+            "impact": "Alcohol can affect the amygdala's function, leading to increased aggression, anxiety, and emotional instability. It also can blunt the feeling of fear.",
+            "symptoms": ["Increased aggression", "Anxiety", "Emotional instability"]
+        }
+    ]
+}
