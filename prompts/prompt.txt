@@ -26,4 +26,4 @@ If the question is not about the brain reply with an error using this json templ
 
 Give your response based on this question:
 
-Whats the weather today 
+what is the effect of alzeimer
