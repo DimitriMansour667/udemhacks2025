@@ -33,7 +33,8 @@ export class GenAIUtils {
         let cleanResponse = answer.replace(/```json/g, '').replace(/```/g, '').trim();
         try {
             const parsedData = JSON.parse(cleanResponse);
-            return new AiAnswer(parsedData);
+
+            return AiAnswer.fromJson(parsedData);
         }catch(error){
             console.log(cleanResponse)
             console.log(error)

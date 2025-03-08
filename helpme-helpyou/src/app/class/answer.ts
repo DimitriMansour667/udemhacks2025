@@ -28,6 +28,9 @@ export class AiAnswer {
         this.error = error
     }
     static fromJson(parsedData:any): AiAnswer{
+        if("error" in parsedData){
+            return new AiAnswer([], true)
+        }
         const answers = []
         for(const answer of parsedData.parts){
             answers.push(Answer.fromJson(answer))

@@ -22,10 +22,9 @@ export default function Brain() {
         e.preventDefault()
         if (!input.trim()) return
         
-        // Here you would typically send the message to your backend
         console.log("Sending message:", input)
-        setInput("")
         console.log(await genAi.parseResponse(input))
+        setInput("")
 
     }
 
