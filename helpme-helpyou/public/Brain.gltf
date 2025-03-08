@@ -1,0 +1,139 @@
+{
+  "accessors": [
+    {
+      "name": "BRAIN-Mesh_0_positions",
+      "componentType": 5126,
+      "count": 9206,
+      "min": [
+        -101.68675994873047,
+        9.9999998245167e-15,
+        -53.811363220214844
+      ],
+      "max": [
+        112.23895263671875,
+        180.1543731689453,
+        118.13262939453125
+      ],
+      "type": "VEC3",
+      "bufferView": 0,
+      "byteOffset": 0
+    },
+    {
+      "name": "BRAIN-Mesh_0_texcoords",
+      "componentType": 5126,
+      "count": 9206,
+      "min": [
+        0.03282700106501579,
+        0.36097997426986694
+      ],
+      "max": [
+        0.7683489918708801,
+        0.953341007232666
+      ],
+      "type": "VEC2",
+      "bufferView": 1,
+      "byteOffset": 0
+    },
+    {
+      "name": "BRAIN-Mesh_0_indices",
+      "componentType": 5123,
+      "count": 9210,
+      "min": [
+        0
+      ],
+      "max": [
+        9205
+      ],
+      "type": "SCALAR",
+      "bufferView": 2,
+      "byteOffset": 0
+    }
+  ],
+  "asset": {
+    "generator": "obj2gltf",
+    "version": "2.0"
+  },
+  "buffers": [
+    {
+      "uri": "Brain_data.bin",
+      "byteLength": 202540
+    }
+  ],
+  "bufferViews": [
+    {
+      "name": "bufferView_0",
+      "buffer": 0,
+      "byteLength": 110472,
+      "byteOffset": 0,
+      "byteStride": 12,
+      "target": 34962
+    },
+    {
+      "name": "bufferView_1",
+      "buffer": 0,
+      "byteLength": 73648,
+      "byteOffset": 110472,
+      "byteStride": 8,
+      "target": 34962
+    },
+    {
+      "name": "bufferView_2",
+      "buffer": 0,
+      "byteLength": 18420,
+      "byteOffset": 184120,
+      "target": 34963
+    }
+  ],
+  "materials": [
+    {
+      "name": "Brain pink",
+      "pbrMetallicRoughness": {
+        "baseColorFactor": [
+          0.1843137294054,
+          0.40000000596046,
+          0.56470590829849,
+          1
+        ],
+        "metallicFactor": 0,
+        "roughnessFactor": 0.95
+      },
+      "emissiveFactor": [
+        0,
+        0,
+        0
+      ],
+      "alphaMode": "OPAQUE",
+      "doubleSided": false
+    }
+  ],
+  "meshes": [
+    {
+      "name": "BRAIN-Mesh",
+      "primitives": [
+        {
+          "attributes": {
+            "POSITION": 0,
+            "TEXCOORD_0": 1
+          },
+          "indices": 2,
+          "material": 0,
+          "mode": 4
+        }
+      ]
+    }
+  ],
+  "nodes": [
+    {
+      "name": "BRAIN",
+      "mesh": 0
+    }
+  ],
+  "scene": 0,
+  "scenes": [
+    {
+      "nodes": [
+        0
+      ]
+    }
+  ]
+}
