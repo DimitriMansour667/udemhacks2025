@@ -6,9 +6,8 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { Send } from "lucide-react";
 import { useState } from "react";
-import { SparklesText } from "@/components/magicui/sparkles-text";
 
-export default function Brain() {
+export default function Hearth() {
     const [isTyping, setIsTyping] = useState(false)
     const [input, setInput] = useState("")
     
@@ -27,10 +26,8 @@ export default function Brain() {
 
     return (
         <div className="flex flex-col items-center justify-center min-h-screen p-4">
-            <SparklesText text="Brain 🧠" />
-            <div className="h-8"></div>
-            <div className="w-full max-w-xl">
-                <div className="w-full aspect-square bg-gray-200/80 rounded-lg shadow-md">
+            <div className="w-full max-w-2xl">
+                <div className="w-full aspect-square bg-gray-200 rounded-lg shadow-md">
                     {/* Content for the square can go here */}
                 </div>
             </div>
