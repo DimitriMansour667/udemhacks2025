@@ -71,16 +71,11 @@ function BrainModel({ points }) {
   };
 
   return (
-    <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
-      <ambientLight intensity={1} />
-      <directionalLight position={[5, 5, 5]} intensity={2} />
-      {/* <directionalLight position={[-5, -5, -5]} intensity={0.5} color="orange" /> */}
-      <OrbitControls enableZoom={true} />
-
+    <>
       {/* Wrapper group to recenter the model */}
-      <a.group ref={brainRef} position={[0, 0, 0]} rotation={rotation}>
-      {/* <a.group ref={brainRef} position={[0, -1, -0.3]} rotation={rotation}> */}
-      <a.group position={[0, -1, -0.3]}>
+        <a.group ref={brainRef} position={[0, 0, 0]} rotation={rotation}>
+        {/* <a.group ref={brainRef} position={[0, -1, -0.3]} rotation={rotation}> */}
+        <a.group position={[0, -1, -0.3]}>
         <primitive object={scene} scale={0.0098} onClick={handleModelClick} />
       </a.group>
         {points.map((point, index) => (
@@ -92,9 +87,7 @@ function BrainModel({ points }) {
           </mesh>
         ))}
       </a.group>
-
-      
-    </Canvas>
+    </>
   );
 }
 

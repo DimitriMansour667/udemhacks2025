@@ -57,7 +57,14 @@ export default function Brain() {
           <div className="w-full max-w-2xl">
             <div className="w-full aspect-square bg-gray-200 rounded-lg shadow-md">
               {/* Replace with your actual BrainModel */}
-              <BrainModel points={points} />
+
+              <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+                <ambientLight intensity={1} />
+                <directionalLight position={[5, 5, 5]} intensity={2} />
+                {/* <directionalLight position={[-5, -5, -5]} intensity={0.5} color="orange" /> */}
+                <OrbitControls enableZoom={true} />
+                <BrainModel points={points} />
+              </Canvas>
             </div>
           </div>
           
