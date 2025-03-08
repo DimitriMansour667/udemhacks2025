@@ -9,7 +9,7 @@ In the answer give a list of the most relevant affected parts of the body, give 
 
 Use this json template when replying to the question:
 {
-    [    
+    "parts": [    
         {
             "part": "",
             "description":""
