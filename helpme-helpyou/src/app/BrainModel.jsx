@@ -8,11 +8,11 @@ import * as THREE from "three";
 function BrainModel({ points }) {
   const { scene } = useGLTF("/Brain.glb");
   const brainRef = useRef();
-  const [i, setI] = useState(0);
+  const [i, setI] = useState(-1);
 
   const [{ rotation }, setRotation] = useSpring(() => ({
     rotation: [0, 0, 0], // Default rotation (brain at initial orientation)
-    config: { mass: 1, tension: 180, friction: 12 },
+    config: { mass: 10, tension: 180, friction: 120 },
   }));
 
   useEffect(() => {
@@ -20,9 +20,12 @@ function BrainModel({ points }) {
   }, [i]);
 
   const rotateInterval = () => {
-    console.log("Rotating to point:", points[i]);
-    rotateToPoint(points[i].x, points[i].y, points[i].z);
-    setI((i + 1) % points.length);
+    setRotation({ rotation: [0, 0, 0] });
+    setTimeout(() => {
+      console.log("Rotating to point:", points[i]);
+      rotateToPoint(points[i + 1].x, points[i + 1].y, points[i + 1].z);
+      setI((i + 1) % points.length);
+    }, 200)
   }
 
   const handleModelClick = (event) => {
@@ -39,34 +42,28 @@ function BrainModel({ points }) {
   const rotateToPoint = (x, y, z) => {
     if (!brainRef.current) return;
 
-    // Get the camera position (static position here)
-    const cameraPosition = new THREE.Vector3(0, 0, 4); // Camera position (assumed)
+    // Step 1: Compute normalized direction to the target point
+    const targetDirection = new THREE.Vector3(x, y, z).normalize();
 
-    // The target point is relative to the brain's initial position (origin)
-    const targetPoint = new THREE.Vector3(x, y, z); // Relative point (e.g., (1, 1, 1))
+    // Step 2: Compute normalized direction to the camera
+    const cameraDirection = new THREE.Vector3(0, 0, 1)
 
-    // Calculate the direction vector from the brain's center to the camera
-    const directionToCamera = cameraPosition.sub(new THREE.Vector3(0, 0, 0)).normalize();
+    // Step 3: Compute rotation axis (cross product)
+    const rotationAxis = new THREE.Vector3().crossVectors(targetDirection, cameraDirection);
+    if (rotationAxis.length() === 0) return; // Avoid zero-axis rotation
 
-    // Calculate the direction vector from the brain's center to the target point
-    const directionToTarget = targetPoint.sub(new THREE.Vector3(0, 0, 0)).normalize();
+    // Step 4: Compute rotation angle (dot product and arccos)
+    let angle = Math.acos(targetDirection.dot(cameraDirection)); // Angle in radians
 
-    // Calculate the angle between the target direction and camera direction
-    const angle = Math.acos(directionToCamera.dot(directionToTarget));
+    // Step 5: Create quaternion rotation
+    const quaternion = new THREE.Quaternion();
+    quaternion.setFromAxisAngle(rotationAxis.normalize(), angle);
 
-    // To make the target point align between the brain's center and the camera, we need to calculate
-    // the rotation axis, which is perpendicular to both directionToCamera and directionToTarget.
-    const rotationAxis = new THREE.Vector3()
-      .crossVectors(directionToCamera, directionToTarget)
-      .normalize();
+    // Step 6: Convert quaternion to Euler angles
+    const targetEuler = new THREE.Euler().setFromQuaternion(quaternion);
 
-    // Now apply the rotation to the brain
-    const quaternion = new THREE.Quaternion().setFromAxisAngle(rotationAxis, angle);
-    brainRef.current.quaternion.multiplyQuaternions(quaternion, new THREE.Quaternion(1, 0, 0, 0));
-
-    // Update rotation using the quaternion
-    const newRotation = brainRef.current.rotation.clone();
-    setRotation({ rotation: [newRotation.x, newRotation.y, newRotation.z] });
+    // Step 7: Animate the rotation smoothly
+    setRotation({ rotation: [targetEuler.x, targetEuler.y, targetEuler.z] });
   };
 
   return (

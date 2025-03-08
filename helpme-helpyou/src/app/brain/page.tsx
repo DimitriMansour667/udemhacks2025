@@ -7,7 +7,7 @@ import { useState, useRef } from "react";
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
-import { OrbitControls, useGLTF } from "@react-three/drei";
+import { OrbitControls } from "@react-three/drei";
 import * as THREE from 'three';
 
 export default function Brain() {
@@ -66,11 +66,10 @@ export default function Brain() {
     
         const cornerRadius = 20; // Radius for the rounded corners
         const padding = 20; // Padding for text inside the rectangle
+        const padding_left = 30;
     
         // Set the background color to semi-transparent gray
-        ctx.fillStyle = 'rgba(128, 128, 128, 0.5)'; // Semi-transparent gray
-    
-        // Draw a rectangle with rounded corners
+        ctx.fillStyle = 'rgba(128, 128, 128, 0.75)'; // Semi-transparent gray
         ctx.beginPath();
         ctx.moveTo(padding + cornerRadius, padding); // Start at the top-left corner
         ctx.arcTo(canvas.width - padding, padding, canvas.width - padding, canvas.height - padding, cornerRadius); // Top-right corner
@@ -79,53 +78,57 @@ export default function Brain() {
         ctx.arcTo(padding, padding, canvas.width - padding, padding, cornerRadius); // Top-left corner
         ctx.closePath();
         ctx.fill();
+        // Draw a rectangle with rounded corners
+
     
         // Set text properties
-        ctx.font = '12px Arial';
-        ctx.fillStyle = 'black';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-    
+        
         // Create dynamic text
-        const textPadding = 10;
+        const textPadding = 30;
         const lineHeight = 24;
         let currentY = padding + textPadding;
         
         // Draw the 'part' text
-        ctx.font = 'bold 10px Arial';
+        ctx.fillStyle = 'black';
+        ctx.font = 'bold 26px Arial';
+        ctx.textAlign = 'center';
+        ctx.textBaseline = 'middle';    
         ctx.fillText(data.part, canvas.width / 2, currentY);
         currentY += lineHeight;
     
-        // Draw the 'description' text
-        ctx.font = '12px Arial';
-        const descriptionLines = wrapText(data.description, canvas.width - padding * 2, ctx);
-        descriptionLines.forEach(line => {
-            ctx.fillText(line, canvas.width / 2, currentY);
-            currentY += lineHeight;
-        });
+        // // Draw the 'description' text
+        // ctx.font = '12px Arial';
+        // const descriptionLines = wrapText(data.description, canvas.width - padding * 2, ctx);
+        // descriptionLines.forEach(line => {
+        //     ctx.fillText(line, canvas.width / 2, currentY);
+        //     currentY += lineHeight;
+        // });
     
         // Draw the 'impact' text
-        ctx.font = '12px Arial';
+        ctx.font = 'bold 12px Arial';
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'top';    
         if (data.impact.length > 0) {
-            ctx.fillText('Impact:', canvas.width / 2, currentY);
+            ctx.fillText('Impact:', padding_left, currentY);
             currentY += lineHeight;
-            const impactLines = wrapText(data.impact, canvas.width - padding * 2, ctx);
+            const impactLines = wrapText(data.impact, canvas.width / 1.5, ctx);
             impactLines.forEach(line => {
-                ctx.fillText(line, canvas.width / 2, currentY);
+                ctx.fillText(line, padding_left, currentY);
                 currentY += lineHeight;
             });
         }
     
         // Draw the 'symptoms' text
-        ctx.font = '12px Arial';
+        ctx.font = ' bold 12px Arial';
         if (data.symptoms.length > 0) {
-            ctx.fillText('Symptoms:', canvas.width / 2, currentY);
+            ctx.fillText('Symptoms:', canvas.width, currentY);
             currentY += lineHeight;
             data.symptoms.forEach(line => {
-                ctx.fillText(line, canvas.width / 2, currentY);
+                ctx.fillText(line, padding_left, currentY);
                 currentY += lineHeight;
             });
         }
+
     
         // Create a texture from the canvas
         const texture = new THREE.CanvasTexture(canvas);
