@@ -69,13 +69,13 @@ export function SpriteComponent({ data, firstPoint }) {
     // Create dynamic text
     const textPadding = 10;
     const lineHeight = 24;
-    let currentY = padding + textPadding;
+    let currentY = padding + 10 + textPadding;
     
     // Draw 'part of body'
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = 'bold 20px Arial';
-    ctx.fillText(data.part, canvas.width / 2, currentY);
+    ctx.fillText(data.part, canvas.width / 2 , currentY);
     currentY += lineHeight;
 
     // Draw 'description'
@@ -92,7 +92,7 @@ export function SpriteComponent({ data, firstPoint }) {
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.position.set(1, 0, 3);
+    sprite.position.set(1, 0, 2);
     sprite.scale.set(1, 1, 1);
     const posVec = new THREE.Vector3()
     sprite.getWorldPosition(posVec)
