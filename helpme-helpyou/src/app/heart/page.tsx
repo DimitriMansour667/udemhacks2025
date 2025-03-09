@@ -57,11 +57,10 @@ export default function Heart() {
     };
     
     useEffect(() => {
-        const queryParam = searchParams.get('query');
-
-        if (queryParam) {
-            setInput(queryParam);
-            handleSubmit(new Event('submit') as any, queryParam);
+        const modalInput = localStorage.getItem('modalInput');
+        if (modalInput) {
+            setInput(modalInput);
+            handleSubmit(new Event('submit') as any, modalInput);
         }
     }, []);
 
@@ -92,6 +91,7 @@ export default function Heart() {
                     setModalTitle("Your question might be related to the "+answer_response.recommendation);
                     setModalDescription("Click the button below to access the related section.");
                     setModalIsOpen(true);
+                    localStorage.setItem('modalInput', JSON.stringify(customInput));
                 } else {
                     setModalTitle("Error");
                     setModalDescription("Try a more relevant question.");
@@ -279,7 +279,10 @@ export default function Heart() {
                 title={modalTitle}
                 description={modalDescription}
                 isOpen={modalIsOpen}
-                onClose={() => setModalIsOpen(false)}
+                onClose={() => {
+                    setModalIsOpen(false);
+                    localStorage.removeItem('modalInput');
+                }}
                 isReroute={isReroute}
                 routeLink={routeLink}
                 modalInput={modalInput}

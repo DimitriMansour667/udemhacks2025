@@ -148,6 +148,7 @@ export default function Brain() {
             "Click the button below to access the related section."
           );
           setModalIsOpen(true);
+          localStorage.setItem('modalInput', customInput);
         } else {
           setModalTitle("Error");
           setModalDescription("Try a more relevant question.");
@@ -387,7 +388,10 @@ export default function Brain() {
         title={modalTitle}
         description={modalDescription}
         isOpen={modalIsOpen}
-        onClose={() => setModalIsOpen(false)}
+        onClose={() => {
+          setModalIsOpen(false);
+          localStorage.removeItem('modalInput');
+        }}
         isReroute={isReroute}
         routeLink={routeLink}
         modalInput={modalInput}
