@@ -14,6 +14,7 @@ import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circu
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
 import Image from 'next/image'
 import { BrainParts, BodyParts } from "@/app/constant/bodyParts"
+import { Spline, Eye } from "lucide-react"
 
 export default function Brain() {
 
@@ -35,6 +36,8 @@ export default function Brain() {
     const [modalDescription, setModalDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [isReroute, setIsReroute] = useState(false);
+    const [routeLink, setRouteLink] = useState("");
     const points_dict: { [key: string]: { x: number, y: number, z: number } } = {
         "Cerebrum": { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 },
         "Cerebellum": { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 },
@@ -66,9 +69,21 @@ export default function Brain() {
             console.log(answer_response)
 
             if (answer_response.error) {
-                setModalTitle("Error");
-                setModalDescription("Try a more relevant question.");
-                setModalIsOpen(true);
+                console.log("There is an error")
+                console.log(answer_response.recommendation)
+                if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
+                    setIsReroute(true);
+                    setRouteLink(answer_response.recommendation);
+                    setModalTitle("Your question might be related to the "+answer_response.recommendation);
+                    setModalDescription("Click the button below to access the related section.");
+                    setModalIsOpen(true);
+                } else {
+                    setModalTitle("Error");
+                    setModalDescription("Try a more relevant question.");
+                    setIsReroute(false);
+                    setRouteLink("");
+                    setModalIsOpen(true);
+                }
             }else{
                 const possible_values = Object.values(BrainParts) as string[];
                 console.log(possible_values)
@@ -98,12 +113,21 @@ export default function Brain() {
         setInput(e.target.value)
     }
 
-    const handleItemClick = (index: number) => {
+    const handleSpriteClick = (index: number) => {
         setSelectedResponseIndex(index);
         console.log("Clicked item index: ", index);
         setAnswer(responses[index])
         setPartIndex(0)
         setshowSprite(!!responses[index] && !responses[index].error)
+    }
+
+    const handleEyeClick = (index: number) => {
+        setSelectedResponseIndex(index);
+        console.log("Clicked item index: ", index);
+        setAnswer(responses[index])
+        setModalIsOpen(true);
+        setModalTitle(answer?.parts[partIndex].part || "");
+        setModalDescription(answer?.parts[partIndex].text || "");
     }
 
     const handleForwardClick = () => {
@@ -155,17 +179,18 @@ export default function Brain() {
                 {responses
                 .filter(response => response.question) // Filter out responses with empty questions
                 .map((response, index) => (
-                    <AnimatedListItem 
-                        key={index}
-                        onClick={() => handleItemClick(index)}
-                    >
-                        <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer bg-white/80 backdrop-blur-sm hover:scale-105 transition-transform duration-200">
+                    <AnimatedListItem key={index}>
+                        <div className="p-2 border-black border-1 rounded-lg shadow-md bg-white/80 backdrop-blur-sm transition-transform duration-200">
                             <h3 className="font-bold">{response.question}</h3>
-                            {response.parts.map((part, partIndex) => (
-                                <div key={partIndex}>
-                                    <h3>-{part.part}</h3>
-                                </div>
-                            ))}
+                            <h3 className="text-sm text-gray-500">{response.parts.map(part => part.part).join(", ")}</h3>
+                            <div className="flex flex-row gap-2">
+                                <Button variant="outline" size="icon" onClick={() => handleSpriteClick(index)}>
+                                    <Spline />
+                                </Button>
+                                <Button variant="outline" size="icon" onClick={() => handleEyeClick(index)}>
+                                    <Eye />
+                                </Button>
+                            </div>
                         </div>
                     </AnimatedListItem>
                 ))}
@@ -184,12 +209,6 @@ export default function Brain() {
                     )}
                 </Canvas>
             </div>
-            <ModalNathan
-                title={modalTitle}
-                description={modalDescription}
-                isOpen={modalIsOpen}
-                onClose={() => setModalIsOpen(false)}
-            />
 
             {isLoading && (
                 <>
@@ -213,7 +232,7 @@ export default function Brain() {
                     {/* <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent">
                         <Image src="/back.svg" alt="Back" width={24} height={24} />
                     </Button>
-                    <Button onClick={handleForwardClick} size="icon" className="h-12 w-12 bg-transparent">
+                    <Button onClick={handleForwardClick} size="icon" className="h-12 w-12 bg-transparent hover:bg-gray-200 hover:scale-110 transition-all duration-300">
                         <Image src="/forward.svg" alt="Forward" width={24} height={24} />
                     </Button> */}
                 </div>
@@ -231,6 +250,14 @@ export default function Brain() {
                     </Button>
                 </form>
             </div>
+            <ModalNathan
+                title={modalTitle}
+                description={modalDescription}
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+                isReroute={isReroute}
+                routeLink={routeLink}
+            />
         </div>
     );
 }

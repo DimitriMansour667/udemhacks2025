@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
-import { NonBinary, Send } from "lucide-react";
+import { NonBinary, Send, Spline, Eye } from "lucide-react";
 import { useState, useRef, PointerEventHandler } from "react";
 import HearthModel from '@/app/HeartModel'
 import { AiAnswer, Answer } from "../class/answer";
@@ -14,6 +14,7 @@ import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNa
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 import { HeartParts, BodyParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
+import Image from "next/image";
 
 
 export default function Heart() {
@@ -38,6 +39,8 @@ export default function Heart() {
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showingModel, setShowingModel] = useState(false);
+    const [isReroute, setIsReroute] = useState(false);
+    const [routeLink, setRouteLink] = useState("");
     const points_dict: { [key: string]: { x: number, y: number, z: number } } = {
         "Superior Vena Cava": { x: -0.6425948281061822, y: 0.9755409592647069, z: -0.13576635170186815 }, // Superior Vena Cava
         "Inferior Vena Cava": { x: -0.5117882345665898, y: -0.31672799261628004, z: -0.44637480826734105 }, // Inferior Vena Cava
@@ -63,13 +66,24 @@ export default function Heart() {
         try {
             const answer_response = await genAi.sendRequest(input, BodyParts.Hearth)
             setProgress(100); // Complete the progress
-            setAnswer(answer_response)
             console.log(answer_response)
 
             if (answer_response.error) {
-                setModalTitle("Error");
-                setModalDescription("Try a more relevant question.");
-                setModalIsOpen(true);
+                console.log("There is an error")
+                console.log(answer_response.recommendation)
+                if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
+                    setIsReroute(true);
+                    setRouteLink(answer_response.recommendation);
+                    setModalTitle("Your question might be related to the "+answer_response.recommendation);
+                    setModalDescription("Click the button below to access the related section.");
+                    setModalIsOpen(true);
+                } else {
+                    setModalTitle("Error");
+                    setModalDescription("Try a more relevant question.");
+                    setIsReroute(false);
+                    setRouteLink("");
+                    setModalIsOpen(true);
+                }
             } else {
                 const possible_values = Object.values(HeartParts) as string[];
                 console.log(possible_values)
@@ -99,13 +113,35 @@ export default function Heart() {
         setInput(e.target.value)
     }
 
-    const handleItemClick = (index: number) => {
+    const handleSpriteClick = (index: number) => {
         setSelectedResponseIndex(index);
         console.log("Clicked item index: ", index);
         setAnswer(responses[index])
         setPartIndex(0)
         setshowSprite(!!responses[index] && !responses[index].error)
     }
+
+    const handleEyeClick = (index: number) => {
+        setSelectedResponseIndex(index);
+        console.log("Clicked item index: ", index);
+        setAnswer(responses[index])
+        setModalIsOpen(true);
+        setModalTitle(answer?.parts[partIndex].part || "");
+        setModalDescription(answer?.parts[partIndex].text || "");
+    }
+
+    const handleForwardClick = () => {
+        if (answer) {
+            setPartIndex(prev => Math.min(prev + 1, answer.parts.length - 1));
+        }
+    };
+
+    const handleBackClick = () => {
+        if (answer) {
+            setPartIndex(prev => Math.max(prev - 1, 0));
+        }
+    };
+
     return (
         <div className="relative h-screen w-full">
             {/* Animated list on the left */}
@@ -114,19 +150,20 @@ export default function Heart() {
                 <div className="flex flex-col gap-2"></div>
                 <AnimatedList>
                     {responses
-                        .filter(response => response.question) // Filter out responses with empty questions
+                        .filter(response => response.question)
                         .map((response, index) => (
-                            <AnimatedListItem
-                                key={index}
-                                onClick={() => handleItemClick(index)}
-                            >
-                                <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer bg-white/80 backdrop-blur-sm hover:scale-105 transition-transform duration-200">
+                            <AnimatedListItem key={index}>
+                                <div className="p-2 border-black border-1 rounded-lg shadow-md bg-white/80 backdrop-blur-sm transition-transform duration-200">
                                     <h3 className="font-bold">{response.question}</h3>
-                                    {response.parts.map((part, partIndex) => (
-                                        <div key={partIndex}>
-                                            <h3>-{part.part}</h3>
-                                        </div>
-                                    ))}
+                                    <h3 className="text-sm text-gray-500">{response.parts.map(part => part.part).join(", ")}</h3>
+                                    <div className="flex flex-row gap-2">
+                                        <Button variant="outline" size="icon" onClick={() => handleSpriteClick(index)}>
+                                            <Spline />
+                                        </Button>
+                                        <Button variant="outline" size="icon" onClick={() => handleEyeClick(index)}>
+                                            <Eye />
+                                        </Button>
+                                    </div>
                                 </div>
                             </AnimatedListItem>
                         ))}
@@ -149,6 +186,8 @@ export default function Heart() {
                 description={modalDescription}
                 isOpen={modalIsOpen}
                 onClose={() => setModalIsOpen(false)}
+                isReroute={isReroute}
+                routeLink={routeLink}
             />
 
             {isLoading && (
@@ -168,7 +207,15 @@ export default function Heart() {
                 </>
             )}
 
-            <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+            <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+                <div className="flex justify-end mb-4">
+                    <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent hover:bg-gray-200 hover:scale-110 transition-all duration-300">
+                        <Image src="/back.svg" alt="Back" width={24} height={24} />
+                    </Button>
+                    <Button onClick={handleForwardClick} size="icon" className="h-12 w-12 bg-transparent hover:bg-gray-200 hover:scale-110 transition-all duration-300">
+                        <Image src="/forward.svg" alt="Forward" width={24} height={24} />
+                    </Button>
+                </div>
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input
                         value={input}

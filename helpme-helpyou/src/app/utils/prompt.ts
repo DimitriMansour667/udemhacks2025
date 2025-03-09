@@ -11,22 +11,23 @@ For each organ-related query:
 2. Explain their key functions and importance
 3. Describe potential impacts of damage or dysfunction
 4. List observable symptoms when this region is affected
-
+5. Make a summary of the information above with impacts, symptoms and description
 Format your response using this exact JSON template:
 {
     "parts": [    
         {
             "part": "Name of organ region",
-            "description": "3-sentence explanation of the region's function and its importance towards the question asked by the user, less than 500 chars",
-            "impact": "Clear description of what happens if this region is damaged",
-            "symptoms": ["Symptom 1", "Symptom 2", "Symptom 3"]
+            "description": "3-sentence explanation of the region's function and its importance towards the question asked by the use, max 500 chars",
+            "text": "A text around 600-1000 characters making a summary of the information above with impacts, symptoms and description"
         }
     ]
 }
 
-If the question is not specifically about the main topic or the main topic, respond with:
+If the question is not specifically about the main topic or the main topic, give a recommendation if the topic of the question matches with another topic and if not leave it at none, respond with:
 {
-    "error": "Please ask a question about the <main topic> or its functions."
+    "error": "Please ask a question about the <main topic> or its functions.",
+    "question": return the question that was asked,
+    "recommendation": As the chatbot you have to choose between one of those options: "brain or heart or kidney or none". You have to be very precise, so depending on the question asked you have to clearly identify if it is a brain heart or kidney or none of these options. If the question touches multiple topics, please prioritize the one that is on the current main topic.
 }
 
 Give your response based on this question:

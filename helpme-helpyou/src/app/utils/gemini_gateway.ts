@@ -59,12 +59,10 @@ export class GenAIUtils {
         let cleanResponse = answer.replace(/```json/g, '').replace(/```/g, '').trim();
         try {
             const parsedData = JSON.parse(cleanResponse);
-
+            //console.log(JSON.parse(cleanResponse))
             return AiAnswer.fromJson(parsedData, prompt);
         } catch (error) {
-            console.log(cleanResponse)
-            console.log(error)
-            return new AiAnswer([], true);
+            return new AiAnswer([], true, undefined, "none");
         }
     }
 }
