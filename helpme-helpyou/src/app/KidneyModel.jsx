@@ -6,7 +6,7 @@ import { useSpring, animated, a } from "@react-spring/three";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 
-function KidneyModel({ points, i }) {
+function KidneyModel({ points, currentKey }) {
   const { scene } = useGLTF("/Kidneys.glb");
   const brainRef = useRef();
 
@@ -46,16 +46,16 @@ function KidneyModel({ points, i }) {
   });
   
   useEffect(() => {
-    // rotateInterval();
-  }, [i]);
+    rotateInterval();
+  }, [currentKey]);
   
   const rotateInterval = () => {
     setRotation({ x: 0, y: 0, z: 0 });
     resetCamera();
     
     setTimeout(() => {
-      console.log("Rotating to point:", points[i]);
-      rotateToPoint(points[i].x, points[i].y, points[i].z);
+      console.log("Rotating to point:", points[currentKey]);
+      rotateToPoint(points[currentKey].x, points[currentKey].y, points[currentKey].z);
     }, 200)
   }
   const handleModelClick = (event) => {
@@ -72,27 +72,20 @@ function KidneyModel({ points, i }) {
   const rotateToPoint = (x, y, z) => {
     if (!brainRef.current) return;
 
-    // Step 1: Compute normalized direction to the target point
     const targetDirection = new THREE.Vector3(x, y, z).normalize();
 
-    // Step 2: Compute normalized direction to the camera
     const cameraDirection = new THREE.Vector3(0, 0, 1)
 
-    // Step 3: Compute rotation axis (cross product)
     const rotationAxis = new THREE.Vector3().crossVectors(targetDirection, cameraDirection);
     if (rotationAxis.length() === 0) return; // Avoid zero-axis rotation
 
-    // Step 4: Compute rotation angle (dot product and arccos)
     let angle = Math.acos(targetDirection.dot(cameraDirection)); // Angle in radians
 
-    // Step 5: Create quaternion rotation
     const quaternion = new THREE.Quaternion();
     quaternion.setFromAxisAngle(rotationAxis.normalize(), angle);
 
-    // Step 6: Convert quaternion to Euler angles
     const targetEuler = new THREE.Euler().setFromQuaternion(quaternion);
 
-    // Step 7: Animate the rotation smoothly
     setRotation({ rotation: [targetEuler.x, targetEuler.y, targetEuler.z] });
   };
 
@@ -104,12 +97,10 @@ function KidneyModel({ points, i }) {
         <a.group position={[0, -0.8, 0]}>
         <primitive object={scene} scale={0.033} onClick={handleModelClick} />
       </a.group>
-        {points.map((point, index) => (
-
+      {Object.entries(points).map(([mkey, point], index) => (
           <mesh key={index} position={[point.x, point.y, point.z]}>
-          {/* <mesh key={index} position={[point.x, point.y + 1, point.z + 0.3]}> */}
             <sphereGeometry args={[0.03, 16, 16]} /> {/* Small Sphere */}
-            <meshStandardMaterial color={index==i ? "yellow" : "white"} />
+            <meshStandardMaterial color={currentKey === mkey ? "red" : "white"} />
           </mesh>
         ))}
       </a.group>

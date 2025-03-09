@@ -47,7 +47,6 @@ function BrainModel({ points, currentKey }) {
 
   useEffect(() => {
     rotateInterval();
-    console.log("key", currentKey)
 
   }, [currentKey]);
 

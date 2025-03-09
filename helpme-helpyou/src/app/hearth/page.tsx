@@ -14,8 +14,8 @@ import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNa
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 
 export default function Heart() {
-    
-    if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
+
+    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
         return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
@@ -33,14 +33,14 @@ export default function Heart() {
     const [progress, setProgress] = useState(0);
     const [showingModel, setShowingModel] = useState(false);
     const points = [
-        {x: -0.6425948281061822, y: 0.9755409592647069, z: -0.13576635170186815}, // Superior Vena Cava
-        {x: -0.5117882345665898, y: -0.31672799261628004, z: -0.44637480826734105}, // Inferior Vena Cava
-        {x: -0.8261055456500125, y: 0.24391593048958704, z: -0.20885697217606747}, // Right Atrium
-        {x: -0.4118636364035363, y: -0.32572980813680563, z: 0.3115741059342562}, // Right Ventricle
-        {x: -0.16193168281080988, y: 0.6367147881552804, z: -0.4426578114213608}, // Pulmonery Artery
-        {x: 0.30574125831175064, y: 0.3561960606050185, z: 0.06690800612468763}, // Left Atrium
-        {x: 0.6125498759899235, y: -0.3933885492530122, z: 0.5048913170917531}, // Left Ventricle
-        {x: -0.09475676993002183, y: 1.011880422924982, z: -0.1643971837933614}, // Aorta
+        { x: -0.6425948281061822, y: 0.9755409592647069, z: -0.13576635170186815 }, // Superior Vena Cava
+        { x: -0.5117882345665898, y: -0.31672799261628004, z: -0.44637480826734105 }, // Inferior Vena Cava
+        { x: -0.8261055456500125, y: 0.24391593048958704, z: -0.20885697217606747 }, // Right Atrium
+        { x: -0.4118636364035363, y: -0.32572980813680563, z: 0.3115741059342562 }, // Right Ventricle
+        { x: -0.16193168281080988, y: 0.6367147881552804, z: -0.4426578114213608 }, // Pulmonery Artery
+        { x: 0.30574125831175064, y: 0.3561960606050185, z: 0.06690800612468763 }, // Left Atrium
+        { x: 0.6125498759899235, y: -0.3933885492530122, z: 0.5048913170917531 }, // Left Ventricle
+        { x: -0.09475676993002183, y: 1.011880422924982, z: -0.1643971837933614 }, // Aorta
     ];
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -48,23 +48,23 @@ export default function Heart() {
 
         setIsLoading(true);
         setProgress(0);
-        
+
         // Start progress animation
         const progressInterval = setInterval(() => {
             setProgress(prev => Math.min(prev + 2, 90));
         }, 50);
 
         try {
-            const answer_response = await genAi.parseResponse(input)
+            const answer_response = await genAi.sendRequest(input)
             setProgress(100); // Complete the progress
             setAnswer(answer_response)
             console.log(answer_response)
-            
+
             if (answer_response.error) {
                 setModalTitle("Error");
                 setModalDescription("Try a more relevant question.");
                 setModalIsOpen(true);
-            }else{
+            } else {
                 setshowSprite(!!answer && !answer.error)
             }
         } finally {
@@ -88,9 +88,9 @@ export default function Heart() {
                     <directionalLight position={[5, 5, 5]} intensity={2} />
                     <directionalLight position={[-5, -5, -5]} intensity={1} color="white" />
                     <OrbitControls enableZoom={true} />
-                    <HearthModel points={points} i={partIndex}/>
+                    <HearthModel points={points} i={partIndex} />
                     {showSprite && answer && (
-                            <SpriteComponent data={answer.parts[0]} firstPoint={points[partIndex]}/>
+                        <SpriteComponent data={answer.parts[0]} firstPoint={points[partIndex]} />
                     )}
                 </Canvas>
             </div>

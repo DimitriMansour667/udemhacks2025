@@ -1,6 +1,8 @@
 
 export enum BodyParts{
-    Brain = "Brain"
+    Brain = "Brain",
+    Kidney = "Kidney",
+    Hearth = "Hearth"
 }
 
 export enum BrainParts {
