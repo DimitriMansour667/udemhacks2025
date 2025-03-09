@@ -70,7 +70,7 @@ export default function Kidney() {
                 setModalDescription("Try a more relevant question.");
                 setModalIsOpen(true);
             } else {
-                const possible_values = Object.values(KidneyParts)
+                const possible_values = Object.values(KidneyParts) as string[];
                 console.log(possible_values)
                 if (!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))) {
                     setModalTitle("Skill issue");

@@ -87,7 +87,7 @@ function BrainModel({ points, currentKey }) {
   return (
     <>
       {/* Wrapper group to recenter the model */}
-        <a.group ref={brainRef} position={[0, 0, 0]} rotation={rotation} scale={1}>
+        <a.group ref={brainRef} position={[0, 0, 0]} rotation={rotation} scale={1.5}>
         {/* <a.group ref={brainRef} position={[0, -1, -0.3]} rotation={rotation}> */}
         <a.group position={[0, -1, -0.3]}>
           <primitive object={scene} scale={0.0098} onClick={handleModelClick} />
