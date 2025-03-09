@@ -28,7 +28,7 @@ function wrapText(
   return lines;
 }
 
-export function SpriteComponent({ data, firstPoint }: { data: any, firstPoint: any }) {
+export function SpriteComponent({ nbpost, data, firstPoint }: { nbpost:number,  data: any, firstPoint: any }) {
   if (!data) return null;
 
   const canvas = document.createElement("canvas");
@@ -105,8 +105,10 @@ export function SpriteComponent({ data, firstPoint }: { data: any, firstPoint: a
     currentY += lineHeight;
   });
 
-  currentY = canvas.height - 30;
-  ctx.fillText("Click anywhere to continue.", padding_left, currentY);
+  if(nbpost > 1){
+      currentY = canvas.height - 30;
+      ctx.fillText("Click anywhere to continue.", padding_left, currentY);
+  }
 
   const texture = new THREE.CanvasTexture(canvas);
   const spriteMaterial = new THREE.SpriteMaterial({ map: texture });

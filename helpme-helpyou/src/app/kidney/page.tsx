@@ -220,7 +220,7 @@ export default function Kidney() {
                     <OrbitControls enableZoom={false} />
                     <KidneyModel points={points_dict} currentKey={answer?.parts[partIndex].part} />
                     {showSprite && answer && (
-                        <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
+                        <SpriteComponent nbpost={answer.parts.length} data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
                     )}
                 </Canvas>
             </div>

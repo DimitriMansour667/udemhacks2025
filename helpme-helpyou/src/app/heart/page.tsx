@@ -223,7 +223,7 @@ export default function Heart() {
                     <OrbitControls enableZoom={false} />
                     <HearthModel points={points_dict} currentKey={answer?.parts[partIndex].part} />
                     {showSprite && answer && (
-                        <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
+                        <SpriteComponent nbpost={answer.parts.length} data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
                     )}
                 </Canvas>
             </div>

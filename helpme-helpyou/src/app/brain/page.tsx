@@ -316,6 +316,7 @@ export default function Brain() {
           />
           {showSprite && answer && (
             <SpriteComponent
+              nbpost={answer.parts.length}
               data={answer.parts[partIndex]}
               firstPoint={points_dict[answer.parts[partIndex].part]}
             />
@@ -339,18 +340,21 @@ export default function Brain() {
           </div>
         </>
       )}
+      {answer && answer.parts.length > 1 &&(
+
       <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
         <div className="flex justify-center gap-2 mb-4">
           {answer?.parts.map((_, index) => (
             <div
-              key={index}
-              className={`rounded-full transition-all duration-200 ${
+            key={index}
+            className={`rounded-full transition-all duration-200 ${
                 index === partIndex ? "h-3 w-3 bg-black" : "h-2 w-2 bg-gray-300"
-              }`}
+            }`}
             />
-          ))}
+        ))}
         </div>
       </div>
+    )}
       <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
         <div className="flex justify-end mb-4">
           {/* <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent">
