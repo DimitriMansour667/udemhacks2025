@@ -228,15 +228,7 @@ export default function Kidney() {
                     )}
                 </Canvas>
             </div>
-            <ModalNathan
-                title={modalTitle}
-                description={modalDescription}
-                isOpen={modalIsOpen}
-                onClose={() => setModalIsOpen(false)}
-                isReroute={isReroute}
-                routeLink={routeLink}
-                modalInput={modalInput}
-            />
+
 
             {isLoading && (
                 <>
@@ -282,6 +274,15 @@ export default function Kidney() {
                     </Button>
                 </form>
             </div>
+            <ModalNathan
+                title={modalTitle}
+                description={modalDescription}
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+                isReroute={isReroute}
+                routeLink={routeLink}
+                modalInput={modalInput}
+            />
         </div>
     );
 }
