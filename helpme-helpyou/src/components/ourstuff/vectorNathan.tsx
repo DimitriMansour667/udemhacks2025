@@ -69,13 +69,13 @@ export function SpriteComponent({ data, firstPoint }) {
     // Create dynamic text
     const textPadding = 10;
     const lineHeight = 24;
-    let currentY = padding + textPadding;
+    let currentY = padding + 10 + textPadding;
     
     // Draw 'part of body'
     ctx.textAlign = 'center';
     ctx.textBaseline = 'middle';
     ctx.font = 'bold 20px Arial';
-    ctx.fillText(data.part, canvas.width / 2, currentY);
+    ctx.fillText(data.part, canvas.width / 2 , currentY);
     currentY += lineHeight;
 
     // Draw 'description'
