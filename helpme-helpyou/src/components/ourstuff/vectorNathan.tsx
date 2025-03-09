@@ -100,6 +100,7 @@ export function SpriteComponent({ nbpost, data, firstPoint }: { nbpost:number,  
     canvas.width - padding_left * 2,
     ctx
   );
+  
   descriptionLines.forEach((line) => {
     ctx.fillText(line, padding_left, currentY);
     currentY += lineHeight;
