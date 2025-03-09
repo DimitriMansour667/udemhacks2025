@@ -32,7 +32,7 @@ export default function Brain() {
     const [modalDescription, setModalDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
-    const points_dict: { [key: string] } = {
+    const points_dict: { [key: string]: { x: number, y: number, z: number } } = {
         "Cerebrum": { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 },
         "Cerebellum": { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 },
         "Brainstem": { x: 0.23097607679126156, y: -0.7122985424067342, z: 0.12780552084877117 },
