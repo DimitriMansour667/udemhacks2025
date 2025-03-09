@@ -107,6 +107,7 @@ export function SpriteComponent({ nbpost, data, firstPoint }: { nbpost:number,  
 
   if(nbpost > 1){
       currentY = canvas.height - 30;
+      ctx.font = "italic bold 18px Arial"; // 'italic' style added
       ctx.fillText("Click anywhere to continue.", padding_left, currentY);
   }
 
