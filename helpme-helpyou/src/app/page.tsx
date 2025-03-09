@@ -39,13 +39,13 @@ export default function Home() {
       <div className="h-8"></div>
       <div className="flex flex-row items-center justify-center gap-4">
         <InteractiveHoverButton onClick={() => router.push('/brain')}>Access Brain</InteractiveHoverButton>
-        <InteractiveHoverButton onClick={() => router.push('/hearth')}>Access Hearth</InteractiveHoverButton>
+        <InteractiveHoverButton onClick={() => router.push('/heart')}>Access Heart</InteractiveHoverButton>
         <InteractiveHoverButton onClick={() => router.push('/chat')}>Access Lungs</InteractiveHoverButton>
       </div>
       <div className="h-8"></div>
       <div className="flex flex-row items-center justify-center gap-4">
-        <InteractiveHoverButton onClick={() => router.push('/chat')}>Access Stomach</InteractiveHoverButton>
         <InteractiveHoverButton onClick={() => router.push('/kidney')}>Access Kidneys</InteractiveHoverButton>
+        <InteractiveHoverButton onClick={() => router.push('/')}>🚧 Access Stomach 🚧</InteractiveHoverButton>
       </div>
     </div>
   );

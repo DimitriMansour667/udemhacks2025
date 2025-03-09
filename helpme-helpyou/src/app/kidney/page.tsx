@@ -73,7 +73,8 @@ export default function Kidney() {
             } else {
                 const possible_values = Object.values(KidneyParts) as string[];
                 console.log(possible_values)
-                if (!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))) {
+                answer_response.parts = answer_response.parts.filter(part => possible_values.includes(part.part));
+                if (answer_response.parts.length === 0) {
                     setModalTitle("Skill issue");
                     setModalDescription("Be more original with your prompt!");
                     setModalIsOpen(true);
@@ -121,7 +122,7 @@ export default function Kidney() {
                         key={index}
                         onClick={() => handleItemClick(index)}
                     >
-                        <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer hover:scale-105 transition-transform duration-200">
+                        <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer bg-white/80 backdrop-blur-sm hover:scale-105 transition-transform duration-200">
                             <h3 className="font-bold">{response.question}</h3>
                             {response.parts.map((part, partIndex) => (
                                 <div key={partIndex}>
