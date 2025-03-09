@@ -51,8 +51,25 @@ export default function Lung() {
         "Middle Lobe": {x: -0.42280640625689175, y: -0.023496275495605512, z: 0.29680553414583244},
         "Lower Lobe": {x: -0.5579146282974743, y: -0.3578304357966164, z: 0.300323532322612},
     };
+
+    const saveResponses = (responses: AiAnswer[]) => {
+      localStorage.setItem('lungResponses', JSON.stringify(responses));
+    }
+  
+    const getResponses = () => {
+      return JSON.parse(localStorage.getItem('lungResponses') ?? "[]") as AiAnswer[];
+    }
+  
+    const loadResponses = () => {
+      const responses = getResponses();
+      if (responses) {
+        setResponses(responses);
+      }
+    }
     
     useEffect(() => {
+        loadResponses();
+    
         const modalInput = localStorage.getItem('modalInput');
         if (modalInput) {
             setInput(modalInput);
@@ -106,10 +123,13 @@ export default function Lung() {
                     setModalIsOpen(true);
                     return;
                 }
-                setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
+
+                saveResponses([...getResponses(), answer_response]); // Add to the list of all responses
+                loadResponses();
+        
                 setAnswer(answer_response)
                 setPartIndex(0)
-                setSelectedResponseIndex(responses.length)
+                setSelectedResponseIndex(getResponses().length);
                 console.log("Selected response index: ", selectedResponseIndex)
                 setshowSprite(!!answer_response && !answer_response.error)
                 console.log("Safe sapce", showSprite, answer_response)
@@ -130,15 +150,15 @@ export default function Lung() {
     const handleSpriteClick = (index: number) => {
         setSelectedResponseIndex(index);
         console.log("Clicked item index: ", index);
-        setAnswer(responses[index])
-        setPartIndex(0)
-        setshowSprite(!!responses[index] && !responses[index].error)
+        setAnswer(getResponses()[index]);
+        setPartIndex(0);
+        setshowSprite(!!getResponses()[index] && !getResponses()[index].error);
     }
 
     const handleEyeClick = (index: number) => {
         setSelectedResponseIndex(index);
         console.log("Clicked item index: ", index);
-        setAnswer(responses[index])
+        setAnswer(getResponses()[index]);
         setModalIsOpen(true);
         setModalTitle(answer?.parts[partIndex].part || "");
         setModalDescription(answer?.parts[partIndex].text || "");
@@ -189,7 +209,7 @@ export default function Lung() {
             {/* Animated list on the left */}
             <div className="absolute top-0 left-3 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY: 'auto', zIndex: 10 }}>
                 {responses.length !== 0 && (
-                <h1 className="text-2xl font-bold">History</h1>
+                <h1 className="text-2xl font-bold mb-2">History</h1>
                 )}
                 <div className="flex flex-col gap-2"></div>
                 <AnimatedList>

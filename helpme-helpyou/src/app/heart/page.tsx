@@ -53,8 +53,25 @@ export default function Heart() {
         "Left Ventricle": { x: 0.6125498759899235, y: -0.3933885492530122, z: 0.5048913170917531 }, // Left Ventricle
         "Aorta": { x: -0.09475676993002183, y: 1.011880422924982, z: -0.1643971837933614 }, // Aorta
     };
+
+    const saveResponses = (responses: AiAnswer[]) => {
+      localStorage.setItem('heartResponses', JSON.stringify(responses));
+    }
+  
+    const getResponses = () => {
+      return JSON.parse(localStorage.getItem('heartResponses') ?? "[]") as AiAnswer[];
+    }
+  
+    const loadResponses = () => {
+      const responses = getResponses();
+      if (responses) {
+        setResponses(responses);
+      }
+    }
     
     useEffect(() => {
+        loadResponses();
+    
         const modalInput = localStorage.getItem('modalInput');
         if (modalInput) {
             setInput(modalInput);
@@ -108,10 +125,13 @@ export default function Heart() {
                     setModalIsOpen(true);
                     return;
                 }
-                setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
+
+                saveResponses([...getResponses(), answer_response]); // Add to the list of all responses
+                loadResponses();
+        
                 setAnswer(answer_response)
                 setPartIndex(0)
-                setSelectedResponseIndex(responses.length)
+                setSelectedResponseIndex(getResponses().length);
                 setshowSprite(!!answer_response && !answer_response.error)
                 console.log("Safe sapce", showSprite, answer_response)
             }
@@ -131,15 +151,15 @@ export default function Heart() {
     const handleSpriteClick = (index: number) => {
         setSelectedResponseIndex(index);
         console.log("Clicked item index: ", index);
-        setAnswer(responses[index])
-        setPartIndex(0)
-        setshowSprite(!!responses[index] && !responses[index].error)
+        setAnswer(getResponses()[index]);
+        setPartIndex(0);
+        setshowSprite(!!getResponses()[index] && !getResponses()[index].error);
     }
 
     const handleEyeClick = (index: number) => {
         setSelectedResponseIndex(index);
         console.log("Clicked item index: ", index);
-        setAnswer(responses[index])
+        setAnswer(getResponses()[index]);
         setModalIsOpen(true);
         setModalTitle(answer?.parts[partIndex].part || "");
         setModalDescription(answer?.parts[partIndex].text || "");
@@ -190,7 +210,7 @@ export default function Heart() {
             {/* Animated list on the left */}
             <div className="absolute top-0 left-3 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY: 'auto', zIndex: 10 }}>
                 {responses.length !== 0 && (
-                <h1 className="text-2xl font-bold">History</h1>
+                <h1 className="text-2xl font-bold mb-2">History</h1>
                 )}
                 <div className="flex flex-col gap-2"></div>
                 <AnimatedList>
