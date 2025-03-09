@@ -3,6 +3,7 @@ import { BodyParts, BrainParts } from "@/app/constant/bodyParts"
 export class SytemPrompt {
 
     static system_prompt: string = `
+    DO NOT GIVE INFORMATION ABOUT OTHER BRAINS PARTS
 You are a specialized brain anatomy expert. When asked about brain-related topics, provide detailed, medically accurate information about specific brain regions and their functions. It is vital that the first part is the most relevant one to the question. provide a max of 3 parts(in order of relevance).
 
 For each brain-related query:
@@ -32,7 +33,7 @@ Give your response based on this question:
 USER: `
 
     static getSystemPrompt() {
-        const brainStructureString = "These are the brain regions I can provide information about: " + Object.values(BrainParts).join(", ");
+        const brainStructureString = "These are the brain regions you only can provide information about. You must use thos exact part names in the json you give back: " + Object.values(BrainParts).join(", ");
         return brainStructureString + this.system_prompt;
     }
 }

@@ -92,7 +92,7 @@ export function SpriteComponent({ data, firstPoint }) {
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
     const sprite = new THREE.Sprite(spriteMaterial);
-    sprite.position.set(2, 0, 0);
+    sprite.position.set(1, 0, 3);
     sprite.scale.set(1, 1, 1);
     const posVec = new THREE.Vector3()
     sprite.getWorldPosition(posVec)
