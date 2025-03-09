@@ -21,13 +21,15 @@ export class Answer {
 export class AiAnswer {
     parts: Answer[]
     error: boolean
+    question: string
 
-    constructor(parts:Answer[] = [], error:boolean = false)
+    constructor(parts:Answer[] = [], error:boolean = false, question:string="")
     {
         this.parts = parts
         this.error = error
+        this.question = question
     }
-    static fromJson(parsedData:any): AiAnswer{
+    static fromJson(parsedData:any, prompt:string): AiAnswer{
         if("error" in parsedData){
             return new AiAnswer([], true)
         }
@@ -35,6 +37,6 @@ export class AiAnswer {
         for(const answer of parsedData.parts){
             answers.push(Answer.fromJson(answer))
         }
-        return new AiAnswer(answers)
+        return new AiAnswer(answers, false, prompt)
     }
 }

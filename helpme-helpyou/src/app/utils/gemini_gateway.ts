@@ -35,7 +35,7 @@ export class GenAIUtils {
         try {
             const parsedData = JSON.parse(cleanResponse);
 
-            return AiAnswer.fromJson(parsedData);
+            return AiAnswer.fromJson(parsedData,prompt);
         }catch(error){
             console.log(cleanResponse)
             console.log(error)

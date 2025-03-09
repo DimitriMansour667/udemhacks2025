@@ -25,7 +25,7 @@ If the question is not about the brain reply with an error using this json templ
 }
 
 Give your response based on this question:
-USER:`
+USER: `
 
     static getSystemPrompt() {
         const brainStructureString = "These are the brain parts that you know of:" + Object.values(BrainParts).join(", ");
