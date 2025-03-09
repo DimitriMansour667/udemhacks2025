@@ -99,7 +99,7 @@ function KidneyModel({ points, currentKey }) {
       {Object.entries(points).map(([mkey, point], index) => (
           <mesh key={index} position={[point.x, point.y, point.z]}>
             <sphereGeometry args={[0.03, 16, 16]} />
-            <meshStandardMaterial color={currentKey === mkey ? "red" : "white"} />
+            <meshStandardMaterial color={currentKey === mkey ? "yellow" : "white"} />
           </mesh>
         ))}
       </a.group>
