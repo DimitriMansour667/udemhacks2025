@@ -6,7 +6,7 @@ import { useSpring, animated, a } from "@react-spring/three";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 
-function BrainModel({ points, currentKey }) {
+function BrainModel({ points, currentKey, historyIndex }) {
 
   const { scene } = useGLTF("/Brain.glb");
   const brainRef = useRef();
@@ -33,13 +33,13 @@ function BrainModel({ points, currentKey }) {
       const currentPosition = new THREE.Vector3(0, 0, 0);
       currentPosition.copy(camera.position); // Copy current camera position
 
-      currentPosition.lerp(targetPosition.current, 0.03); // 0.05 is the speed factor
+      currentPosition.lerp(targetPosition.current, 0.05); // 0.05 is the speed factor
 
       // Update camera position
       camera.position.copy(currentPosition);
 
       // If the camera is close enough to the target, stop the animation
-      if (camera.position.distanceTo(targetPosition.current) < 0.01) {
+      if (camera.position.distanceTo(targetPosition.current) < 0.025) {
         setIsResetting(false); // Stop resetting once close enough
       }
     }
@@ -47,8 +47,7 @@ function BrainModel({ points, currentKey }) {
 
   useEffect(() => {
     rotateInterval();
-
-  }, [currentKey]);
+  }, [currentKey, historyIndex]);
 
   const rotateInterval = () => {
     setRotation({ x: 0, y: 0, z: 0 });
