@@ -62,12 +62,6 @@ function BrainModel({ points, currentKey }) {
   }
   const handleModelClick = (event) => {
     event.stopPropagation(); // Prevents unwanted interactions
-    const { x, y, z } = event.point; // Get the clicked 3D coordinates
-
-    console.log("Clicked at:", { x, y, z }); // Log XYZ position
-
-    // Optionally store the points in state
-    setClickedPoints([...clickedPoints, { x, y, z }]);
   };
 
   const rotateToPoint = (x, y, z) => {
