@@ -25,6 +25,7 @@ export default function Brain() {
     const [input, setInput] = useState("")
     const [answer, setAnswer] = useState<AiAnswer | undefined>(undefined) // Holds the latest response
     const [responses, setResponses] = useState<AiAnswer[]>([]) // Holds all responses
+    const [selectedResponseIndex, setSelectedResponseIndex] = useState<number | null>(null); // Holds the index of the selected response
     const controlsRef = useRef(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [showSprite, setshowSprite] = useState(false);
@@ -85,25 +86,30 @@ export default function Brain() {
         setInput(e.target.value)
     }
 
+    const handleItemClick = (index: number) => {
+        setSelectedResponseIndex(index);
+        console.log("Clicked item index: ", index);
+    }
+
     return (
         <div className="relative h-screen w-full">
             {/* Animated list on the left */}
-            <div className="absolute top-0 left-0 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY:'auto', zIndex: 10}}>
+            <div className="absolute top-0 left-0 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY: 'auto', zIndex: 10 }}>
             <AnimatedList>
                 {responses
-                    .filter(response => response.question) // Filter out responses with empty questions
-                    .map((response, index) => (
-                        <AnimatedListItem key={index}>
-                            <div className="p-2 bg-gray-200 rounded-lg shadow-md">
-                                <h3 className="font-bold">{response.question}</h3>
-                                {response.parts.map((part, partIndex) => (
-                                    <div key={partIndex}>
-                                        <h3>-{part.part}</h3>
-                                    </div>
-                                ))}
-                            </div>
-                        </AnimatedListItem>
-                    ))}
+                .filter(response => response.question) // Filter out responses with empty questions
+                .map((response, index) => (
+                    <AnimatedListItem key={index} onClick={() => handleItemClick(index)}>
+                    <div className="p-2 bg-gray-200 rounded-lg shadow-md">
+                        <h3 className="font-bold">{response.question}</h3>
+                        {response.parts.map((part, partIndex) => (
+                        <div key={partIndex}>
+                            <h3>-{part.part}</h3>
+                        </div>
+                        ))}
+                    </div>
+                    </AnimatedListItem>
+                ))}
             </AnimatedList>
             </div>
 
