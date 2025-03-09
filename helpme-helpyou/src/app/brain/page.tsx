@@ -371,7 +371,7 @@ export default function Brain() {
           <Input
             value={input}
             onChange={handleInputChange}
-            placeholder="Type your message..."
+            placeholder="Ask anything on the human brain."
             className="flex-grow text-lg"
             disabled={isTyping}
             style={{ height: "50px" }}
