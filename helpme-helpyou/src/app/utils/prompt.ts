@@ -17,8 +17,8 @@ Format your response using this exact JSON template:
     "parts": [    
         {
             "part": "Name of organ region",
-            "description": "3-sentence explanation of the region's function and its importance towards the question asked by the user, max 500 chars",
-            "text": "A text around 600-1000 characters making a summary of the information above with impacts, symptoms and description"
+            "description": "3-sentence explanation of the region's function and its importance towards the question asked by the user, max 350 chars",
+            "text": "A text around 600-900 characters making a summary of the information above with impacts, symptoms and description"
         }
     ]
 }
