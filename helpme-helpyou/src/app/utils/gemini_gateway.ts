@@ -26,9 +26,13 @@ export class GenAIUtils {
         switch (bodyPart) {
             case BodyParts.Brain:
                 system_prompt = SytemPrompt.getSystemPromptBrain()
+                break;
             case BodyParts.Kidney:
                 system_prompt = SytemPrompt.getSystemPromptKidneys()
+                break;
         }
+
+        console.log (system_prompt)
             
         this.model = this.genAI.getGenerativeModel(
             {
