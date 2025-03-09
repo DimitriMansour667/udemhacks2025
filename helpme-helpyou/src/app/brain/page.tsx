@@ -329,6 +329,7 @@ export default function Brain() {
           <BrainModel
             points={points_dict}
             currentKey={answer?.parts[partIndex].part}
+            historyIndex={selectedResponseIndex}
           />
           {showSprite && answer && (
             <SpriteComponent
