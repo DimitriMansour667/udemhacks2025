@@ -243,6 +243,8 @@ export default function Lung() {
                 </>
             )}
             <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+            {answer && answer.parts.length > 1 &&(
+
                 <div className="flex justify-center gap-2 mb-4">
                     {answer?.parts.map((_, index) => (
                         <div 
@@ -255,6 +257,7 @@ export default function Lung() {
                         />
                     ))}
                 </div>
+            )}
             </div>
 
             <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">

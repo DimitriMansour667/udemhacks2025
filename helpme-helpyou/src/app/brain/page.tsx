@@ -340,9 +340,9 @@ export default function Brain() {
           </div>
         </>
       )}
+        <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
       {answer && answer.parts.length > 1 &&(
 
-      <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
         <div className="flex justify-center gap-2 mb-4">
           {answer?.parts.map((_, index) => (
             <div
@@ -353,8 +353,8 @@ export default function Brain() {
             />
         ))}
         </div>
-      </div>
     )}
+    </div>
       <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
         <div className="flex justify-end mb-4">
           {/* <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent">
