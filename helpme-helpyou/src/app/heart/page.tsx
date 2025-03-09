@@ -218,7 +218,7 @@ export default function Heart() {
     return (
         <div className="relative h-screen w-full">
             {/* Animated list on the left */}
-            <div className="absolute top-0 left-3 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY: 'auto', zIndex: 10 }}>
+            <div className="absolute top-0 left-3 w-1/4 p-4" style={{ maxHeight: '87vh', overflowY: 'auto', zIndex: 10 }}>
                 {responses.length !== 0 && (
                 <h1 className="text-2xl font-bold mb-2">History</h1>
                 )}
