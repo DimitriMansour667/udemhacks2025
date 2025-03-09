@@ -12,6 +12,7 @@ import { ModalNathan } from "@/components/ourstuff/modalNathan";
 import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
+import Image from 'next/image'
 import { BrainParts, BodyParts } from "@/app/constant/bodyParts"
 
 export default function Brain() {
@@ -104,6 +105,18 @@ export default function Brain() {
         setshowSprite(!!responses[index] && !responses[index].error)
     }
 
+    const handleForwardClick = () => {
+        if (answer) {
+            setPartIndex(prev => Math.min(prev + 1, answer.parts.length - 1));
+        }
+    };
+
+    const handleBackClick = () => {
+        if (answer) {
+            setPartIndex(prev => Math.max(prev - 1, 0));
+        }
+    };
+
     return (
         <div className="relative h-screen w-full">
             {/* Animated list on the left */}
@@ -167,7 +180,15 @@ export default function Brain() {
                 </>
             )}
 
-            <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+            <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+                <div className="flex justify-end mb-4">
+                    <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent">
+                        <Image src="/back.svg" alt="Back" width={24} height={24} />
+                    </Button>
+                    <Button onClick={handleForwardClick} size="icon" className="h-12 w-12 bg-transparent">
+                        <Image src="/forward.svg" alt="Forward" width={24} height={24} />
+                    </Button>
+                </div>
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input
                         value={input}

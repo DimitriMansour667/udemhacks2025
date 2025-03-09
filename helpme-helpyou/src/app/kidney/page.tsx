@@ -34,6 +34,7 @@ export default function Kidney() {
     const [showSprite, setshowSprite] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modalDescription, setModalDescription] = useState("");
+    const [selectedResponseIndex, setSelectedResponseIndex] = useState<number | null>(null); // Holds the index of the selected response
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showingModel, setShowingModel] = useState(false);
@@ -96,28 +97,41 @@ export default function Kidney() {
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
     }
+    
+    const handleItemClick = (index: number) => {
+        setSelectedResponseIndex(index);
+        console.log("Clicked item index: ", index);
+        setAnswer(responses[index])
+        setPartIndex(0)
+        setshowSprite(!!responses[index] && !responses[index].error)
+    }
 
     return (
 
         <div className="relative h-screen w-full">
             {/* Animated list on the left */}
-            <div className="absolute top-0 left-0 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY: 'auto', zIndex: 10 }}>
-                <AnimatedList>
-                    {responses
-                        .filter(response => response.question) // Filter out responses with empty questions
-                        .map((response, index) => (
-                            <AnimatedListItem key={index} onClick={() => handleItemClick(index)}>
-                                <div className="p-2 bg-gray-200 rounded-lg shadow-md">
-                                    <h3 className="font-bold">{response.question}</h3>
-                                    {response.parts.map((part, partIndex) => (
-                                        <div key={partIndex}>
-                                            <h3>-{part.part}</h3>
-                                        </div>
-                                    ))}
+            <div className="absolute top-0 left-3 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY: 'auto', zIndex: 10 }}>
+            <h1 className="text-2xl font-bold">History</h1>
+            <div className="flex flex-col gap-2"></div>
+            <AnimatedList>
+                {responses
+                .filter(response => response.question) // Filter out responses with empty questions
+                .map((response, index) => (
+                    <AnimatedListItem 
+                        key={index}
+                        onClick={() => handleItemClick(index)}
+                    >
+                        <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer hover:scale-105 transition-transform duration-200">
+                            <h3 className="font-bold">{response.question}</h3>
+                            {response.parts.map((part, partIndex) => (
+                                <div key={partIndex}>
+                                    <h3>-{part.part}</h3>
                                 </div>
-                            </AnimatedListItem>
-                        ))}
-                </AnimatedList>
+                            ))}
+                        </div>
+                    </AnimatedListItem>
+                ))}
+            </AnimatedList>
             </div>
             <div className="absolute inset-0">
                 <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
@@ -147,7 +161,7 @@ export default function Kidney() {
                                 max={100}
                                 min={0}
                                 value={progress}
-                                gaugePrimaryColor="rgb(79 70 229)"
+                                gaugePrimaryColor="rgb(0, 0, 0)"
                                 gaugeSecondaryColor="rgba(0, 0, 0, 0.1)"
                             />
                         </div>
