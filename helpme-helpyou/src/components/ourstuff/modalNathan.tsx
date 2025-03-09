@@ -38,11 +38,11 @@ export function ModalNathan({
         >
           {description}
         </CardItem> 
-        <div className="flex justify-between items-center mt-20">
+        <div className="flex justify-between items-center mt-20 cursor-pointer">
           <CardItem
             translateZ={20}
             as="button"
-            className="px-4 py-3 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold hover:scale-110 transition-all duration-300"
+            className="px-4 py-3 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold hover:scale-110 transition-all duration-300 cursor-pointer"
             onClick={onClose}
           >
             Close
@@ -51,8 +51,8 @@ export function ModalNathan({
             <CardItem
               translateZ={20}
               as="button"
-              className="px-4 py-3 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold hover:scale-110 transition-all duration-300"
-              onClick={() => window.location.href = routeLink + (modalInput ? `?query=${modalInput}` : "")}
+              className="px-4 py-3 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold hover:scale-110 transition-all duration-300 cursor-pointer"
+              onClick={() => window.location.href = routeLink}
             >
               Go to {routeLink}
             </CardItem>

@@ -15,7 +15,7 @@ function BrainModel({ points, currentKey }) {
 
   const [{ rotation }, setRotation] = useSpring(() => ({
     rotation: [0, 0, 0], // Default rotation (brain at initial orientation)
-    config: { mass: 1, tension: 1, friction: 30 }, // Adjusted for slower animation
+    config: { mass: 1, tension: 60, friction: 10 }, // Adjusted for slower animation
   }));
 
   // Flag to indicate when camera reset should happen
