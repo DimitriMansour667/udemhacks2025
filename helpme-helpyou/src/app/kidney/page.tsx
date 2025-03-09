@@ -87,7 +87,8 @@ export default function Kidney() {
                 if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
                     setIsReroute(true);
                     setRouteLink(answer_response.recommendation);
-                    setModalInput(customInput);
+                    localStorage.setItem('modalInput', JSON.stringify(customInput));
+                    // setModalInput(customInput);
                     setModalTitle("Your question might be related to the "+answer_response.recommendation);
                     setModalDescription("Click the button below to access the related section.");
                     setModalIsOpen(true);

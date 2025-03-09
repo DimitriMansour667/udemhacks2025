@@ -98,11 +98,12 @@ export default function Brain() {
   };
 
   useEffect(() => {
-    const queryParam = searchParams.get("query");
+    const oldQuestion = localStorage.getItem('modalInput');
 
-    if (queryParam) {
-      setInput(queryParam);
-      handleSubmit(new Event("submit") as any, queryParam);
+    if (oldQuestion) {
+        localStorage.removeItem('modalInput')
+      setInput(oldQuestion);
+      handleSubmit(new Event("submit") as any, oldQuestion);
     }
   }, []);
 
