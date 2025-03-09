@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
 import { NonBinary, Send } from "lucide-react";
 import { useState, useRef, PointerEventHandler } from "react";
-import HearthModel from '@/app/HeartModel'
+import KidneyModel from '@/app/KidneyModel'
 import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
@@ -13,7 +13,7 @@ import { ModalNathan } from "@/components/ourstuff/modalNathan";
 import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 
-export default function Heart() {
+export default function Kidney() {
     
     if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
         return <div>No api key error</div>
@@ -33,14 +33,15 @@ export default function Heart() {
     const [progress, setProgress] = useState(0);
     const [showingModel, setShowingModel] = useState(false);
     const points = [
-        {x: -0.6425948281061822, y: 0.9755409592647069, z: -0.13576635170186815}, // Superior Vena Cava
-        {x: -0.5117882345665898, y: -0.31672799261628004, z: -0.44637480826734105}, // Inferior Vena Cava
-        {x: -0.8261055456500125, y: 0.24391593048958704, z: -0.20885697217606747}, // Right Atrium
-        {x: -0.4118636364035363, y: -0.32572980813680563, z: 0.3115741059342562}, // Right Ventricle
-        {x: -0.16193168281080988, y: 0.6367147881552804, z: -0.4426578114213608}, // Pulmonery Artery
-        {x: 0.30574125831175064, y: 0.3561960606050185, z: 0.06690800612468763}, // Left Atrium
-        {x: 0.6125498759899235, y: -0.3933885492530122, z: 0.5048913170917531}, // Left Ventricle
-        {x: -0.09475676993002183, y: 1.011880422924982, z: -0.1643971837933614}, // Aorta
+        {x: 0.14197008894221275, y: 0.1510056992837222, z: -0.0474645050978109}, // Reinal Artery
+        {x: -0.09266655990271129, y: 0.07673202226194742, z: 0.12560388714898651}, // Renal Vein
+        {x: 0.03454300102385906, y: 0.14640120990398575, z: 0.07322032575937706}, // Ureter
+        {x: -0.07735738907917715, y: 0.15904299995250792, z: 0.001166892950766126}, // Renal Pelvis
+        {x: -0.7550017828952282, y: 0.8469339433521645, z: 0.0028131433130842006}, // Medulla
+        {x: -0.3920363927567727, y: 0.8741752335712509, z: -0.019888666615165376}, // Cortex
+        {x: 0.8054631252283667, y: 0.5353339986846517, z: -0.19906144681366653}, // Nephron
+        {x: 0.5903147887166088, y: -0.7959747341315074, z: 0.005024125140933365}, // Renal Capsule
+
     ];
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
@@ -88,7 +89,7 @@ export default function Heart() {
                     <directionalLight position={[5, 5, 5]} intensity={2} />
                     <directionalLight position={[-5, -5, -5]} intensity={1} color="white" />
                     <OrbitControls enableZoom={true} />
-                    <HearthModel points={points} i={partIndex}/>
+                    <KidneyModel points={points} i={partIndex}/>
                     {showSprite && answer && (
                             <SpriteComponent data={answer.parts[0]} firstPoint={points[partIndex]}/>
                     )}

@@ -9,7 +9,12 @@ import React, {
   useState,
 } from "react";
 
-export function AnimatedListItem({ children }: { children: React.ReactNode }) {
+interface AnimatedListItemProps {
+  children: React.ReactNode;
+  onClick?: () => void; // Add the onClick prop
+}
+
+export function AnimatedListItem({ children, onClick }: AnimatedListItemProps) {
   const animations = {
     initial: { scale: 0, opacity: 0 },
     animate: { scale: 1, opacity: 1, originY: 0 },
@@ -18,7 +23,7 @@ export function AnimatedListItem({ children }: { children: React.ReactNode }) {
   };
 
   return (
-    <motion.div {...animations} layout className="mx-auto w-full">
+    <motion.div {...animations} layout className="mx-auto w-full" onClick={onClick}>
       {children}
     </motion.div>
   );
