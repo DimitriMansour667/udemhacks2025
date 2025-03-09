@@ -6,10 +6,11 @@
     "dev": "next dev --turbopack",
     "build": "npm run dev",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint --fix"
   },
   "dependencies": {
     "@google/generative-ai": "^0.24.0",
+    "@next/eslint-plugin-next": "^15.2.1",
     "@radix-ui/react-slot": "^1.1.2",
     "@react-spring/three": "^9.7.5",
     "@react-three/drei": "^10.0.4",
@@ -17,6 +18,8 @@
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
     "dotenv": "^16.4.7",
+    "eslint": "^9.22.0",
+    "eslint-config-next": "^15.2.1",
     "gsap": "^3.12.7",
     "lucide-react": "^0.479.0",
     "motion": "^12.4.10",

@@ -59,7 +59,7 @@ export class GenAIUtils {
 
         const answer = await this.generateContent(prompt, bodyPart)
 
-        let cleanResponse = answer.replace(/```json/g, '').replace(/```/g, '').trim();
+        const cleanResponse = answer.replace(/```json/g, '').replace(/```/g, '').trim();
         try {
             const parsedData = JSON.parse(cleanResponse);
             //console.log(JSON.parse(cleanResponse))

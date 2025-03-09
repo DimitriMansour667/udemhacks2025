@@ -2,19 +2,17 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
-import { NonBinary, Send, Spline, Eye } from "lucide-react";
-import { useState, useRef, PointerEventHandler, KeyboardEventHandler, use, useEffect } from "react";
+import {  Send, Spline, Eye } from "lucide-react";
+import { useState, useRef,  KeyboardEventHandler,  useEffect } from "react";
 import KidneyModel from '@/app/KidneyModel'
-import { AiAnswer, Answer } from "../class/answer";
+import { AiAnswer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import * as THREE from 'three';
 import { ModalNathan } from "@/components/ourstuff/modalNathan";
-import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
+import { SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 import { KidneyParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
-import Image from "next/image";
 
 import { BodyParts } from "@/app/constant/bodyParts";
 import { useSearchParams } from 'next/navigation';
