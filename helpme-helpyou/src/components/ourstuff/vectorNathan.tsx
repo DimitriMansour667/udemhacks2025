@@ -56,21 +56,38 @@ export function SpriteComponent({ data, firstPoint }) {
     ctx.closePath();
     ctx.fill();
 
-    // Text rendering
-    const textPadding = 30;
-    const lineHeight = 24;
-    let currentY = padding + textPadding;
-
     // Text content
     ctx.fillStyle = 'black';
     ctx.font = 'bold 16px Arial';
     ctx.textAlign = 'left';
     ctx.textBaseline = 'top';
+
+    // Set text properties
+    ctx.font = '18px Arial';
+    ctx.fillStyle = 'black';
     
-    const lines = wrapText(data.part, canvas.width - (padding * 2), ctx);
-    lines.forEach(line => {
-        const vectorAB = new THREE.Vector3(0);
+    // Create dynamic text
+    const textPadding = 10;
+    const lineHeight = 24;
+    let currentY = padding + textPadding;
+    
+    // Draw 'part of body'
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
+    ctx.font = 'bold 20px Arial';
+    ctx.fillText(data.part, canvas.width / 2, currentY);
+    currentY += lineHeight;
+
+    // Draw 'description'
+    ctx.font = '18px Arial';
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'top';
+    const descriptionLines = wrapText(data.description, canvas.width - padding * 2, ctx);
+    descriptionLines.forEach(line => {
+        ctx.fillText(line, padding_left, currentY);
+        currentY += lineHeight;
     });
+    
 
     const texture = new THREE.CanvasTexture(canvas);
     const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
@@ -88,7 +105,6 @@ export function SpriteComponent({ data, firstPoint }) {
 
 export function VectorComponent({ firstPoint, secondPoint }: VectorProps) {
     const vectA = new THREE.Vector3(0, 0, Math.sqrt(firstPoint.x * firstPoint.x + firstPoint.y * firstPoint.y + firstPoint.z * firstPoint.z));
-    // const vectA = new THREE.Vector3(firstPoint.x, firstPoint.y, firstPoint.z);
     const vectB = secondPoint;
     const vectorAB = new THREE.Vector3().subVectors(vectB, vectA);
     const length = vectA.distanceTo(vectB);

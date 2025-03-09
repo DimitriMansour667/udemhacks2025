@@ -62,12 +62,14 @@ export default function Brain() {
             const answer_response = await genAi.parseResponse(input)
             setProgress(100); // Complete the progress
             setAnswer(answer_response)
-            setShowingModel(!!answer && !answer.error)
-
+            console.log(answer_response)
+            
             if (answer_response.error) {
                 setModalTitle("Error");
                 setModalDescription("Try a more relevant question.");
                 setModalIsOpen(true);
+            }else{
+                setshowSprite(!!answer && !answer.error)
             }
         } finally {
             clearInterval(progressInterval);
