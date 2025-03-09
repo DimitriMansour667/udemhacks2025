@@ -6,7 +6,7 @@ import { useSpring, animated, a } from "@react-spring/three";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 
-function KidneyModel({ points, currentKey }) {
+function KidneyModel({ points, currentKey, historyIndex }) {
   const { scene } = useGLTF("/Kidneys.glb");
   const brainRef = useRef();
 
@@ -46,7 +46,7 @@ function KidneyModel({ points, currentKey }) {
   
   useEffect(() => {
     rotateInterval();
-  }, [currentKey]);
+  }, [currentKey, historyIndex]);
   
   const rotateInterval = () => {
     setRotation({ x: 0, y: 0, z: 0 });

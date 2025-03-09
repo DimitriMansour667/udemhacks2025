@@ -7,7 +7,7 @@ import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 import { Exo_2 } from "next/font/google";
 
-function LungModel({ points, currentKey }) {
+function LungModel({ points, currentKey, historyIndex }) {
   const { scene } = useGLTF("/Lungs.glb");
   const brainRef = useRef();
 
@@ -48,7 +48,7 @@ function LungModel({ points, currentKey }) {
 
   useEffect(() => {
     rotateInterval();
-  }, [currentKey]);
+  }, [currentKey, historyIndex]);
 
   const rotateInterval = () => {
     setRotation({ x: 0, y: 0, z: 0 });

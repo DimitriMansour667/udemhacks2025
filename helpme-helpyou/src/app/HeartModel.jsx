@@ -6,7 +6,7 @@ import { useSpring, animated, a } from "@react-spring/three";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 
-function HearthModel({ points, currentKey }) {
+function HearthModel({ points, currentKey, historyIndex }) {
   const { scene } = useGLTF("/Heart.glb");
   const brainRef = useRef();
 
@@ -47,7 +47,7 @@ function HearthModel({ points, currentKey }) {
 
   useEffect(() => {
     rotateInterval();
-  }, [currentKey]);
+  }, [currentKey, historyIndex]);
 
   const rotateInterval = () => {
     setRotation({ x: 0, y: 0, z: 0 });
