@@ -62,7 +62,7 @@ export class GenAIUtils {
             //console.log(JSON.parse(cleanResponse))
             return AiAnswer.fromJson(parsedData, prompt);
         } catch (error) {
-            return new AiAnswer([], true);
+            return new AiAnswer([], true, undefined, "none");
         }
     }
 }

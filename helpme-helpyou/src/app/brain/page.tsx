@@ -36,6 +36,8 @@ export default function Brain() {
     const [modalDescription, setModalDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [isReroute, setIsReroute] = useState(false);
+    const [routeLink, setRouteLink] = useState("");
     const points_dict: { [key: string]: { x: number, y: number, z: number } } = {
         "Cerebrum": { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 },
         "Cerebellum": { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 },
@@ -69,12 +71,19 @@ export default function Brain() {
             if (answer_response.error) {
                 console.log("There is an error")
                 console.log(answer_response.recommendation)
-                if (answer_response.recommendation != 'none') {
-                    console.log("pingpong")
+                if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
+                    setIsReroute(true);
+                    setRouteLink(answer_response.recommendation);
+                    setModalTitle("Your question might be related to the "+answer_response.recommendation);
+                    setModalDescription("Click the button below to access the related section.");
+                    setModalIsOpen(true);
+                } else {
+                    setModalTitle("Error");
+                    setModalDescription("Try a more relevant question.");
+                    setIsReroute(false);
+                    setRouteLink("");
+                    setModalIsOpen(true);
                 }
-                setModalTitle("Error");
-                setModalDescription("Try a more relevant question.");
-                setModalIsOpen(true);
             }else{
                 const possible_values = Object.values(BrainParts) as string[];
                 console.log(possible_values)
@@ -219,6 +228,8 @@ export default function Brain() {
                 description={modalDescription}
                 isOpen={modalIsOpen}
                 onClose={() => setModalIsOpen(false)}
+                isReroute={isReroute}
+                routeLink={routeLink}
             />
         </div>
     );

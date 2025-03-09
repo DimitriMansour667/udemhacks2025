@@ -14,7 +14,7 @@ import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNa
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 import { KidneyParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
-import { Image } from "next/image";
+import Image from "next/image";
 
 import { BodyParts } from "@/app/constant/bodyParts";
 
@@ -39,6 +39,8 @@ export default function Kidney() {
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showingModel, setShowingModel] = useState(false);
+    const [isReroute, setIsReroute] = useState(false);
+    const [routeLink, setRouteLink] = useState("");
     const points_dict: { [key: string]: { x: number, y: number, z: number } } = {
         "Reinal Artery": { x: 0.14197008894221275, y: 0.1510056992837222, z: -0.0474645050978109 }, // Reinal Artery
         "Renal Vein": { x: -0.09266655990271129, y: 0.07673202226194742, z: 0.12560388714898651 }, // Renal Vein
@@ -68,9 +70,21 @@ export default function Kidney() {
             console.log(answer_response)
 
             if (answer_response.error) {
-                setModalTitle("Error");
-                setModalDescription("Try a more relevant question.");
-                setModalIsOpen(true);
+                console.log("There is an error")
+                console.log(answer_response.recommendation)
+                if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
+                    setIsReroute(true);
+                    setRouteLink(answer_response.recommendation);
+                    setModalTitle("Your question might be related to the "+answer_response.recommendation);
+                    setModalDescription("Click the button below to access the related section.");
+                    setModalIsOpen(true);
+                } else {
+                    setModalTitle("Error");
+                    setModalDescription("Try a more relevant question.");
+                    setIsReroute(false);
+                    setRouteLink("");
+                    setModalIsOpen(true);
+                }
             } else {
                 const possible_values = Object.values(KidneyParts) as string[];
                 console.log(possible_values)
@@ -174,6 +188,8 @@ export default function Kidney() {
                 description={modalDescription}
                 isOpen={modalIsOpen}
                 onClose={() => setModalIsOpen(false)}
+                isReroute={isReroute}
+                routeLink={routeLink}
             />
 
             {isLoading && (

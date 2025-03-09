@@ -39,6 +39,8 @@ export default function Heart() {
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showingModel, setShowingModel] = useState(false);
+    const [isReroute, setIsReroute] = useState(false);
+    const [routeLink, setRouteLink] = useState("");
     const points_dict: { [key: string]: { x: number, y: number, z: number } } = {
         "Superior Vena Cava": { x: -0.6425948281061822, y: 0.9755409592647069, z: -0.13576635170186815 }, // Superior Vena Cava
         "Inferior Vena Cava": { x: -0.5117882345665898, y: -0.31672799261628004, z: -0.44637480826734105 }, // Inferior Vena Cava
@@ -64,13 +66,24 @@ export default function Heart() {
         try {
             const answer_response = await genAi.sendRequest(input, BodyParts.Hearth)
             setProgress(100); // Complete the progress
-            setAnswer(answer_response)
             console.log(answer_response)
 
             if (answer_response.error) {
-                setModalTitle("Error");
-                setModalDescription("Try a more relevant question.");
-                setModalIsOpen(true);
+                console.log("There is an error")
+                console.log(answer_response.recommendation)
+                if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
+                    setIsReroute(true);
+                    setRouteLink(answer_response.recommendation);
+                    setModalTitle("Your question might be related to the "+answer_response.recommendation);
+                    setModalDescription("Click the button below to access the related section.");
+                    setModalIsOpen(true);
+                } else {
+                    setModalTitle("Error");
+                    setModalDescription("Try a more relevant question.");
+                    setIsReroute(false);
+                    setRouteLink("");
+                    setModalIsOpen(true);
+                }
             } else {
                 const possible_values = Object.values(HeartParts) as string[];
                 console.log(possible_values)
@@ -173,6 +186,8 @@ export default function Heart() {
                 description={modalDescription}
                 isOpen={modalIsOpen}
                 onClose={() => setModalIsOpen(false)}
+                isReroute={isReroute}
+                routeLink={routeLink}
             />
 
             {isLoading && (
