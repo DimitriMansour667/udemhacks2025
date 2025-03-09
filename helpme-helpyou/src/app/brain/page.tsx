@@ -5,14 +5,13 @@ import { GenAIUtils } from "@/app/utils/gemini_gateway"
 import { NonBinary, Send } from "lucide-react";
 import { useState, useRef, PointerEventHandler } from "react";
 import BrainModel from '@/app/BrainModel'
-import { AiAnswer, Answer } from "../class/answer";
+import { AiAnswer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
-import * as THREE from 'three';
 import { ModalNathan } from "@/components/ourstuff/modalNathan";
-import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
-import { Point3D } from "@/app/types/types";
+import { SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
+import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
 
 export default function Brain() {
     
@@ -24,7 +23,8 @@ export default function Brain() {
     const [isTyping, setIsTyping] = useState(false)
     const [partIndex, setPartIndex] = useState(0)
     const [input, setInput] = useState("")
-    const [answer, setAnswer] = useState<AiAnswer | undefined>(undefined)
+    const [answer, setAnswer] = useState<AiAnswer | undefined>(undefined) // Holds the latest response
+    const [responses, setResponses] = useState<AiAnswer[]>([]) // Holds all responses
     const controlsRef = useRef(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [showSprite, setshowSprite] = useState(false);
@@ -32,8 +32,7 @@ export default function Brain() {
     const [modalDescription, setModalDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
-    const [showingModel, setShowingModel] = useState(false);
-    const points_dict: { [key: string]: Point3D } = {
+    const points_dict: { [key: string] } = {
         "Cerebellum": { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 },
         "Cerebrum": { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 },
         "Brainstem": { x: 0.23097607679126156, y: -0.7122985424067342, z: 0.12780552084877117 },
@@ -62,8 +61,8 @@ export default function Brain() {
             const answer_response = await genAi.parseResponse(input)
             setProgress(100); // Complete the progress
             setAnswer(answer_response)
-            console.log("First Part", answer_response?.parts[partIndex].part)
             setPartIndex(0)
+            setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
             
             if (answer_response.error) {
                 setModalTitle("Error");
@@ -88,6 +87,26 @@ export default function Brain() {
 
     return (
         <div className="relative h-screen w-full">
+            {/* Animated list on the left */}
+            <div className="absolute top-0 left-0 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY:'auto', zIndex: 10}}>
+            <AnimatedList>
+                {responses
+                    .filter(response => response.question) // Filter out responses with empty questions
+                    .map((response, index) => (
+                        <AnimatedListItem key={index}>
+                            <div className="p-2 bg-gray-200 rounded-lg shadow-md">
+                                <h3 className="font-bold">{response.question}</h3>
+                                {response.parts.map((part, partIndex) => (
+                                    <div key={partIndex}>
+                                        <h3>-{part.part}</h3>
+                                    </div>
+                                ))}
+                            </div>
+                        </AnimatedListItem>
+                    ))}
+            </AnimatedList>
+            </div>
+
             <div className="absolute inset-0">
                 <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
                     <ambientLight intensity={1} />

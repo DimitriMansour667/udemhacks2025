@@ -29,7 +29,7 @@ If the question is not specifically about the brain or brain function, respond w
 }
 
 Give your response based on this question:
-USER:`
+USER: `
 
     static getSystemPrompt() {
         const brainStructureString = "These are the brain regions I can provide information about: " + Object.values(BrainParts).join(", ");
