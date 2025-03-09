@@ -217,13 +217,10 @@ export default function Kidney() {
                 .filter(response => response.question) // Filter out responses with empty questions
                 .map((response, index) => (
                     <AnimatedListItem key={index}>
-                        <div className={`p-2 ${selectedResponseIndex === index ? 'border-2 border-black/80 shadow-lg scale-[1.02]' : 'border border-black/20'} rounded-lg bg-white/80 backdrop-blur-sm transition-all duration-200`}>
+                        <div  onClick={() => handleSpriteClick(index)} className={`p-2 ${selectedResponseIndex === index ? 'border-2 border-black/80 shadow-lg scale-[1.02]' : 'border border-black/20'} rounded-lg bg-white/80 backdrop-blur-sm transition-all duration-200 cursor-pointer`}>
                             <h3 className="font-bold">{response.question}</h3>
                             <h3 className="text-sm text-gray-500">{response.parts.map(part => part.part).join(", ")}</h3>
                             <div className="flex flex-row gap-2">
-                                <Button variant="outline" size="icon" onClick={() => handleSpriteClick(index)}>
-                                    <Spline />
-                                </Button>
                                 <Button variant="outline" size="icon" onClick={() => handleEyeClick(index)}>
                                     <Eye />
                                 </Button>
