@@ -1,13 +1,7 @@
 "use client";
 
 import * as THREE from "three";
-import { Point3D } from "@/app/types/types";
-import { Answer } from "@/app/class/answer";
 
-interface VectorProps {
-  firstPoint: Point3D;
-  secondPoint: Point3D;
-}
 
 function wrapText(
   text: string,
@@ -34,7 +28,7 @@ function wrapText(
   return lines;
 }
 
-export function SpriteComponent({ data, firstPoint }) {
+export function SpriteComponent({ data, firstPoint }: { data: any, firstPoint: any }) {
   if (!data) return null;
 
   const canvas = document.createElement("canvas");
@@ -130,7 +124,7 @@ export function SpriteComponent({ data, firstPoint }) {
   );
 }
 
-export function VectorComponent({ firstPoint, secondPoint }: VectorProps) {
+export function VectorComponent({ firstPoint, secondPoint }: { firstPoint: any, secondPoint: any }) {
   const vectA = new THREE.Vector3(
     0,
     0,
