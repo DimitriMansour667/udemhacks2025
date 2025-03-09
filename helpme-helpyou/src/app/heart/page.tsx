@@ -57,6 +57,8 @@ export default function Heart() {
     useEffect(() => {
         const modalInput = localStorage.getItem('modalInput');
         if (modalInput) {
+            localStorage.removeItem('modalInput')
+
             setInput(modalInput);
             handleSubmit(new Event('submit') as any, modalInput);
         }

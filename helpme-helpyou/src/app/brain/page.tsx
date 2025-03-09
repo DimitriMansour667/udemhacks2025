@@ -97,7 +97,6 @@ export default function Brain() {
 
   useEffect(() => {
     const oldQuestion = localStorage.getItem('modalInput');
-
     if (oldQuestion) {
         localStorage.removeItem('modalInput')
       setInput(oldQuestion);
