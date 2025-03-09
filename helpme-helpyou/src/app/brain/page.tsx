@@ -30,8 +30,8 @@ export default function Brain() {
     const [modalTitle, setModalTitle] = useState("");
     const [modalDescription, setModalDescription] = useState("");
     const points: Point3D[] = [
-        { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 }, // Cerebellum
+        { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.23097607679126156, y: -0.7122985424067342, z: 0.12780552084877117 }, // Brainstem
         { x: -0.5882046695307154, y: 0.6145940866691428, z: 0.02 }, // Frontal lobe
         { x: 0.27951995256963796, y: 0.7540875925218076, z: 0.02 }, // Parietal lobe
@@ -73,10 +73,7 @@ export default function Brain() {
                     <OrbitControls enableZoom={true} />
                     <BrainModel points={points} i={partIndex} />
                     {showSprite && answer && (
-                        <>
-                            <VectorComponent firstPoint={points[partIndex]} secondPoint={{ x: 2, y: 0, z: 0 }} />
-                            <SpriteComponent {...answer.parts[0]} />
-                        </>
+                            <SpriteComponent data={answer.parts[0]} firstPoint={points[partIndex]}/>
                     )}
                 </Canvas>
             </div>
