@@ -5,10 +5,9 @@ import { useRef, useEffect, useState } from "react";
 import { useSpring, a } from "@react-spring/three";
 import * as THREE from "three";
 
-function BrainModel({ points }) {
+function BrainModel({ points, i }) {
   const { scene } = useGLTF("/Brain.glb");
   const brainRef = useRef();
-  const [i, setI] = useState(-1);
 
   const [{ rotation }, setRotation] = useSpring(() => ({
     rotation: [0, 0, 0], // Default rotation (brain at initial orientation)
@@ -16,15 +15,14 @@ function BrainModel({ points }) {
   }));
 
   useEffect(() => {
-    setTimeout(rotateInterval, 3000);
+    rotateInterval();
   }, [i]);
 
   const rotateInterval = () => {
     setRotation({ rotation: [0, 0, 0] });
     setTimeout(() => {
       console.log("Rotating to point:", points[i]);
-      rotateToPoint(points[i + 1].x, points[i + 1].y, points[i + 1].z);
-      setI((i + 1) % points.length);
+      rotateToPoint(points[i].x, points[i].y, points[i].z);
     }, 200)
   }
 

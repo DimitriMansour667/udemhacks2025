@@ -12,11 +12,12 @@ import * as THREE from 'three';
 
 export default function Brain() {
     if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
-        return <div>No api key erro</div>
+        return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
 
     const [isTyping, setIsTyping] = useState(false)
+    const [partIndex, setPartIndex] = useState(0)
     const [input, setInput] = useState("")
     const [answer, setAnswer] = useState<AiAnswer | null>(null)
     const controlsRef = useRef(null);
@@ -167,6 +168,20 @@ export default function Brain() {
         lines.push(line); // Push the last line
         return lines;
     }
+
+    function VectorComponent({firstPoint,secondPoint}){
+        const vectA = new THREE.Vector3(firstPoint.x, firstPoint.y, firstPoint.z)
+        const vectB = new THREE.Vector3(1, 1, 1)
+        const vectorAB = new THREE.Vector3().subVectors(vectA, vectB);
+        const length = vectA.distanceTo(vectB);
+        const arrowHelper = new THREE.ArrowHelper(vectorAB, vectA, length, 0xff0000);
+        console.log("vec")
+        console.log(vectorAB)   
+        return (
+            <primitive object={arrowHelper} />
+          );
+    }
+
     return (
         <div className="relative h-screen w-full">
             <div className="absolute inset-0">
@@ -174,11 +189,12 @@ export default function Brain() {
                 <ambientLight intensity={1} />
                 <directionalLight position={[5, 5, 5]} intensity={2} />
                 <OrbitControls enableZoom={true} />
-                <BrainModel points={points} />
-                <SpriteComponent data={answer?.parts[0]} />
+                <BrainModel points={points} i={partIndex} />
+                {/* <SpriteComponent data={answer?.parts[0]} /> */}
+                <VectorComponent firstPoint={points[partIndex]} secondPoint={[2,0,0]} />
               </Canvas>
             </div>
-
+            firstPoint
             {/* Floating chat box positioned lower and wider */}
             <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
