@@ -30,7 +30,6 @@ function KidneyModel({ points, currentKey }) {
       // If the current camera position is not the target, animate it towards the target
       
       const currentPosition = new THREE.Vector3(0, 0, 0);
-      console.log(camera.position, targetPosition, currentPosition);
       currentPosition.copy(camera.position); // Copy current camera position
 
       currentPosition.lerp(targetPosition.current, 0.03); // 0.05 is the speed factor
@@ -99,7 +98,7 @@ function KidneyModel({ points, currentKey }) {
       </a.group>
       {Object.entries(points).map(([mkey, point], index) => (
           <mesh key={index} position={[point.x, point.y, point.z]}>
-            <sphereGeometry args={[0.03, 16, 16]} /> {/* Small Sphere */}
+            <sphereGeometry args={[0.03, 16, 16]} />
             <meshStandardMaterial color={currentKey === mkey ? "red" : "white"} />
           </mesh>
         ))}

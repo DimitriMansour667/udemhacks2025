@@ -1,4 +1,4 @@
-import { BodyParts, BrainParts, KidneyParts } from "@/app/constant/bodyParts"
+import { BodyParts, BrainParts, KidneyParts, HeartParts } from "@/app/constant/bodyParts"
 
 export class SytemPrompt {
 
@@ -33,12 +33,16 @@ Give your response based on this question:
 USER: `
 
     static getSystemPromptBrain() {
-        const brainStructureString = "The brain is the main topic, only answer question based in the brain. These are the brain regions you only can provide information about. You must use thos exact part names in the json you give back: " + Object.values(BrainParts).join(", ");
+        const brainStructureString = "The brain is the main topic, only answer question based in the brain. These are the brain regions you only can provide information about. You must use those exact part names in the json you give back: " + Object.values(BrainParts).join(", ");
         return brainStructureString + this.system_prompt;
     }
 
     static getSystemPromptKidneys() {
-        const brainStructureString = "The kidney is the main topic, only answer question based on the kidney. These are the kidneys regions you only can provide information about. You must use thos exact part names in the json you give back: " + Object.values(KidneyParts).join(", ");
+        const brainStructureString = "The kidney is the main topic, only answer question based on the kidney. These are the kidneys regions you only can provide information about. You must use those exact part names in the json you give back: " + Object.values(KidneyParts).join(", ");
+        return brainStructureString + this.system_prompt;
+    }
+    static getSystemPromptHearth() {
+        const brainStructureString = "The heart is the main topic, only answer question based on the heart. These are the heart regions you only can provide information about. You must use those exact part names in the json you give back: " + Object.values(HeartParts).join(", ");
         return brainStructureString + this.system_prompt;
     }
 }
