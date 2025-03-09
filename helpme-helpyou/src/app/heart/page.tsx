@@ -227,15 +227,7 @@ export default function Heart() {
                     )}
                 </Canvas>
             </div>
-            <ModalNathan
-                title={modalTitle}
-                description={modalDescription}
-                isOpen={modalIsOpen}
-                onClose={() => setModalIsOpen(false)}
-                isReroute={isReroute}
-                routeLink={routeLink}
-                modalInput={modalInput}
-            />
+
 
             {isLoading && (
                 <>
@@ -281,6 +273,15 @@ export default function Heart() {
                     </Button>
                 </form>
             </div>
+            <ModalNathan
+                title={modalTitle}
+                description={modalDescription}
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+                isReroute={isReroute}
+                routeLink={routeLink}
+                modalInput={modalInput}
+            />
         </div>
     );
 }
