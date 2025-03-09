@@ -15,7 +15,6 @@ import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circu
 import { HeartParts, BodyParts, LungParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
 import Image from "next/image";
-import { useSearchParams } from "next/navigation";
 
 
 export default function Lung() {
@@ -25,8 +24,6 @@ export default function Lung() {
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
     
-    const searchParams = useSearchParams();
-
     const [isTyping, setIsTyping] = useState(false)
     const [partIndex, setPartIndex] = useState(0)
     const [input, setInput] = useState("")

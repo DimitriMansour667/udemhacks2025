@@ -27,7 +27,6 @@ import {
 import Image from "next/image";
 import { BrainParts, BodyParts } from "@/app/constant/bodyParts";
 import { Spline, Eye } from "lucide-react";
-import { useSearchParams } from "next/navigation";
 
 export default function Brain() {
     // AZAP
@@ -36,7 +35,6 @@ export default function Brain() {
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
         
-    const searchParams = useSearchParams();
 
   const [isTyping, setIsTyping] = useState(false);
   const [partIndex, setPartIndex] = useState(0);

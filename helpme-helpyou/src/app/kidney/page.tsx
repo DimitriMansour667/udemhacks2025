@@ -15,7 +15,6 @@ import { KidneyParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
 
 import { BodyParts } from "@/app/constant/bodyParts";
-import { useSearchParams } from 'next/navigation';
 
 export default function Kidney() {
 
@@ -24,7 +23,6 @@ export default function Kidney() {
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
 
-    const searchParams = useSearchParams();
 
     const [isTyping, setIsTyping] = useState(false)
     const [partIndex, setPartIndex] = useState(0)
