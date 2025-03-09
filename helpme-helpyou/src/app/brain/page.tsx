@@ -33,15 +33,15 @@ export default function Brain() {
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const points_dict: { [key: string] } = {
-        "Cerebellum": { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 },
         "Cerebrum": { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 },
+        "Cerebellum": { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 },
         "Brainstem": { x: 0.23097607679126156, y: -0.7122985424067342, z: 0.12780552084877117 },
         "Frontal Lobe": { x: -0.5882046695307154, y: 0.6145940866691428, z: 0.02 },
         "Parietal Lobe": { x: 0.27951995256963796, y: 0.7540875925218076, z: 0.02 },
         "Temporal Lobe": { x: -0.9354594627863727, y: 0, z: -0.048221844984680406 },
         "Occipital Lobe": { x: 1.0539338261146913, y: 0.09036493727733252, z: 0.24006206499231558 },
         "Medulla Oblongata": { x: 0.3103568635444375, y: -0.9436120129849548, z: 0.01327201803336897 },
-        "Limbic Lobe": { x: 0.08484408250910186, y: 0.5155446110247102, z: -0.5469365826356386 },
+        "Limbic System": { x: 0.08484408250910186, y: 0.5155446110247102, z: -0.5469365826356386 },
         "Amygdala": { x: -0.20268099697845515, y: -0.46522303081001093, z: -0.002686627744875103 }
     };
     
@@ -60,8 +60,7 @@ export default function Brain() {
         try {
             const answer_response = await genAi.parseResponse(input)
             setProgress(100); // Complete the progress
-            setAnswer(answer_response)
-            setPartIndex(0)
+            console.log(answer_response)
             setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
             
             if (answer_response.error) {
@@ -69,6 +68,8 @@ export default function Brain() {
                 setModalDescription("Try a more relevant question.");
                 setModalIsOpen(true);
             }else{
+                setAnswer(answer_response)
+                setPartIndex(0)
                 setshowSprite(!!answer_response && !answer_response.error)
                 console.log("Safe sapce", showSprite, answer_response)
             }
