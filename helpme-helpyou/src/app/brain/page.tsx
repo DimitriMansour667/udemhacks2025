@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
 import { NonBinary, Send } from "lucide-react";
-import { useState, useRef } from "react";
+import { useState, useRef, PointerEventHandler } from "react";
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
