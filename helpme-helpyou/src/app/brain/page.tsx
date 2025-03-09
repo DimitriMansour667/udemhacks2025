@@ -14,6 +14,7 @@ import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circu
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
 import Image from 'next/image'
 import { BrainParts, BodyParts } from "@/app/constant/bodyParts"
+import { Spline, Eye } from "lucide-react"
 
 export default function Brain() {
 
@@ -98,12 +99,21 @@ export default function Brain() {
         setInput(e.target.value)
     }
 
-    const handleItemClick = (index: number) => {
+    const handleSpriteClick = (index: number) => {
         setSelectedResponseIndex(index);
         console.log("Clicked item index: ", index);
         setAnswer(responses[index])
         setPartIndex(0)
         setshowSprite(!!responses[index] && !responses[index].error)
+    }
+
+    const handleEyeClick = (index: number) => {
+        setSelectedResponseIndex(index);
+        console.log("Clicked item index: ", index);
+        setAnswer(responses[index])
+        setModalIsOpen(true);
+        setModalTitle(answer?.parts[partIndex].part || "");
+        setModalDescription(answer?.parts[partIndex].text || "");
     }
 
     const handleForwardClick = () => {
@@ -128,17 +138,18 @@ export default function Brain() {
                 {responses
                 .filter(response => response.question) // Filter out responses with empty questions
                 .map((response, index) => (
-                    <AnimatedListItem 
-                        key={index}
-                        onClick={() => handleItemClick(index)}
-                    >
-                        <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer bg-white/80 backdrop-blur-sm hover:scale-105 transition-transform duration-200">
+                    <AnimatedListItem key={index}>
+                        <div className="p-2 border-black border-1 rounded-lg shadow-md bg-white/80 backdrop-blur-sm transition-transform duration-200">
                             <h3 className="font-bold">{response.question}</h3>
-                            {response.parts.map((part, partIndex) => (
-                                <div key={partIndex}>
-                                    <h3>-{part.part}</h3>
-                                </div>
-                            ))}
+                            <h3 className="text-sm text-gray-500">{response.parts.map(part => part.part).join(", ")}</h3>
+                            <div className="flex flex-row gap-2">
+                                <Button variant="outline" size="icon" onClick={() => handleSpriteClick(index)}>
+                                    <Spline />
+                                </Button>
+                                <Button variant="outline" size="icon" onClick={() => handleEyeClick(index)}>
+                                    <Eye />
+                                </Button>
+                            </div>
                         </div>
                     </AnimatedListItem>
                 ))}
@@ -157,12 +168,6 @@ export default function Brain() {
                     )}
                 </Canvas>
             </div>
-            <ModalNathan
-                title={modalTitle}
-                description={modalDescription}
-                isOpen={modalIsOpen}
-                onClose={() => setModalIsOpen(false)}
-            />
 
             {isLoading && (
                 <>
@@ -183,10 +188,10 @@ export default function Brain() {
 
             <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
                 <div className="flex justify-end mb-4">
-                    <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent">
+                    <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent hover:bg-gray-200 hover:scale-110 transition-all duration-300">
                         <Image src="/back.svg" alt="Back" width={24} height={24} />
                     </Button>
-                    <Button onClick={handleForwardClick} size="icon" className="h-12 w-12 bg-transparent">
+                    <Button onClick={handleForwardClick} size="icon" className="h-12 w-12 bg-transparent hover:bg-gray-200 hover:scale-110 transition-all duration-300">
                         <Image src="/forward.svg" alt="Forward" width={24} height={24} />
                     </Button>
                 </div>
@@ -204,6 +209,12 @@ export default function Brain() {
                     </Button>
                 </form>
             </div>
+            <ModalNathan
+                title={modalTitle}
+                description={modalDescription}
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+            />
         </div>
     );
 }

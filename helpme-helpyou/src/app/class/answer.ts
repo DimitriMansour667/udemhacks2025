@@ -3,17 +3,15 @@ import { error } from "console"
 export class Answer {
     part: string
     description: string
-    impact: string
-    symptoms: string[]
+    text: string
 
-    constructor(part:string, description:string, impact:string, symptoms:string[]){
+    constructor(part:string, description:string, text:string){
         this.part = part
         this.description = description
-        this.impact = impact
-        this.symptoms = symptoms
+        this.text = text
     }
     static fromJson(parsedData:any): Answer{
-        return new Answer(parsedData.part, parsedData.description, parsedData.impact, parsedData.symptoms)
+        return new Answer(parsedData.part, parsedData.description, parsedData.text)
     }
 }
 

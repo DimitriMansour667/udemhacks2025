@@ -11,15 +11,14 @@ For each organ-related query:
 2. Explain their key functions and importance
 3. Describe potential impacts of damage or dysfunction
 4. List observable symptoms when this region is affected
-
+5. Make a summary of the information above with impacts, symptoms and description
 Format your response using this exact JSON template:
 {
     "parts": [    
         {
             "part": "Name of organ region",
             "description": "3-sentence explanation of the region's function and its importance towards the question asked by the user",
-            "impact": "Clear description of what happens if this region is damaged",
-            "symptoms": ["Symptom 1", "Symptom 2", "Symptom 3"]
+            "text": "A text around 550-600 characters making a summary of the information above with impacts, symptoms and description"
         }
     ]
 }
