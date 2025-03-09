@@ -108,7 +108,7 @@ export function SpriteComponent({ data, firstPoint }: { data: any, firstPoint: a
   const texture = new THREE.CanvasTexture(canvas);
   const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
   const sprite = new THREE.Sprite(spriteMaterial);
-  sprite.position.set(0.6, 0, 2);
+  sprite.position.set(0.6, 0, 1.2);
   sprite.scale.set(1, 1, 1);
   const posVec = new THREE.Vector3();
   sprite.getWorldPosition(posVec);
@@ -129,10 +129,10 @@ export function VectorComponent({ firstPoint, secondPoint }: { firstPoint: any, 
     0,
     0,
     Math.sqrt(
-      firstPoint.x * firstPoint.x +
+        firstPoint.x * firstPoint.x +
         firstPoint.y * firstPoint.y +
         firstPoint.z * firstPoint.z
-    ) * 1.5
+    )
   );
   const vectB = secondPoint;
   const vectorAB = new THREE.Vector3().subVectors(vectB, vectA);

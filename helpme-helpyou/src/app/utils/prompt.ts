@@ -3,7 +3,7 @@ import { BodyParts, BrainParts, KidneyParts, HeartParts } from "@/app/constant/b
 export class SytemPrompt {
 
     static system_prompt: string = `
-    DO NOT GIVE INFORMATION ABOUT OTHER BRAINS PARTS
+    DO NOT GIVE INFORMATION ABOUT ANY OTHER BODY PARTS
 You are a specialized health anatomy expert. When asked about health-related topics, provide detailed, medically accurate information about specific body regions and their functions. It is vital that the first part is the most relevant one to the question. provide a max of 3 parts(in order of relevance).
 
 For each organ-related query:
@@ -16,7 +16,7 @@ Format your response using this exact JSON template:
 {
     "parts": [    
         {
-            "part": "Name of brain region",
+            "part": "Name of organ region",
             "description": "3-sentence explanation of the region's function and its importance towards the question asked by the user",
             "impact": "Clear description of what happens if this region is damaged",
             "symptoms": ["Symptom 1", "Symptom 2", "Symptom 3"]
