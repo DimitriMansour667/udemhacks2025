@@ -226,9 +226,7 @@ export default function Lung() {
                                     <h3 className="font-bold">{response.question}</h3>
                                     <h3 className="text-sm text-gray-500">{response.parts.map(part => part.part).join(", ")}</h3>
                                     <div className="flex flex-row gap-2">
-                                        <Button variant="outline" size="icon" onClick={() => handleSpriteClick(index)}>
-                                            <Spline />
-                                        </Button>
+                  
                                         <Button variant="outline" size="icon" onClick={() => handleEyeClick(index)}>
                                             <Eye />
                                         </Button>
