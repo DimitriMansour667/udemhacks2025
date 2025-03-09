@@ -33,13 +33,13 @@ function HearthModel({ points, currentKey, historyIndex }) {
       console.log(camera.position, targetPosition, currentPosition);
       currentPosition.copy(camera.position); // Copy current camera position
 
-      currentPosition.lerp(targetPosition.current, 0.03); // 0.05 is the speed factor
+      currentPosition.lerp(targetPosition.current, 0.05); // 0.05 is the speed factor
 
       // Update camera position
       camera.position.copy(currentPosition);
 
       // If the camera is close enough to the target, stop the animation
-      if (camera.position.distanceTo(targetPosition.current) < 0.01) {
+      if (camera.position.distanceTo(targetPosition.current) < 0.025) {
         setIsResetting(false); // Stop resetting once close enough
       }
     }
