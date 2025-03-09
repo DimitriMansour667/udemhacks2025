@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
 import { NonBinary, Send, Spline, Eye } from "lucide-react";
-import { useState, useRef, PointerEventHandler } from "react";
+import { useState, useRef, PointerEventHandler, KeyboardEventHandler } from "react";
 import HearthModel from '@/app/HeartModel'
 import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
@@ -130,18 +130,46 @@ export default function Heart() {
         setModalDescription(answer?.parts[partIndex].text || "");
     }
 
+
     const handleForwardClick = () => {
-        if (answer) {
-            setPartIndex(prev => Math.min(prev + 1, answer.parts.length - 1));
-        }
-    };
-
-    const handleBackClick = () => {
-        if (answer) {
-            setPartIndex(prev => Math.max(prev - 1, 0));
-        }
-    };
-
+            if (answer) {
+                setPartIndex(prev => (prev + 1) % answer.parts.length);
+            }
+        };
+    
+        const handleBackClick = () => {
+            if (answer) {
+                setPartIndex(prev => prev === 0 ? answer.parts.length - 1 : prev - 1);
+            }
+        };
+    
+    
+        const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {    
+            console.log(event.key)
+            if (event.key === "ArrowLeft") {
+                handleBackClick();
+            }
+            if (event.key === "ArrowRight") {
+                handleForwardClick();
+            }
+        };
+    
+        const [mouseDownPos, setMouseDownPos] = useState({ x: 0, y: 0 });
+    
+        const handleMouseDown = (e: React.MouseEvent) => {
+            setMouseDownPos({ x: e.clientX, y: e.clientY });
+        };
+    
+        const handleMouseUp = (e: React.MouseEvent) => {
+            const distance = Math.sqrt(
+            Math.pow(e.clientX - mouseDownPos.x, 2) + Math.pow(e.clientY - mouseDownPos.y, 2)
+            );
+    
+            if (distance < 5) {
+                handleForwardClick();
+            }
+        };
+    
     return (
         <div className="relative h-screen w-full">
             {/* Animated list on the left */}
@@ -170,7 +198,7 @@ export default function Heart() {
                 </AnimatedList>
             </div>
             <div className="absolute inset-0">
-                <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
+                <Canvas camera={{ position: [0, 0, 4], fov: 50 }} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onKeyDown={handleKeyDown} tabIndex={0} onFocus={(e) => e.currentTarget.focus()}>
                     <ambientLight intensity={1} />
                     <directionalLight position={[5, 5, 5]} intensity={2} />
                     <directionalLight position={[-5, -5, -5]} intensity={2} color="white" />
@@ -208,14 +236,14 @@ export default function Heart() {
             )}
 
             <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
-                <div className="flex justify-end mb-4">
+                {/* <div className="flex justify-end mb-4">
                     <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent hover:bg-gray-200 hover:scale-110 transition-all duration-300">
                         <Image src="/back.svg" alt="Back" width={24} height={24} />
                     </Button>
                     <Button onClick={handleForwardClick} size="icon" className="h-12 w-12 bg-transparent hover:bg-gray-200 hover:scale-110 transition-all duration-300">
                         <Image src="/forward.svg" alt="Forward" width={24} height={24} />
                     </Button>
-                </div>
+                </div> */}
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input
                         value={input}
