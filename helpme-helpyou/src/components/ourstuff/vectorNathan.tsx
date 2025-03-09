@@ -105,6 +105,9 @@ export function SpriteComponent({ data, firstPoint }: { data: any, firstPoint: a
     currentY += lineHeight;
   });
 
+  currentY = canvas.height - 30;
+  ctx.fillText("Click anywhere to continue.", padding_left, currentY);
+
   const texture = new THREE.CanvasTexture(canvas);
   const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
   const sprite = new THREE.Sprite(spriteMaterial);
