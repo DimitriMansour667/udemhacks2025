@@ -135,8 +135,8 @@ export default function Heart() {
                 <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
                     <ambientLight intensity={1} />
                     <directionalLight position={[5, 5, 5]} intensity={2} />
-                    <directionalLight position={[-5, -5, -5]} intensity={1} color="white" />
-                    <OrbitControls enableZoom={true} />
+                    <directionalLight position={[-5, -5, -5]} intensity={2} color="white" />
+                    <OrbitControls enableZoom={false} />
                     <HearthModel points={points_dict} currentKey={answer?.parts[partIndex].part} />
                     {showSprite && answer && (
                         <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
