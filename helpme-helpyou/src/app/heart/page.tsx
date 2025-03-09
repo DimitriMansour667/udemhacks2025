@@ -209,6 +209,11 @@ export default function Heart() {
                 handleForwardClick();
             }
         };
+
+        const handleRefreshClick = () => {
+            localStorage.removeItem('heartResponses');
+            setResponses([]);
+        };
     
     return (
         <div className="relative h-screen w-full">
@@ -296,6 +301,13 @@ export default function Heart() {
                         <Send className="h-6 w-6" />
                     </Button>
                 </form>
+            </div>
+            <div className="absolute bottom-[7%] left-1/70 bg-white/80 backdrop-blur-sm shadow-lg">
+                <Button 
+                className="x-4 y-2"
+                onClick={handleRefreshClick}>
+                    Delete History
+                </Button>
             </div>
             <ModalNathan
                 title={modalTitle}
