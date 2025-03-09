@@ -11,7 +11,6 @@ export enum BrainParts {
     ParietalLobe = "Parietal Lobe",
     TemporalLobe = "Temporal Lobe",
     OccipitalLobe = "Occipital Lobe",
-    CorpusCallosum = "Corpus Callosum",
     MedullaOblongata = "Medulla Oblongata",
     LimbicSystem = "Limbic System",
     Amygdala = "Amygdala"
