@@ -72,6 +72,8 @@ export default function Lung() {
     
         const modalInput = localStorage.getItem('modalInput');
         if (modalInput) {
+            localStorage.removeItem('modalInput')
+
             setInput(modalInput);
             handleSubmit(new Event('submit') as any, modalInput);
         }
@@ -241,7 +243,7 @@ export default function Lung() {
                     <OrbitControls enableZoom={false} />
                     <LungModel points={points_dict} currentKey={answer?.parts[partIndex].part} />
                     {showSprite && answer && (
-                        <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
+                        <SpriteComponent nbpost={answer.parts.length} data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
                     )}
                 </Canvas>
             </div>
@@ -263,6 +265,8 @@ export default function Lung() {
                 </>
             )}
             <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+            {answer && answer.parts.length > 1 &&(
+
                 <div className="flex justify-center gap-2 mb-4">
                     {answer?.parts.map((_, index) => (
                         <div 
@@ -275,6 +279,7 @@ export default function Lung() {
                         />
                     ))}
                 </div>
+            )}
             </div>
 
             <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
@@ -290,7 +295,7 @@ export default function Lung() {
                     <Input
                         value={input}
                         onChange={handleInputChange}
-                        placeholder="Ask anything on the human lung."
+                        placeholder="Ask anything on the human lung..."
                         className="flex-grow text-lg"
                         disabled={isTyping}
                         style={{ height: '50px' }}

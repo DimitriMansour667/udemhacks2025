@@ -72,6 +72,8 @@ export default function Kidney() {
     
         const modalInput = localStorage.getItem('modalInput');
         if (modalInput) {
+            localStorage.removeItem('modalInput')
+
             setInput(modalInput);
             handleSubmit(new Event('submit') as any, modalInput);
         }
@@ -240,7 +242,7 @@ export default function Kidney() {
                     <OrbitControls enableZoom={false} />
                     <KidneyModel points={points_dict} currentKey={answer?.parts[partIndex].part} />
                     {showSprite && answer && (
-                        <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
+                        <SpriteComponent nbpost={answer.parts.length} data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
                     )}
                 </Canvas>
             </div>
@@ -264,6 +266,8 @@ export default function Kidney() {
             )}
 
             <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+                {answer && answer.parts.length > 1 &&(
+
                 <div className="flex justify-center gap-2 mb-4">
                     {answer?.parts.map((_, index) => (
                         <div 
@@ -276,11 +280,12 @@ export default function Kidney() {
                         />
                     ))}
                 </div>
+                )}
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input
                         value={input}
                         onChange={handleInputChange}
-                        placeholder="Ask anything on the human kidney."
+                        placeholder="Ask anything on the human kidney..."
                         className="flex-grow text-lg"
                         disabled={isTyping}
                         style={{ height: '50px' }}
