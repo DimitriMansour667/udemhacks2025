@@ -12,7 +12,7 @@ import * as THREE from 'three';
 import { ModalNathan } from "@/components/ourstuff/modalNathan";
 import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
-import { BrainParts, BodyParts } from "@/app/constant/bodyParts"
+import { HeartParts, BodyParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
 
 
@@ -71,7 +71,7 @@ export default function Heart() {
                 setModalDescription("Try a more relevant question.");
                 setModalIsOpen(true);
             } else {
-                const possible_values = Object.values(BrainParts) as string[];
+                const possible_values = Object.values(HeartParts) as string[];
                 console.log(possible_values)
                 if (!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))) {
                     setModalTitle("Skill issue");

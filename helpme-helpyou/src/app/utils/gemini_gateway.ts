@@ -30,8 +30,8 @@ export class GenAIUtils {
             case BodyParts.Kidney:
                 system_prompt = SytemPrompt.getSystemPromptKidneys()
                 break;
-            case BodyParts.Kidney:
-                system_prompt = SytemPrompt.get()
+            case BodyParts.Hearth:
+                system_prompt = SytemPrompt.getSystemPromptHearth()
                 break;
         }
 
