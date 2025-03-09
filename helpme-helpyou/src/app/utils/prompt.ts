@@ -16,7 +16,7 @@ Format your response using this exact JSON template:
 {
     "parts": [    
         {
-            "part": "Name of brain region",
+            "part": "Name of organ region",
             "description": "3-sentence explanation of the region's function and its importance towards the question asked by the user",
             "impact": "Clear description of what happens if this region is damaged",
             "symptoms": ["Symptom 1", "Symptom 2", "Symptom 3"]
