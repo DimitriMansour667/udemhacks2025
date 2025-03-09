@@ -299,12 +299,11 @@ export default function Kidney() {
                 </form>
             </div>
             <div className="absolute bottom-[7%] left-1/70 bg-white/80 backdrop-blur-sm shadow-lg">
-                        <Button 
-                        variant="outline" 
-                        size="width" 
-                        onClick={handleRefreshClick}>
-                            Delete History
-                        </Button>
+                <Button 
+                className="x-4 y-2"
+                onClick={handleRefreshClick}>
+                    Delete History
+                </Button>
             </div>
             <ModalNathan
                 title={modalTitle}

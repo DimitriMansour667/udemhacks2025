@@ -405,8 +405,7 @@ export default function Brain() {
       </div>
       <div className="absolute bottom-[7%] left-1/70 bg-white/80 backdrop-blur-sm shadow-lg">
             <Button 
-            variant="outline" 
-            size="width" 
+            className="x-4 y-2"
             onClick={handleRefreshClick}>
                 Delete History
             </Button>
