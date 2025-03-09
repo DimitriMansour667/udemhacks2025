@@ -141,6 +141,9 @@ export default function Brain() {
         customInput,
         BodyParts.Brain
       );
+      if (answer_response.recommendation.toLowerCase() === "brain") {
+        answer_response.recommendation = "none";
+      }
       setProgress(100); // Complete the progress
       console.log(answer_response);
 

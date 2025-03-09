@@ -95,6 +95,9 @@ export default function Heart() {
 
         try {
             const answer_response = await genAi.sendRequest(customInput, BodyParts.Hearth)
+            if (answer_response.recommendation.toLowerCase() === "heart") {
+                answer_response.recommendation = "none";
+            }
             setProgress(100); // Complete the progress
             console.log(answer_response)
 
