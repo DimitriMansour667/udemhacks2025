@@ -7,12 +7,16 @@ export function ModalNathan({
   title, 
   description, 
   isOpen = true,
-  onClose 
+  onClose,
+  isReroute = false,
+  routeLink= ""
 }: { 
   title: string, 
   description: string,
   isOpen?: boolean,
-  onClose?: () => void
+  onClose?: () => void,
+  isReroute?: boolean,
+  routeLink?: string
 }) {
   if (!isOpen) return null;
   

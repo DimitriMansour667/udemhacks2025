@@ -20,16 +20,18 @@ export class AiAnswer {
     parts: Answer[]
     error: boolean
     question: string
+    recommendation: string
 
-    constructor(parts:Answer[] = [], error:boolean = false, question:string="")
+    constructor(parts:Answer[] = [], error:boolean = false, question:string="", recommendation:string="")
     {
         this.parts = parts
         this.error = error
         this.question = question
+        this.recommendation = recommendation
     }
     static fromJson(parsedData:any, prompt:string): AiAnswer{
         if("error" in parsedData){
-            return new AiAnswer([], true)
+            return new AiAnswer([], true, parsedData.question,parsedData.recommendation)
         }
         const answers = []
         for(const answer of parsedData.parts){
