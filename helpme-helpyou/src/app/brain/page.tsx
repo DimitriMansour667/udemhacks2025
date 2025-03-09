@@ -18,7 +18,7 @@ import { Spline, Eye } from "lucide-react"
 import { useSearchParams } from "next/navigation";
 
 export default function Brain() {
-
+    // AZAP
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
         return <div>No api key error</div>
     }
