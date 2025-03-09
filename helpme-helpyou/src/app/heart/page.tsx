@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
 import { NonBinary, Send, Spline, Eye } from "lucide-react";
-import { useState, useRef, PointerEventHandler, KeyboardEventHandler } from "react";
+import { useState, useRef, PointerEventHandler, KeyboardEventHandler, useEffect } from "react";
 import HearthModel from '@/app/HeartModel'
 import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
@@ -15,6 +15,7 @@ import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circu
 import { HeartParts, BodyParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
 import Image from "next/image";
+import { useSearchParams } from "next/navigation";
 
 
 export default function Heart() {
@@ -23,6 +24,8 @@ export default function Heart() {
         return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
+    
+    const searchParams = useSearchParams();
 
     const [isTyping, setIsTyping] = useState(false)
     const [partIndex, setPartIndex] = useState(0)
@@ -35,6 +38,7 @@ export default function Heart() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [showSprite, setshowSprite] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
+    const [modalInput, setModalInput] = useState("");
     const [modalDescription, setModalDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -51,9 +55,19 @@ export default function Heart() {
         "Left Ventricle": { x: 0.6125498759899235, y: -0.3933885492530122, z: 0.5048913170917531 }, // Left Ventricle
         "Aorta": { x: -0.09475676993002183, y: 1.011880422924982, z: -0.1643971837933614 }, // Aorta
     };
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+    
+    useEffect(() => {
+        const queryParam = searchParams.get('query');
+
+        if (queryParam) {
+            setInput(queryParam);
+            handleSubmit(new Event('submit') as any, queryParam);
+        }
+    }, []);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, customInput = input) => {
         e.preventDefault()
-        if (!input.trim()) return
+        if (!customInput.trim()) return
 
         setIsLoading(true);
         setProgress(0);
@@ -64,7 +78,7 @@ export default function Heart() {
         }, 50);
 
         try {
-            const answer_response = await genAi.sendRequest(input, BodyParts.Hearth)
+            const answer_response = await genAi.sendRequest(customInput, BodyParts.Hearth)
             setProgress(100); // Complete the progress
             console.log(answer_response)
 
@@ -74,6 +88,7 @@ export default function Heart() {
                 if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
                     setIsReroute(true);
                     setRouteLink(answer_response.recommendation);
+                    setModalInput(customInput);
                     setModalTitle("Your question might be related to the "+answer_response.recommendation);
                     setModalDescription("Click the button below to access the related section.");
                     setModalIsOpen(true);
@@ -82,6 +97,7 @@ export default function Heart() {
                     setModalDescription("Try a more relevant question.");
                     setIsReroute(false);
                     setRouteLink("");
+                    setModalInput("");
                     setModalIsOpen(true);
                 }
             } else {
@@ -218,6 +234,7 @@ export default function Heart() {
                 onClose={() => setModalIsOpen(false)}
                 isReroute={isReroute}
                 routeLink={routeLink}
+                modalInput={modalInput}
             />
 
             {isLoading && (
