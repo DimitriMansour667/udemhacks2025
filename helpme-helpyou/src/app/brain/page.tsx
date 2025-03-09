@@ -12,6 +12,7 @@ import { ModalNathan } from "@/components/ourstuff/modalNathan";
 import { SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
+import {BrainParts} from "@/app/constant/bodyParts"
 
 export default function Brain() {
     
@@ -61,13 +62,20 @@ export default function Brain() {
             const answer_response = await genAi.parseResponse(input)
             setProgress(100); // Complete the progress
             console.log(answer_response)
-            setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
             
             if (answer_response.error) {
                 setModalTitle("Error");
                 setModalDescription("Try a more relevant question.");
                 setModalIsOpen(true);
             }else{
+                const possible_values = Object.keys(BrainParts)
+                if(!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))){
+                    setModalTitle("Skill issue");
+                    setModalDescription("Be more original with your prompt! ");
+                    setModalIsOpen(true);
+                    return
+                }
+                setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
                 setAnswer(answer_response)
                 setPartIndex(0)
                 setshowSprite(!!answer_response && !answer_response.error)
