@@ -132,7 +132,7 @@ export function VectorComponent({ firstPoint, secondPoint }: { firstPoint: any, 
       firstPoint.x * firstPoint.x +
         firstPoint.y * firstPoint.y +
         firstPoint.z * firstPoint.z
-    ) * 1.5
+    )
   );
   const vectB = secondPoint;
   const vectorAB = new THREE.Vector3().subVectors(vectB, vectA);
