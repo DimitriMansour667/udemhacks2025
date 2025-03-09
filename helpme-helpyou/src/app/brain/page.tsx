@@ -131,7 +131,7 @@ export default function Brain() {
                         key={index}
                         onClick={() => handleItemClick(index)}
                     >
-                        <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer hover:scale-105 transition-transform duration-200">
+                        <div className="p-2 border-black border-1 rounded-lg shadow-md hover:bg-gray-300 cursor-pointer bg-white/80 backdrop-blur-sm hover:scale-105 transition-transform duration-200">
                             <h3 className="font-bold">{response.question}</h3>
                             {response.parts.map((part, partIndex) => (
                                 <div key={partIndex}>
