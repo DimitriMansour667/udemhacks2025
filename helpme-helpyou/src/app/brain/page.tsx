@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
 import { NonBinary, Send } from "lucide-react";
-import { useState, useRef, PointerEventHandler, KeyboardEventHandler } from "react";
+import { useState, useRef, PointerEventHandler, KeyboardEventHandler, useEffect } from "react";
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
@@ -15,6 +15,7 @@ import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-li
 import Image from 'next/image'
 import { BrainParts, BodyParts } from "@/app/constant/bodyParts"
 import { Spline, Eye } from "lucide-react"
+import { useSearchParams } from "next/navigation";
 
 export default function Brain() {
 
@@ -22,6 +23,8 @@ export default function Brain() {
         return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
+        
+    const searchParams = useSearchParams();
 
     const [isTyping, setIsTyping] = useState(false)
     const [partIndex, setPartIndex] = useState(0)
@@ -33,6 +36,7 @@ export default function Brain() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [showSprite, setshowSprite] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
+    const [modalInput, setModalInput] = useState("");
     const [modalDescription, setModalDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
@@ -50,10 +54,19 @@ export default function Brain() {
         "Limbic System": { x: 0.08484408250910186, y: 0.5155446110247102, z: -0.5469365826356386 },
         "Amygdala": { x: -0.20268099697845515, y: -0.46522303081001093, z: -0.002686627744875103 }
     };
+    
+    useEffect(() => {
+        const queryParam = searchParams.get('query');
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        if (queryParam) {
+            setInput(queryParam);
+            handleSubmit(new Event('submit') as any, queryParam);
+        }
+    }, []);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, customInput = input) => {
         e.preventDefault()
-        if (!input.trim()) return
+        if (!customInput.trim()) return
 
         setIsLoading(true);
         setProgress(0);
@@ -64,7 +77,7 @@ export default function Brain() {
         }, 50);
 
         try {
-            const answer_response = await genAi.sendRequest(input, BodyParts.Brain)
+            const answer_response = await genAi.sendRequest(customInput, BodyParts.Brain)
             setProgress(100); // Complete the progress
             console.log(answer_response)
 
@@ -74,6 +87,7 @@ export default function Brain() {
                 if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
                     setIsReroute(true);
                     setRouteLink(answer_response.recommendation);
+                    setModalInput(customInput);
                     setModalTitle("Your question might be related to the "+answer_response.recommendation);
                     setModalDescription("Click the button below to access the related section.");
                     setModalIsOpen(true);
@@ -82,6 +96,7 @@ export default function Brain() {
                     setModalDescription("Try a more relevant question.");
                     setIsReroute(false);
                     setRouteLink("");
+                    setModalInput("");
                     setModalIsOpen(true);
                 }
             }else{
@@ -257,6 +272,7 @@ export default function Brain() {
                 onClose={() => setModalIsOpen(false)}
                 isReroute={isReroute}
                 routeLink={routeLink}
+                modalInput={modalInput}
             />
         </div>
     );

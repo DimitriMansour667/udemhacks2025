@@ -3,7 +3,7 @@ import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
 import { NonBinary, Send, Spline, Eye } from "lucide-react";
-import { useState, useRef, PointerEventHandler, KeyboardEventHandler } from "react";
+import { useState, useRef, PointerEventHandler, KeyboardEventHandler, use, useEffect } from "react";
 import KidneyModel from '@/app/KidneyModel'
 import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
@@ -17,6 +17,7 @@ import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-li
 import Image from "next/image";
 
 import { BodyParts } from "@/app/constant/bodyParts";
+import { useSearchParams } from 'next/navigation';
 
 export default function Kidney() {
 
@@ -24,6 +25,8 @@ export default function Kidney() {
         return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
+
+    const searchParams = useSearchParams();
 
     const [isTyping, setIsTyping] = useState(false)
     const [partIndex, setPartIndex] = useState(0)
@@ -34,6 +37,7 @@ export default function Kidney() {
     const [responses, setResponses] = useState<AiAnswer[]>([]) // Holds all responses
     const [showSprite, setshowSprite] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
+    const [modalInput, setModalInput] = useState("");
     const [modalDescription, setModalDescription] = useState("");
     const [selectedResponseIndex, setSelectedResponseIndex] = useState<number | null>(null); // Holds the index of the selected response
     const [isLoading, setIsLoading] = useState(false);
@@ -52,9 +56,19 @@ export default function Kidney() {
         "Renal Capsule": { x: 0.5903147887166088, y: -0.7959747341315074, z: 0.005024125140933365 }, // Renal Capsule
 
     };
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+
+    useEffect(() => {
+        const queryParam = searchParams.get('query');
+
+        if (queryParam) {
+            setInput(queryParam);
+            handleSubmit(new Event('submit') as any, queryParam);
+        }
+    }, []);
+
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>, customInput = input) => {
         e.preventDefault()
-        if (!input.trim()) return
+        if (!customInput.trim()) return
 
         setIsLoading(true);
         setProgress(0);
@@ -65,7 +79,7 @@ export default function Kidney() {
         }, 50);
 
         try {
-            const answer_response = await genAi.sendRequest(input, BodyParts.Kidney)
+            const answer_response = await genAi.sendRequest(customInput, BodyParts.Kidney)
             setProgress(100); // Complete the progress
             console.log(answer_response)
 
@@ -75,6 +89,7 @@ export default function Kidney() {
                 if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
                     setIsReroute(true);
                     setRouteLink(answer_response.recommendation);
+                    setModalInput(customInput);
                     setModalTitle("Your question might be related to the "+answer_response.recommendation);
                     setModalDescription("Click the button below to access the related section.");
                     setModalIsOpen(true);
@@ -83,6 +98,7 @@ export default function Kidney() {
                     setModalDescription("Try a more relevant question.");
                     setIsReroute(false);
                     setRouteLink("");
+                    setModalInput("");
                     setModalIsOpen(true);
                 }
             } else {
@@ -217,6 +233,7 @@ export default function Kidney() {
                 onClose={() => setModalIsOpen(false)}
                 isReroute={isReroute}
                 routeLink={routeLink}
+                modalInput={modalInput}
             />
 
             {isLoading && (

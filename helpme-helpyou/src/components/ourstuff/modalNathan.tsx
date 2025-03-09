@@ -9,7 +9,8 @@ export function ModalNathan({
   isOpen = true,
   onClose,
   isReroute = false,
-  routeLink= ""
+  routeLink= "",
+  modalInput
 }: { 
   title: string, 
   description: string,
@@ -17,6 +18,7 @@ export function ModalNathan({
   onClose?: () => void,
   isReroute?: boolean,
   routeLink?: string
+  modalInput?: string
 }) {
   if (!isOpen) return null;
   
@@ -50,7 +52,7 @@ export function ModalNathan({
               translateZ={20}
               as="button"
               className="px-4 py-3 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold hover:scale-110 transition-all duration-300"
-              onClick={() => window.location.href = routeLink}
+              onClick={() => window.location.href = routeLink + (modalInput ? `?query=${modalInput}` : "")}
             >
               Go to {routeLink}
             </CardItem>
