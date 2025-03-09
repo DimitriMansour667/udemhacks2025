@@ -12,6 +12,7 @@ import * as THREE from 'three';
 import { ModalNathan } from "@/components/ourstuff/modalNathan";
 import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { Point3D } from "@/app/types/types";
+import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 
 export default function Brain() {
 
@@ -29,6 +30,8 @@ export default function Brain() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modalDescription, setModalDescription] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
     const points: Point3D[] = [
         { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 }, // Cerebellum
@@ -46,18 +49,33 @@ export default function Brain() {
         e.preventDefault()
         if (!input.trim()) return
 
-        console.log("Sending message:", input)
-        const answer_response = await genAi.parseResponse(input)
-        setAnswer(answer_response)
-        setShowingModel(!!answer && !answer.error)
+        setIsLoading(true);
+        setProgress(0);
+        
+        // Start progress animation
+        const progressInterval = setInterval(() => {
+            setProgress(prev => Math.min(prev + 2, 90));
+        }, 50);
 
-        if (answer_response.error) {
-            setModalTitle("Error");
-            setModalDescription("Try a more relevant question.");
-            setModalIsOpen(true);
+        try {
+            const answer_response = await genAi.parseResponse(input)
+            setProgress(100); // Complete the progress
+            setAnswer(answer_response)
+            setShowingModel(!!answer && !answer.error)
+
+            if (answer_response.error) {
+                setModalTitle("Error");
+                setModalDescription("Try a more relevant question.");
+                setModalIsOpen(true);
+            }
+        } finally {
+            clearInterval(progressInterval);
+            setTimeout(() => {
+                setIsLoading(false);
+                setProgress(0);
+            }, 500); // Give time for the 100% to show
+            setInput("");
         }
-        console.log(answer_response)
-        setInput("")
     }
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
@@ -85,6 +103,23 @@ export default function Brain() {
                 isOpen={modalIsOpen}
                 onClose={() => setModalIsOpen(false)}
             />
+
+            {isLoading && (
+                <>
+                    <div className="absolute inset-0 bg-black/10 backdrop-blur-md z-40" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-full z-50">
+                        <div className="scale-75">
+                            <AnimatedCircularProgressBar
+                                max={100}
+                                min={0}
+                                value={progress}
+                                gaugePrimaryColor="rgb(79 70 229)"
+                                gaugeSecondaryColor="rgba(0, 0, 0, 0.1)"
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
 
             <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
