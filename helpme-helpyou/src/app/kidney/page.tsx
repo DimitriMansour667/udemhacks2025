@@ -73,7 +73,8 @@ export default function Kidney() {
             } else {
                 const possible_values = Object.values(KidneyParts) as string[];
                 console.log(possible_values)
-                if (!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))) {
+                answer_response.parts = answer_response.parts.filter(part => possible_values.includes(part.part));
+                if (answer_response.parts.length === 0) {
                     setModalTitle("Skill issue");
                     setModalDescription("Be more original with your prompt!");
                     setModalIsOpen(true);
