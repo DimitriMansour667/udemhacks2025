@@ -9,8 +9,10 @@ import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from 'three';
+import { ModalNathan } from "@/components/ourstuff/modalNathan";
 
 export default function Brain() {
+
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
         return <div>No api key error</div>
     }
@@ -22,8 +24,9 @@ export default function Brain() {
     const [input, setInput] = useState("")
     const [answer, setAnswer] = useState<AiAnswer | null>(null)
     const controlsRef = useRef(null);
-
-
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalDescription, setModalDescription] = useState("");
     const points = [
         { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 }, // Cerebellum
@@ -37,11 +40,6 @@ export default function Brain() {
         { x: -0.20268099697845515, y: -0.46522303081001093, z: -0.002686627744875103 }, // Amygdala
 
     ];
-
-    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        setInput(e.target.value)
-    }
-
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!input.trim()) return
@@ -51,9 +49,16 @@ export default function Brain() {
         setAnswer(answer_response)
         setShowingModel(!!answer && !answer.error)
 
+        if (answer_response.error) {
+            setModalTitle("Error");
+            setModalDescription("Try a more relevant question.");
+            setModalIsOpen(true);
+        }
         console.log(answer_response)
         setInput("")
-
+    }
+    const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+        setInput(e.target.value)
     }
 
     function SpriteComponent({ data }) {
@@ -186,11 +191,18 @@ export default function Brain() {
                     <BrainModel points={points} i={partIndex} />
                     (isShowingModel && <>
                         <VectorComponent firstPoint={points[partIndex]} secondPoint={[2, 0, 0]} />
-                        <SpriteComponent data={ answer } />
+                        <SpriteComponent data={answer} />
                     </>
                     )
                 </Canvas>
             </div>
+            <ModalNathan
+                title={modalTitle}
+                description={modalDescription}
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+            />
+
             <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input
