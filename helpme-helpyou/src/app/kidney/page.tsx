@@ -263,7 +263,7 @@ export default function Kidney() {
                     <Input
                         value={input}
                         onChange={handleInputChange}
-                        placeholder="Ask anything on the human kidney."
+                        placeholder="Ask anything on the human kidney..."
                         className="flex-grow text-lg"
                         disabled={isTyping}
                         style={{ height: '50px' }}

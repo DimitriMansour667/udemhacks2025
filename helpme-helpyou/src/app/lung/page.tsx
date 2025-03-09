@@ -273,7 +273,7 @@ export default function Lung() {
                     <Input
                         value={input}
                         onChange={handleInputChange}
-                        placeholder="Ask anything on the human lung."
+                        placeholder="Ask anything on the human lung..."
                         className="flex-grow text-lg"
                         disabled={isTyping}
                         style={{ height: '50px' }}
