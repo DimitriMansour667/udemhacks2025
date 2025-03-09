@@ -10,6 +10,8 @@ import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import * as THREE from 'three';
 import { ModalNathan } from "@/components/ourstuff/modalNathan";
+import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
+import { Point3D } from "@/app/types/types";
 
 export default function Brain() {
 
@@ -27,7 +29,7 @@ export default function Brain() {
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modalDescription, setModalDescription] = useState("");
-    const points = [
+    const points: Point3D[] = [
         { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 }, // Cerebellum
         { x: 0.23097607679126156, y: -0.7122985424067342, z: 0.12780552084877117 }, // Brainstem
@@ -61,126 +63,6 @@ export default function Brain() {
         setInput(e.target.value)
     }
 
-    function SpriteComponent({ data }) {
-
-        const canvas = document.createElement('canvas');
-        const ctx: CanvasRenderingContext2D | null = canvas.getContext('2d');
-        console.log("data", data)
-        if (!ctx || !data) {
-            return;
-        }
-        // Set canvas size
-        canvas.width = 350;
-        canvas.height = 350;
-
-        const cornerRadius = 20; // Radius for the rounded corners
-        const padding = 20; // Padding for text inside the rectangle
-        const padding_left = 30;
-
-        // Set the background color to semi-transparent gray
-        ctx.fillStyle = 'rgba(128, 128, 128, 0.85)'; // Semi-transparent gray
-        ctx.beginPath();
-        ctx.moveTo(padding + cornerRadius, padding); // Start at the top-left corner
-        ctx.arcTo(canvas.width - padding, padding, canvas.width - padding, canvas.height - padding, cornerRadius); // Top-right corner
-        ctx.arcTo(canvas.width - padding, canvas.height - padding, padding, canvas.height - padding, cornerRadius); // Bottom-right corner
-        ctx.arcTo(padding, canvas.height - padding, padding, padding, cornerRadius); // Bottom-left corner
-        ctx.arcTo(padding, padding, canvas.width - padding, padding, cornerRadius); // Top-left corner
-        ctx.closePath();
-        ctx.fill();
-        // Draw a rectangle with rounded corners
-
-
-        // Set text properties
-
-        // Create dynamic text
-        const textPadding = 30;
-        const lineHeight = 24;
-        let currentY = padding + textPadding;
-
-        // Draw the 'part' text
-        ctx.fillStyle = 'black';
-        ctx.font = 'bold 26px Arial';
-        ctx.textAlign = 'center';
-        ctx.textBaseline = 'middle';
-        ctx.fillText(data.part, canvas.width / 2, currentY);
-        currentY += lineHeight;
-
-        // Draw the 'impact' text
-        ctx.font = 'bold 16px Arial';
-        ctx.textAlign = 'left';
-        ctx.textBaseline = 'top';
-        console.log(data.impact)
-        if (data.impact.length > 0) {
-            ctx.fillText('Impact:', padding_left, currentY);
-            currentY += lineHeight;
-            ctx.font = ' bold 12px Arial';
-            const impactLines = wrapText(data.impact, canvas.width / 1.2, ctx);
-            impactLines.forEach(line => {
-                ctx.fillText(line, padding_left, currentY);
-                currentY += lineHeight;
-            });
-        }
-
-        // Draw the 'symptoms' text
-        currentY += 10
-        ctx.font = ' bold 16px Arial';
-        if (data.symptoms.length > 0) {
-            ctx.fillText('Symptoms:', padding_left, currentY);
-            currentY += lineHeight;
-            ctx.font = ' bold 12px Arial';
-            data.symptoms.forEach(line => {
-                ctx.fillText(line, padding_left, currentY);
-                currentY += lineHeight;
-            });
-        }
-
-
-        // Create a texture from the canvas
-        const texture = new THREE.CanvasTexture(canvas);
-        // Create the sprite material with the texture
-        const spriteMaterial = new THREE.SpriteMaterial({ map: texture });
-
-        // Create the sprite and position it
-        const sprite = new THREE.Sprite(spriteMaterial);
-        sprite.position.set(2, 0, 0); // Set the position of the sprite next to the brain model
-        sprite.scale.set(1, 1, 1); // Adjust the scale of the sprite
-
-        return (
-            <primitive object={sprite} />
-        );
-    };
-    function wrapText(text: string, maxWidth: number, ctx: CanvasRenderingContext2D) {
-        const words = text.split(' ');
-        let line = '';
-        const lines = [];
-
-        for (let i = 0; i < words.length; i++) {
-            const testLine = line + words[i] + ' ';
-            const testWidth = ctx.measureText(testLine).width;
-
-            if (testWidth > maxWidth && i > 0) {
-                lines.push(line);
-                line = words[i] + ' ';
-            } else {
-                line = testLine;
-            }
-        }
-
-        lines.push(line); // Push the last line
-        return lines;
-    }
-
-    function VectorComponent({ firstPoint, secondPoint }) {
-        const vectA = new THREE.Vector3(firstPoint.x, firstPoint.y, firstPoint.z)
-        const vectB = new THREE.Vector3(1, 1, 1)
-        const vectorAB = new THREE.Vector3().subVectors(vectA, vectB);
-        const length = vectA.distanceTo(vectB);
-        const arrowHelper = new THREE.ArrowHelper(vectorAB, vectA, length, 0xff0000);
-        return (
-            <primitive object={arrowHelper} />
-        );
-    }
-
     return (
         <div className="relative h-screen w-full">
             <div className="absolute inset-0">
@@ -189,11 +71,12 @@ export default function Brain() {
                     <directionalLight position={[5, 5, 5]} intensity={2} />
                     <OrbitControls enableZoom={true} />
                     <BrainModel points={points} i={partIndex} />
-                    (isShowingModel && <>
-                        <VectorComponent firstPoint={points[partIndex]} secondPoint={[2, 0, 0]} />
-                        <SpriteComponent data={answer} />
-                    </>
-                    )
+                    {isShowingModel && (
+                        <>
+                            <VectorComponent firstPoint={points[partIndex]} secondPoint={{ x: 2, y: 0, z: 0 }} />
+                            {answer && <SpriteComponent {...answer.parts[0]} />}
+                        </>
+                    )}
                 </Canvas>
             </div>
             <ModalNathan
