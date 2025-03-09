@@ -1,4 +1,4 @@
-import { BodyParts, BrainParts, KidneyParts, HeartParts } from "@/app/constant/bodyParts"
+import { BodyParts, BrainParts, KidneyParts, HeartParts, LungParts } from "@/app/constant/bodyParts"
 
 export class SytemPrompt {
 
@@ -27,7 +27,7 @@ If the question is not specifically about the main topic or the main topic, give
 {
     "error": "Please ask a question about the <main topic> or its functions.",
     "question": return the question that was asked,
-    "recommendation": As the chatbot you have to choose between one of those options: "brain or heart or kidney or none". You have to be very precise, so depending on the question asked you have to clearly identify if it is a brain heart or kidney or none of these options. If the question touches multiple topics, please prioritize the one that is on the current main topic. And of course, you can't recommend the main topic.
+    "recommendation": As the chatbot you have to choose between one of those options: "brain or heart or kidney or lung or none". You have to be very precise, so depending on the question asked you have to clearly identify if it is a brain heart lung or kidney or none of these options. If the question touches multiple topics, please prioritize the one that is on the current main topic. And of course, you can't recommend the main topic.
 }
 
 Give your response based on this question:
@@ -44,6 +44,10 @@ USER: `
     }
     static getSystemPromptHearth() {
         const brainStructureString = "The heart is the main topic, only answer question based on the heart. These are the heart regions you only can provide information about. You must use those exact part names in the json you give back: " + Object.values(HeartParts).join(", ");
+        return brainStructureString + this.system_prompt;
+    }
+    static getSystemPromptLungs() {
+        const brainStructureString = "The lung is the main topic, only answer question based on the lung. These are the lung regions you only can provide information about. You must use those exact part names in the json you give back: " + Object.values(LungParts).join(", ");
         return brainStructureString + this.system_prompt;
     }
 }

@@ -33,6 +33,9 @@ export class GenAIUtils {
             case BodyParts.Hearth:
                 system_prompt = SytemPrompt.getSystemPromptHearth()
                 break;
+            case BodyParts.Lung:
+                system_prompt = SytemPrompt.getSystemPromptLungs()
+                break;
         }
 
         console.log (system_prompt)
