@@ -30,7 +30,7 @@ export enum HeartParts {
 }
 
 export enum KidneyParts {
-    ReinalArtery = "Reinal Artery",
+    RenalArtery = "Renal Artery",
     RenalVein = "Renal Vein",
     Ureter = "Ureter",
     RenalPelvis = "Renal Pelvis",
