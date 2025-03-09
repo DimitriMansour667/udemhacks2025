@@ -17,7 +17,7 @@ export function ModalNathan({
   if (!isOpen) return null;
   
   return (
-    <CardContainer className="absolute top-[200%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+    <CardContainer className="absolute top-[100%] left-1/2 -translate-x-1/2 +translate-y-1/2 w-full max-w-2xl px-4">
       <CardBody className="bg-gray-50/90 backdrop-blur-sm relative group/card dark:hover:shadow-2xl dark:hover:shadow-emerald-500/[0.1] dark:bg-black/90 dark:border-white/[0.2] border-black/[0.1] w-auto sm:w-[30rem] h-auto rounded-xl p-6 border shadow-lg">
         <CardItem
           translateZ="50"
