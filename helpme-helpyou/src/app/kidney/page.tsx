@@ -203,6 +203,11 @@ export default function Kidney() {
             }
         };
 
+        const handleRefreshClick = () => {
+            localStorage.removeItem('kidneyResponses');
+            setResponses([]);
+        };
+
     return (
 
         <div className="relative h-screen w-full">
@@ -294,6 +299,14 @@ export default function Kidney() {
                         <Send className="h-6 w-6" />
                     </Button>
                 </form>
+            </div>
+            <div className="absolute bottom-[7%] left-1/70 bg-white/80 backdrop-blur-sm shadow-lg">
+                        <Button 
+                        variant="outline" 
+                        size="width" 
+                        onClick={handleRefreshClick}>
+                            Delete History
+                        </Button>
             </div>
             <ModalNathan
                 title={modalTitle}

@@ -205,6 +205,10 @@ export default function Lung() {
                 handleForwardClick();
             }
         };
+        const handleRefreshClick = () => {
+            localStorage.removeItem('lungResponses');
+            setResponses([]);
+        };
     
     return (
         <div className="relative h-screen w-full">
@@ -305,7 +309,14 @@ export default function Lung() {
                     </Button>
                 </form>
             </div>
-
+            <div className="absolute bottom-[7%] left-1/70 bg-white/80 backdrop-blur-sm shadow-lg">
+                        <Button 
+                        variant="outline" 
+                        size="width" 
+                        onClick={handleRefreshClick}>
+                            Delete History
+                        </Button>
+            </div>
             <ModalNathan
                 title={modalTitle}
                 description={modalDescription}
