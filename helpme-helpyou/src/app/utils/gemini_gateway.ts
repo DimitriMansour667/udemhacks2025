@@ -1,16 +1,18 @@
 import { GoogleGenerativeAI, GenerativeModel } from '@google/generative-ai';
-import {SytemPrompt} from "@/app/utils/prompt"
-import {AiAnswer} from  '@/app/class/answer'
+import { SytemPrompt } from "@/app/utils/prompt"
+import { AiAnswer } from '@/app/class/answer'
+import { BodyParts } from '@/app/constant/bodyParts'
+
 export class GenAIUtils {
 
     genAI: GoogleGenerativeAI
     model: GenerativeModel
-    constructor(apiKey:string) {
-        let system_prompt:string = SytemPrompt.getSystemPrompt()
+    constructor(apiKey: string) {
         this.genAI = new GoogleGenerativeAI(apiKey);
         this.model = this.genAI.getGenerativeModel(
-            { model: "gemini-2.0-flash" , 
-                systemInstruction: system_prompt
+            {
+                model: "gemini-2.0-flash",
+                systemInstruction: "Give back an error"
             });
     }
 
@@ -19,7 +21,21 @@ export class GenAIUtils {
      * @param {string} prompt - The prompt for the AI model.
      * @returns {Promise<string>} - The generated content as a string.
      */
-    async generateContent(prompt:string) {
+    async generateContent(prompt: string, bodyPart: BodyParts) {
+        let system_prompt:string = ""
+        switch (bodyPart) {
+            case BodyParts.Brain:
+                system_prompt = SytemPrompt.getSystemPromptBrain()
+            case BodyParts.Kidney:
+                system_prompt = SytemPrompt.getSystemPromptKidneys()
+        }
+            
+        this.model = this.genAI.getGenerativeModel(
+            {
+                model: "gemini-2.0-flash",
+                systemInstruction: system_prompt
+            });
+
         try {
             const result = await this.model.generateContent(prompt)
             return result.response.text();
@@ -29,14 +45,16 @@ export class GenAIUtils {
         }
     }
 
-    async parseResponse(prompt:string): Promise<AiAnswer>{
-        const answer = await this.generateContent(prompt)
+    async sendRequest(prompt: string, bodyPart: BodyParts): Promise<AiAnswer> {
+
+        const answer = await this.generateContent(prompt, bodyPart)
+
         let cleanResponse = answer.replace(/```json/g, '').replace(/```/g, '').trim();
         try {
             const parsedData = JSON.parse(cleanResponse);
 
-            return AiAnswer.fromJson(parsedData,prompt);
-        }catch(error){
+            return AiAnswer.fromJson(parsedData, prompt);
+        } catch (error) {
             console.log(cleanResponse)
             console.log(error)
             return new AiAnswer([], true);
