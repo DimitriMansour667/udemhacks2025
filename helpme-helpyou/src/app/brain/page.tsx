@@ -2,8 +2,8 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
-import { Send } from "lucide-react";
-import { useState } from "react";
+import { NonBinary, Send } from "lucide-react";
+import { useState, useRef, PointerEventHandler } from "react";
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
@@ -87,7 +87,7 @@ export default function Brain() {
                     <ambientLight intensity={1} />
                     <directionalLight position={[5, 5, 5]} intensity={2} />
                     <OrbitControls enableZoom={true} />
-                    <BrainModel points={points} i={partIndex} />
+                    <BrainModel points={points} i={partIndex}/>
                     {showSprite && answer && (
                             <SpriteComponent data={answer.parts[0]} firstPoint={points[partIndex]}/>
                     )}
