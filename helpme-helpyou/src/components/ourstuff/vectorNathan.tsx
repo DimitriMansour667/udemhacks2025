@@ -140,7 +140,7 @@ export function VectorComponent({ firstPoint, secondPoint }: { firstPoint: any, 
   const vectB = secondPoint;
   const vectorAB = new THREE.Vector3().subVectors(vectB, vectA);
   const length = vectA.distanceTo(vectB);
-  const color = 0xff0000; // Bright red for better visibility
+  const color = 0x000000; // Bright red for better visibility
   const headLength = 0.0; // Larger head
   const headWidth = 0.0; // Wider head
   const arrowHelper = new THREE.ArrowHelper(

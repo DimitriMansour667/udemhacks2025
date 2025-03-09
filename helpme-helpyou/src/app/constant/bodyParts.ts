@@ -2,7 +2,8 @@
 export enum BodyParts{
     Brain = "Brain",
     Kidney = "Kidney",
-    Hearth = "Hearth"
+    Hearth = "Hearth",
+    Lung = "Lung"
 }
 
 export enum BrainParts {
@@ -38,4 +39,14 @@ export enum KidneyParts {
     Cortex = "Cortex",
     Nephron = "Nephron",
     RenalCapsule = "Renal Capsule"
+}
+
+export enum LungParts {
+    Trachea = "Trachea",
+    Bronchi = "Main Bronchus",
+    Alveoli = "Alveoli",
+    Bronchioles = "Bronchioles",
+    UpperLobe = "Upper Lobe",
+    MiddleLobe = "Middle Lobe",
+    LowerLobe = "Lower Lobe",
 }

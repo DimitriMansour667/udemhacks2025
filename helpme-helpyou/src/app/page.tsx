@@ -40,7 +40,7 @@ export default function Home() {
       <div className="flex flex-row items-center justify-center gap-4">
         <InteractiveHoverButton onClick={() => router.push('/brain')}>Access Brain</InteractiveHoverButton>
         <InteractiveHoverButton onClick={() => router.push('/heart')}>Access Heart</InteractiveHoverButton>
-        <InteractiveHoverButton onClick={() => router.push('/chat')}>Access Lungs</InteractiveHoverButton>
+        <InteractiveHoverButton onClick={() => router.push('/lung')}>Access Lungs</InteractiveHoverButton>
       </div>
       <div className="h-8"></div>
       <div className="flex flex-row items-center justify-center gap-4">
