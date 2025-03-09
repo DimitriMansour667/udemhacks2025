@@ -26,7 +26,7 @@ import {
 } from "@/components/magicui/animated-list";
 import Image from "next/image";
 import { BrainParts, BodyParts } from "@/app/constant/bodyParts";
-import { Spline, Eye } from "lucide-react";
+import { Spline, Eye, RefreshCw, Text } from "lucide-react";
 
 export default function Brain() {
     // AZAP
@@ -262,6 +262,10 @@ export default function Brain() {
       handleForwardClick();
     }
   };
+  const handleRefreshClick = () => {
+    localStorage.removeItem('brainResponses');
+    setResponses([]);
+};
 
   return (
     <div className="relative h-screen w-full">
@@ -399,6 +403,14 @@ export default function Brain() {
           </Button>
         </form>
       </div>
+      <div className="absolute bottom-[7%] left-1/70">
+            <Button 
+            variant="outline" 
+            size="icon" 
+            onClick={handleRefreshClick}>
+                Delete History
+            </Button>
+        </div>
       <ModalNathan
         title={modalTitle}
         description={modalDescription}
