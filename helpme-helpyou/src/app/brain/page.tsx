@@ -68,10 +68,11 @@ export default function Brain() {
                 setModalDescription("Try a more relevant question.");
                 setModalIsOpen(true);
             }else{
-                const possible_values = Object.keys(BrainParts)
+                const possible_values = Object.values(BrainParts)
+                console.log(possible_values)
                 if(!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))){
                     setModalTitle("Skill issue");
-                    setModalDescription("Be more original with your prompt! ");
+                    setModalDescription("Be more original with your prompt!");
                     setModalIsOpen(true);
                     return
                 }
