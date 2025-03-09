@@ -12,12 +12,12 @@ import { ModalNathan } from "@/components/ourstuff/modalNathan";
 import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
-import {BrainParts} from "@/app/constant/bodyParts"
 import Image from 'next/image'
+import { BrainParts, BodyParts } from "@/app/constant/bodyParts"
 
 export default function Brain() {
-    
-    if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
+
+    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
         return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
@@ -47,24 +47,24 @@ export default function Brain() {
         "Limbic System": { x: 0.08484408250910186, y: 0.5155446110247102, z: -0.5469365826356386 },
         "Amygdala": { x: -0.20268099697845515, y: -0.46522303081001093, z: -0.002686627744875103 }
     };
-    
+
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         if (!input.trim()) return
 
         setIsLoading(true);
         setProgress(0);
-        
+
         // Start progress animation
         const progressInterval = setInterval(() => {
             setProgress(prev => Math.min(prev + 2, 90));
         }, 50);
 
         try {
-            const answer_response = await genAi.parseResponse(input)
+            const answer_response = await genAi.sendRequest(input, BodyParts.Brain)
             setProgress(100); // Complete the progress
             console.log(answer_response)
-            
+
             if (answer_response.error) {
                 setModalTitle("Error");
                 setModalDescription("Try a more relevant question.");
@@ -72,7 +72,7 @@ export default function Brain() {
             }else{
                 const possible_values = Object.values(BrainParts) as string[];
                 console.log(possible_values)
-                if(!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))){
+                if (!Object.values(answer_response.parts).every(value => possible_values.includes(value.part))) {
                     setModalTitle("Skill issue");
                     setModalDescription("Be more original with your prompt!");
                     setModalIsOpen(true);
@@ -152,7 +152,7 @@ export default function Brain() {
                     <OrbitControls enableZoom={false} />
                     <BrainModel points={points_dict} currentKey={answer?.parts[partIndex].part} />
                     {showSprite && answer && (
-                            <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]}/>
+                        <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]} />
                     )}
                 </Canvas>
             </div>
