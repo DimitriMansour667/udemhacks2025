@@ -13,9 +13,8 @@ import { SpriteComponent } from "@/components/ourstuff/vectorNathan";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 import { KidneyParts } from "@/app/constant/bodyParts"
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
-
 import { BodyParts } from "@/app/constant/bodyParts";
-
+// mamelon
 export default function Kidney() {
 
     if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
