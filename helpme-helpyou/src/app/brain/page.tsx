@@ -175,8 +175,6 @@ export default function Brain() {
         const vectorAB = new THREE.Vector3().subVectors(vectA, vectB);
         const length = vectA.distanceTo(vectB);
         const arrowHelper = new THREE.ArrowHelper(vectorAB, vectA, length, 0xff0000);
-        console.log("vec")
-        console.log(vectorAB)   
         return (
             <primitive object={arrowHelper} />
           );
@@ -190,12 +188,9 @@ export default function Brain() {
                 <directionalLight position={[5, 5, 5]} intensity={2} />
                 <OrbitControls enableZoom={true} />
                 <BrainModel points={points} i={partIndex} />
-                {/* <SpriteComponent data={answer?.parts[0]} /> */}
                 <VectorComponent firstPoint={points[partIndex]} secondPoint={[2,0,0]} />
               </Canvas>
             </div>
-            firstPoint
-            {/* Floating chat box positioned lower and wider */}
             <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input
