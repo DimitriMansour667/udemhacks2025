@@ -30,12 +30,13 @@ import { Spline, Eye } from "lucide-react";
 import { useSearchParams } from "next/navigation";
 
 export default function Brain() {
-  if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
-    return <div>No api key error</div>;
-  }
-  const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY);
-
-  const searchParams = useSearchParams();
+    // AZAP
+    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+        return <div>No api key error</div>
+    }
+    const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
+        
+    const searchParams = useSearchParams();
 
   const [isTyping, setIsTyping] = useState(false);
   const [partIndex, setPartIndex] = useState(0);
