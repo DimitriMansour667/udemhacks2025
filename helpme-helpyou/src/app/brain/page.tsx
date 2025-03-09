@@ -1,28 +1,40 @@
 'use client'
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
-import {GenAIUtils} from "@/app/utils/gemini_gateway"
-import { Send } from "lucide-react";
-import { useState, useRef } from "react";
+import { GenAIUtils } from "@/app/utils/gemini_gateway"
+import { NonBinary, Send } from "lucide-react";
+import { useState, useRef, PointerEventHandler } from "react";
 import BrainModel from '@/app/BrainModel'
-import { AiAnswer } from "../class/answer";
+import { AiAnswer, Answer } from "../class/answer";
 import { Canvas } from "@react-three/fiber";
 import { OrbitControls } from "@react-three/drei";
 import { AnimatedList, AnimatedListItem } from "@/components/magicui/animated-list";
+import * as THREE from 'three';
+import { ModalNathan } from "@/components/ourstuff/modalNathan";
+import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
+import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 
 export default function Brain() {
+    
     if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
         return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
 
     const [isTyping, setIsTyping] = useState(false)
+    const [partIndex, setPartIndex] = useState(0)
     const [input, setInput] = useState("")
-    const [answer, setAnswer] = useState<AiAnswer | null>(null) // Holds the latest response
+    const [answer, setAnswer] = useState<AiAnswer | undefined>(undefined) // Holds the latest response
     const [responses, setResponses] = useState<AiAnswer[]>([]) // Holds all responses
     const controlsRef = useRef(null);
-
-
+    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [showSprite, setshowSprite] = useState(false);
+    const [modalTitle, setModalTitle] = useState("");
+    const [modalDescription, setModalDescription] = useState("");
+    const [isLoading, setIsLoading] = useState(false);
+    const [progress, setProgress] = useState(0);
+    const [showingModel, setShowingModel] = useState(false);
+    
     const points = [
         {x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343}, // Cerebrum
         {x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302}, // Cerebellum
@@ -37,32 +49,47 @@ export default function Brain() {
 
     ];
 
+    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
+        if (!input.trim()) return
+
+        setIsLoading(true);
+        setProgress(0);
+        
+        // Start progress animation
+        const progressInterval = setInterval(() => {
+            setProgress(prev => Math.min(prev + 2, 90));
+        }, 50);
+
+        try {
+            const answer_response = await genAi.parseResponse(input)
+            setProgress(100); // Complete the progress
+            setAnswer(answer_response)
+            setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
+            console.log(answer_response)
+            
+            if (answer_response.error) {
+                setModalTitle("Error");
+                setModalDescription("Try a more relevant question.");
+                setModalIsOpen(true);
+            }else{
+                setshowSprite(!!answer && !answer.error)
+            }
+        } finally {
+            clearInterval(progressInterval);
+            setTimeout(() => {
+                setIsLoading(false);
+                setProgress(0);
+            }, 500); // Give time for the 100% to show
+            setInput("");
+        }
+    }
     const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setInput(e.target.value)
     }
 
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-        if (!input.trim()) return;
-
-        setIsTyping(true);
-        try {
-            console.log("Sending message:", input);
-            const answer_response = await genAi.parseResponse(input);
-            setAnswer(answer_response); // Update the latest response
-            setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
-            console.log(answer_response);
-        } catch (error) {
-            console.error("Error generating response:", error);
-        } finally {
-            setIsTyping(false);
-            setInput("");
-        }
-    };
-
     return (
         <div className="relative h-screen w-full">
-            
             {/* Animated list on the left */}
             <div className="absolute top-0 left-0 w-1/4 p-4" style={{ maxHeight: '100vh', overflowY:'auto', zIndex: 10}}>
             <AnimatedList>
@@ -83,18 +110,41 @@ export default function Brain() {
             </AnimatedList>
             </div>
 
-            {/* Brain model container taking full screen */}
-            <div className="absolute inset-0 w-full h-full">
+            <div className="absolute inset-0">
                 <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
                     <ambientLight intensity={1} />
                     <directionalLight position={[5, 5, 5]} intensity={2} />
-                    {/* <directionalLight position={[-5, -5, -5]} intensity={0.5} color="orange" /> */}
                     <OrbitControls enableZoom={true} />
-                    <BrainModel points={points} />
+                    <BrainModel points={points} i={partIndex}/>
+                    {showSprite && answer && (
+                            <SpriteComponent data={answer.parts[0]} firstPoint={points[partIndex]}/>
+                    )}
                 </Canvas>
             </div>
+            <ModalNathan
+                title={modalTitle}
+                description={modalDescription}
+                isOpen={modalIsOpen}
+                onClose={() => setModalIsOpen(false)}
+            />
 
-            {/* Floating chat box positioned lower and wider */}
+            {isLoading && (
+                <>
+                    <div className="absolute inset-0 bg-black/10 backdrop-blur-md z-40" />
+                    <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 flex justify-center items-center w-full z-50">
+                        <div className="scale-75">
+                            <AnimatedCircularProgressBar
+                                max={100}
+                                min={0}
+                                value={progress}
+                                gaugePrimaryColor="rgb(79 70 229)"
+                                gaugeSecondaryColor="rgba(0, 0, 0, 0.1)"
+                            />
+                        </div>
+                    </div>
+                </>
+            )}
+
             <div className="absolute bottom-[10%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input

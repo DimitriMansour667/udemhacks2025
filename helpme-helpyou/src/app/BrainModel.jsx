@@ -2,32 +2,62 @@
 
 import { useGLTF } from "@react-three/drei";
 import { useRef, useEffect, useState } from "react";
-import { useSpring, a } from "@react-spring/three";
+import { useSpring, animated, a } from "@react-spring/three";
 import * as THREE from "three";
+import { useThree, useFrame } from "@react-three/fiber";
 
-function BrainModel({ points }) {
+function BrainModel({ points, i }) {
   const { scene } = useGLTF("/Brain.glb");
   const brainRef = useRef();
-  const [i, setI] = useState(-1);
 
+  const { camera } = useThree();
+  
   const [{ rotation }, setRotation] = useSpring(() => ({
     rotation: [0, 0, 0], // Default rotation (brain at initial orientation)
-    config: { mass: 10, tension: 180, friction: 120 },
+    config: { mass: 1, tension: 1, friction: 30 }, // Adjusted for slower animation
   }));
 
-  useEffect(() => {
-    setTimeout(rotateInterval, 3000);
-  }, [i]);
+  // Flag to indicate when camera reset should happen
+  const [isResetting, setIsResetting] = useState(false);
+  const targetPosition = useRef(new THREE.Vector3(0, 0, 4));
 
+  const resetCamera = () => {
+    setIsResetting(true); // Start the reset process
+  };
+
+  useFrame(() => {
+    if (isResetting) {
+      // If the current camera position is not the target, animate it towards the target
+      
+      const currentPosition = new THREE.Vector3(0, 0, 0);
+      console.log(camera.position, targetPosition, currentPosition);
+      currentPosition.copy(camera.position); // Copy current camera position
+
+      currentPosition.lerp(targetPosition.current, 0.03); // 0.05 is the speed factor
+
+      // Update camera position
+      camera.position.copy(currentPosition);
+
+      // If the camera is close enough to the target, stop the animation
+      if (camera.position.distanceTo(targetPosition.current) < 0.01) {
+        setIsResetting(false); // Stop resetting once close enough
+      }
+    }
+  });
+  
+  useEffect(() => {
+    rotateInterval();
+  }, [i]);
+  
   const rotateInterval = () => {
-    setRotation({ rotation: [0, 0, 0] });
+    setRotation({ x: 0, y: 0, z: 0 });
+    resetCamera();
+    
     setTimeout(() => {
       console.log("Rotating to point:", points[i]);
-      rotateToPoint(points[i + 1].x, points[i + 1].y, points[i + 1].z);
-      setI((i + 1) % points.length);
+      rotateToPoint(points[i].x, points[i].y, points[i].z);
     }, 200)
   }
-
   const handleModelClick = (event) => {
     event.stopPropagation(); // Prevents unwanted interactions
     const { x, y, z } = event.point; // Get the clicked 3D coordinates
@@ -69,7 +99,7 @@ function BrainModel({ points }) {
   return (
     <>
       {/* Wrapper group to recenter the model */}
-        <a.group ref={brainRef} position={[0, 0, 0]} rotation={rotation}>
+        <a.group ref={brainRef} position={[0, 0, 0]} rotation={rotation} scale={1.3}>
         {/* <a.group ref={brainRef} position={[0, -1, -0.3]} rotation={rotation}> */}
         <a.group position={[0, -1, -0.3]}>
         <primitive object={scene} scale={0.0098} onClick={handleModelClick} />
