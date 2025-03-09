@@ -128,7 +128,7 @@ export default function Brain() {
                     <ambientLight intensity={1} />
                     <directionalLight position={[5, 5, 5]} intensity={2} />
                     <directionalLight position={[-5, -5, -5]} intensity={2} color="yellow" />
-                    <OrbitControls enableZoom={true} />
+                    <OrbitControls enableZoom={false} />
                     <BrainModel points={points_dict} currentKey={answer?.parts[partIndex].part} />
                     {showSprite && answer && (
                             <SpriteComponent data={answer.parts[partIndex]} firstPoint={points_dict[answer.parts[partIndex].part]}/>
