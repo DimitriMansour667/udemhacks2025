@@ -57,17 +57,17 @@ export default function Brain() {
   const [isReroute, setIsReroute] = useState(false);
   const [routeLink, setRouteLink] = useState("");
   const points_dict: { [key: string]: { x: number; y: number; z: number } } = {
-    Cerebrum: {
+    "Cerebrum": {
       x: -0.5307685642102951,
       y: 0.18521498665199987,
       z: 0.6060391294560343,
     },
-    Cerebellum: {
+    "Cerebellum": {
       x: 0.5995514895454759,
       y: -0.5581046984943983,
       z: -0.6495908313948302,
     },
-    Brainstem: {
+    "Brainstem": {
       x: 0.23097607679126156,
       y: -0.7122985424067342,
       z: 0.12780552084877117,
@@ -90,7 +90,7 @@ export default function Brain() {
       y: 0.5155446110247102,
       z: -0.5469365826356386,
     },
-    Amygdala: {
+    "Amygdala": {
       x: -0.20268099697845515,
       y: -0.46522303081001093,
       z: -0.002686627744875103,
