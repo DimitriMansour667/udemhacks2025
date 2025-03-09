@@ -97,6 +97,8 @@ export default function Brain() {
                 setResponses((prevResponses) => [...prevResponses, answer_response]); // Add to the list of all responses
                 setAnswer(answer_response)
                 setPartIndex(0)
+                setSelectedResponseIndex(responses.length)
+                console.log("Selected response index: ", selectedResponseIndex)
                 setshowSprite(!!answer_response && !answer_response.error)
                 console.log("Safe sapce", showSprite, answer_response)
             }
@@ -180,7 +182,7 @@ export default function Brain() {
                 .filter(response => response.question) // Filter out responses with empty questions
                 .map((response, index) => (
                     <AnimatedListItem key={index}>
-                        <div className="p-2 border-black border-1 rounded-lg shadow-md bg-white/80 backdrop-blur-sm transition-transform duration-200">
+                        <div className={`p-2 ${selectedResponseIndex === index ? 'border-2 border-black/80 shadow-lg scale-[1.02]' : 'border border-black/20'} rounded-lg bg-white/80 backdrop-blur-sm transition-all duration-200`}>
                             <h3 className="font-bold">{response.question}</h3>
                             <h3 className="text-sm text-gray-500">{response.parts.map(part => part.part).join(", ")}</h3>
                             <div className="flex flex-row gap-2">
@@ -192,6 +194,7 @@ export default function Brain() {
                                 </Button>
                             </div>
                         </div>
+                        
                     </AnimatedListItem>
                 ))}
             </AnimatedList>
@@ -226,7 +229,20 @@ export default function Brain() {
                     </div>
                 </>
             )}
-
+            <div className="absolute bottom-[18%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+                <div className="flex justify-center gap-2 mb-4">
+                    {answer?.parts.map((_, index) => (
+                        <div 
+                            key={index}
+                            className={`rounded-full transition-all duration-200 ${
+                                index === partIndex 
+                                    ? 'h-3 w-3 bg-black' 
+                                    : 'h-2 w-2 bg-gray-300'
+                            }`}
+                        />
+                    ))}
+                </div>
+            </div>
             <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
                 <div className="flex justify-end mb-4">
                     {/* <Button onClick={handleBackClick} size="icon" className="h-12 w-12 bg-transparent">

@@ -27,7 +27,7 @@ If the question is not specifically about the main topic or the main topic, give
 {
     "error": "Please ask a question about the <main topic> or its functions.",
     "question": return the question that was asked,
-    "recommendation": As the chatbot you have to choose between one of those options: "brain or heart or kidney or none". You have to be very precise, so depending on the question asked you have to clearly identify if it is a brain heart or kidney or none of these options. If the question touches multiple topics, please prioritize the one that is on the current main topic.
+    "recommendation": As the chatbot you have to choose between one of those options: "brain or heart or kidney or none". You have to be very precise, so depending on the question asked you have to clearly identify if it is a brain heart or kidney or none of these options. If the question touches multiple topics, please prioritize the one that is on the current main topic. And of course, you can't recommend the main topic.
 }
 
 Give your response based on this question:
