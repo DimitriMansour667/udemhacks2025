@@ -46,10 +46,10 @@ export function SpriteComponent({ data, firstPoint }) {
 
   const cornerRadius = 20;
   const padding = 0;
-  const padding_left = 20;
+  const padding_left = 16;
 
   // Background
-  ctx.fillStyle = "rgba(255, 255, 255, 1)";
+  ctx.fillStyle = "rgba(255, 255, 255, 0.85)";
   ctx.beginPath();
   ctx.moveTo(padding + cornerRadius, padding);
   ctx.arcTo(
@@ -73,13 +73,13 @@ export function SpriteComponent({ data, firstPoint }) {
 
   // Text content
   ctx.fillStyle = "black";
-  ctx.font = "bold 15px Arial";
+  ctx.font = "bold 17px Arial";
   ctx.textAlign = "center";
   ctx.textBaseline = "top";
 
-  // Set text properties
-  ctx.font = "17px Arial";
-  ctx.fillStyle = "black";
+//   // Set text properties
+//   ctx.font = "17px Arial";
+//   ctx.fillStyle = "black";
 
   // Create dynamic text
   const textPadding = 10;
@@ -89,7 +89,7 @@ export function SpriteComponent({ data, firstPoint }) {
   // Draw 'part of body'
   ctx.textAlign = "center";
   ctx.textBaseline = "middle";
-  ctx.font = "bold 20px Arial";
+  ctx.font = "24px Arial";
   ctx.fillText(
     data.part,
     canvas.width / 2,
@@ -98,7 +98,7 @@ export function SpriteComponent({ data, firstPoint }) {
   currentY += lineHeight;
 
   // Draw 'description'
-  ctx.font = "18px Arial";
+  ctx.font = "bold 18px Arial";
   ctx.textAlign = "left";
   ctx.textBaseline = "top";
   const descriptionLines = wrapText(
