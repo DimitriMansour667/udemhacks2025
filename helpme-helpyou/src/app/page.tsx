@@ -45,7 +45,7 @@ export default function Home() {
       <div className="h-8"></div>
       <div className="flex flex-row items-center justify-center gap-4">
         <InteractiveHoverButton onClick={() => router.push('/chat')}>Access Stomach</InteractiveHoverButton>
-        <InteractiveHoverButton onClick={() => router.push('/chat')}>Access Kidneys</InteractiveHoverButton>
+        <InteractiveHoverButton onClick={() => router.push('/kidney')}>Access Kidneys</InteractiveHoverButton>
       </div>
     </div>
   );

@@ -11,7 +11,6 @@ import { OrbitControls } from "@react-three/drei";
 import * as THREE from 'three';
 import { ModalNathan } from "@/components/ourstuff/modalNathan";
 import { VectorComponent, SpriteComponent } from "@/components/ourstuff/vectorNathan";
-import { Point3D } from "@/app/types/types";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 
 export default function Brain() {
@@ -33,7 +32,7 @@ export default function Brain() {
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
     const [showingModel, setShowingModel] = useState(false);
-    const points: Point3D[] = [
+    const points = [
         { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 }, // Cerebellum
         { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.23097607679126156, y: -0.7122985424067342, z: 0.12780552084877117 }, // Brainstem
@@ -90,6 +89,7 @@ export default function Brain() {
                 <Canvas camera={{ position: [0, 0, 4], fov: 50 }}>
                     <ambientLight intensity={1} />
                     <directionalLight position={[5, 5, 5]} intensity={2} />
+                    <directionalLight position={[-5, -5, -5]} intensity={2} color="yellow" />
                     <OrbitControls enableZoom={true} />
                     <BrainModel points={points} i={partIndex}/>
                     {showSprite && answer && (

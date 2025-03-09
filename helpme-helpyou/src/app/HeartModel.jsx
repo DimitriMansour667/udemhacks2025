@@ -6,8 +6,8 @@ import { useSpring, animated, a } from "@react-spring/three";
 import * as THREE from "three";
 import { useThree, useFrame } from "@react-three/fiber";
 
-function BrainModel({ points, i }) {
-  const { scene } = useGLTF("/Brain.glb");
+function HearthModel({ points, i }) {
+  const { scene } = useGLTF("/Heart.glb");
   const brainRef = useRef();
 
   const { camera } = useThree();
@@ -46,7 +46,7 @@ function BrainModel({ points, i }) {
   });
   
   useEffect(() => {
-    rotateInterval();
+    // rotateInterval();
   }, [i]);
   
   const rotateInterval = () => {
@@ -58,6 +58,7 @@ function BrainModel({ points, i }) {
       rotateToPoint(points[i].x, points[i].y, points[i].z);
     }, 200)
   }
+
   const handleModelClick = (event) => {
     event.stopPropagation(); // Prevents unwanted interactions
     const { x, y, z } = event.point; // Get the clicked 3D coordinates
@@ -101,15 +102,15 @@ function BrainModel({ points, i }) {
       {/* Wrapper group to recenter the model */}
         <a.group ref={brainRef} position={[0, 0, 0]} rotation={rotation} scale={1}>
         {/* <a.group ref={brainRef} position={[0, -1, -0.3]} rotation={rotation}> */}
-        <a.group position={[0, -1, -0.3]}>
-        <primitive object={scene} scale={0.0098} onClick={handleModelClick} />
+        <a.group position={[0, -0.8, 0]}>
+        <primitive object={scene} scale={0.033} onClick={handleModelClick} />
       </a.group>
         {points.map((point, index) => (
 
           <mesh key={index} position={[point.x, point.y, point.z]}>
           {/* <mesh key={index} position={[point.x, point.y + 1, point.z + 0.3]}> */}
             <sphereGeometry args={[0.03, 16, 16]} /> {/* Small Sphere */}
-            <meshStandardMaterial color={index==i ? "red" : "white"} />
+            <meshStandardMaterial color={index==i ? "yellow" : "white"} />
           </mesh>
         ))}
       </a.group>
@@ -117,4 +118,4 @@ function BrainModel({ points, i }) {
   );
 }
 
-export default BrainModel;
+export default HearthModel;
