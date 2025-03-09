@@ -93,6 +93,9 @@ export default function Kidney() {
 
         try {
             const answer_response = await genAi.sendRequest(customInput, BodyParts.Kidney)
+            if (answer_response.recommendation.toLowerCase() === "kidney") {
+                answer_response.recommendation = "none";
+            }
             setProgress(100); // Complete the progress
             console.log(answer_response)
 
