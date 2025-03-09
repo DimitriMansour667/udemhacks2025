@@ -245,8 +245,8 @@ export default function Heart() {
                     </div>
                 </>
             )}
-
             <div className="absolute bottom-[7%] left-1/2 -translate-x-1/2 w-full max-w-2xl px-4">
+            {answer && answer.parts.length > 1 &&(
                 <div className="flex justify-center gap-2 mb-4">
                     {answer?.parts.map((_, index) => (
                         <div 
@@ -259,6 +259,7 @@ export default function Heart() {
                         />
                     ))}
                 </div>
+                    )}
                 <form onSubmit={handleSubmit} className="flex w-full space-x-2 bg-white/80 backdrop-blur-sm p-6 rounded-lg shadow-lg">
                     <Input
                         value={input}
