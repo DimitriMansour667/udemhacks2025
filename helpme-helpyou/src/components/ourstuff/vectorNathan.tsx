@@ -31,7 +31,7 @@ function wrapText(text: string, maxWidth: number, ctx: CanvasRenderingContext2D)
     return lines;
 }
 
-export function SpriteComponent( data: Answer) {
+export function SpriteComponent({ data, firstPoint }) {
     if (!data) return null;
 
     const canvas = document.createElement('canvas');
@@ -69,8 +69,7 @@ export function SpriteComponent( data: Answer) {
     
     const lines = wrapText(data.part, canvas.width - (padding * 2), ctx);
     lines.forEach(line => {
-        ctx.fillText(line, padding_left, currentY);
-        currentY += lineHeight;
+        const vectorAB = new THREE.Vector3(0);
     });
 
     const texture = new THREE.CanvasTexture(canvas);
@@ -78,16 +77,25 @@ export function SpriteComponent( data: Answer) {
     const sprite = new THREE.Sprite(spriteMaterial);
     sprite.position.set(2, 0, 0);
     sprite.scale.set(1, 1, 1);
-
-    return <primitive object={sprite} />;
+    const posVec = new THREE.Vector3()
+    sprite.getWorldPosition(posVec)
+    
+    return <>
+            <primitive object={sprite} />;
+            <VectorComponent firstPoint={firstPoint} secondPoint={new THREE.Vector3(posVec.x, posVec.y, posVec.z )} />
+            </>
 }
 
 export function VectorComponent({ firstPoint, secondPoint }: VectorProps) {
-    const vectA = new THREE.Vector3(firstPoint.x, firstPoint.y, firstPoint.z);
-    const vectB = new THREE.Vector3(1, 1, 1);
-    const vectorAB = new THREE.Vector3().subVectors(vectA, vectB);
+    const vectA = new THREE.Vector3(0, 0, Math.sqrt(firstPoint.x * firstPoint.x + firstPoint.y * firstPoint.y + firstPoint.z * firstPoint.z));
+    // const vectA = new THREE.Vector3(firstPoint.x, firstPoint.y, firstPoint.z);
+    const vectB = secondPoint;
+    const vectorAB = new THREE.Vector3().subVectors(vectB, vectA);
     const length = vectA.distanceTo(vectB);
-    const arrowHelper = new THREE.ArrowHelper(vectorAB, vectA, length, 0xff0000);
+    const color = 0xff0000;  // Bright red for better visibility
+    const headLength = 0.0;  // Larger head
+    const headWidth = 0.0;   // Wider head
+    const arrowHelper = new THREE.ArrowHelper(vectorAB, vectA, length, color, headLength, headWidth);
     
     return <primitive object={arrowHelper} />;
 }

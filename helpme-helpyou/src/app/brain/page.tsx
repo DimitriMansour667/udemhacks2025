@@ -2,7 +2,7 @@
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { GenAIUtils } from "@/app/utils/gemini_gateway"
-import { Send } from "lucide-react";
+import { NonBinary, Send } from "lucide-react";
 import { useState, useRef } from "react";
 import BrainModel from '@/app/BrainModel'
 import { AiAnswer, Answer } from "../class/answer";
@@ -15,26 +15,27 @@ import { Point3D } from "@/app/types/types";
 import { AnimatedCircularProgressBar } from "@/components/magicui/animated-circular-progress-bar";
 
 export default function Brain() {
-
-    if (!process.env.NEXT_PUBLIC_GEMINI_API_KEY) {
+    
+    if(!process.env.NEXT_PUBLIC_GEMINI_API_KEY){
         return <div>No api key error</div>
     }
     const genAi = new GenAIUtils(process.env.NEXT_PUBLIC_GEMINI_API_KEY)
 
     const [isTyping, setIsTyping] = useState(false)
-    const [isShowingModel, setShowingModel] = useState(false)
     const [partIndex, setPartIndex] = useState(0)
     const [input, setInput] = useState("")
-    const [answer, setAnswer] = useState<AiAnswer | null>(null)
+    const [answer, setAnswer] = useState<AiAnswer | undefined>(undefined)
     const controlsRef = useRef(null);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [showSprite, setshowSprite] = useState(false);
     const [modalTitle, setModalTitle] = useState("");
     const [modalDescription, setModalDescription] = useState("");
     const [isLoading, setIsLoading] = useState(false);
     const [progress, setProgress] = useState(0);
+    const [showingModel, setShowingModel] = useState(false);
     const points: Point3D[] = [
-        { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.5995514895454759, y: -0.5581046984943983, z: -0.6495908313948302 }, // Cerebellum
+        { x: -0.5307685642102951, y: 0.18521498665199987, z: 0.6060391294560343 }, // Cerebrum
         { x: 0.23097607679126156, y: -0.7122985424067342, z: 0.12780552084877117 }, // Brainstem
         { x: -0.5882046695307154, y: 0.6145940866691428, z: 0.02 }, // Frontal lobe
         { x: 0.27951995256963796, y: 0.7540875925218076, z: 0.02 }, // Parietal lobe
@@ -89,11 +90,8 @@ export default function Brain() {
                     <directionalLight position={[5, 5, 5]} intensity={2} />
                     <OrbitControls enableZoom={true} />
                     <BrainModel points={points} i={partIndex} />
-                    {isShowingModel && (
-                        <>
-                            <VectorComponent firstPoint={points[partIndex]} secondPoint={{ x: 2, y: 0, z: 0 }} />
-                            {answer && <SpriteComponent {...answer.parts[0]} />}
-                        </>
+                    {showSprite && answer && (
+                            <SpriteComponent data={answer.parts[0]} firstPoint={points[partIndex]}/>
                     )}
                 </Canvas>
             </div>
