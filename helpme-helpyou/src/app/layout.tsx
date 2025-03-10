@@ -6,7 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import Link from "next/link";
-import {Analytics} from '@vercel/analytics'
+import {Analytics} from '@vercel/analytics/next'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
