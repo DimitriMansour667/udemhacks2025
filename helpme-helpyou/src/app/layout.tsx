@@ -6,6 +6,7 @@ import { cn } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import { Home } from "lucide-react";
 import Link from "next/link";
+import {Analytics} from '@vercel/analytics'
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -47,6 +48,7 @@ export default function RootLayout({
             <Home className="h-4 w-4" />
           </Button>
         </Link>
+      <Analytics/>
       </body>
     </html>
   );
