@@ -38,7 +38,6 @@ export class GenAIUtils {
                 break;
         }
 
-        console.log (system_prompt)
             
         this.model = this.genAI.getGenerativeModel(
             {
@@ -62,7 +61,6 @@ export class GenAIUtils {
         const cleanResponse = answer.replace(/```json/g, '').replace(/```/g, '').trim();
         try {
             const parsedData = JSON.parse(cleanResponse);
-            //console.log(JSON.parse(cleanResponse))
             return AiAnswer.fromJson(parsedData, prompt);
         } catch (error) {
             return new AiAnswer([], true, undefined, "none");

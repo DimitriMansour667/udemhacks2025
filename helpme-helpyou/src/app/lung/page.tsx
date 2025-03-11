@@ -97,11 +97,8 @@ export default function Lung() {
                 answer_response.recommendation = "none";
             }
             setProgress(100); // Complete the progress
-            console.log(answer_response)
 
             if (answer_response.error) {
-                console.log("There is an error")
-                console.log(answer_response.recommendation)
                 if (answer_response.recommendation != 'none' && answer_response.recommendation != undefined) {
                     setIsReroute(true);
                     setRouteLink(answer_response.recommendation);
@@ -120,7 +117,6 @@ export default function Lung() {
                 }
             } else {
                 const possible_values = Object.values(LungParts) as string[];
-                console.log(possible_values)
                 answer_response.parts = answer_response.parts.filter(part => possible_values.includes(part.part));
                 if (answer_response.parts.length === 0) {
                     setModalTitle("Skill issue");
@@ -135,9 +131,7 @@ export default function Lung() {
                 setAnswer(answer_response)
                 setPartIndex(0)
                 setSelectedResponseIndex(getResponses().length);
-                console.log("Selected response index: ", selectedResponseIndex)
                 setshowSprite(!!answer_response && !answer_response.error)
-                console.log("Safe sapce", showSprite, answer_response)
             }
         } finally {
             clearInterval(progressInterval);
@@ -154,7 +148,6 @@ export default function Lung() {
 
     const handleSpriteClick = (index: number) => {
         setSelectedResponseIndex(index);
-        console.log("Clicked item index: ", index);
         setAnswer(getResponses()[index]);
         setPartIndex(0);
         setshowSprite(!!getResponses()[index] && !getResponses()[index].error);
@@ -162,7 +155,6 @@ export default function Lung() {
 
     const handleEyeClick = (index: number) => {
         setSelectedResponseIndex(index);
-        console.log("Clicked item index: ", index);
         setAnswer(getResponses()[index]);
         setModalIsOpen(true);
         setModalTitle(answer?.parts[partIndex].part || "");
@@ -184,7 +176,6 @@ export default function Lung() {
     
     
         const handleKeyDown: KeyboardEventHandler<HTMLDivElement> = (event) => {    
-            console.log(event.key)
             if (event.key === "ArrowLeft") {
                 handleBackClick();
             }

@@ -53,7 +53,6 @@ function KidneyModel({ points, currentKey, historyIndex }) {
     resetCamera();
     
     setTimeout(() => {
-      console.log("Rotating to point:", points[currentKey]);
       rotateToPoint(points[currentKey].x, points[currentKey].y, points[currentKey].z);
     }, 200)
   }

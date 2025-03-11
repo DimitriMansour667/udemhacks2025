@@ -54,8 +54,6 @@ function BrainModel({ points, currentKey, historyIndex }) {
     resetCamera();
 
     setTimeout(() => {
-      console.log("Rotating to point:", points[currentKey]);
-      console.log(points)
       rotateToPoint(points[currentKey].x, points[currentKey].y, points[currentKey].z);
     }, 200)
   }

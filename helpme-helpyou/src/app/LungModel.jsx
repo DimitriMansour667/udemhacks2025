@@ -31,7 +31,6 @@ function LungModel({ points, currentKey, historyIndex }) {
       // If the current camera position is not the target, animate it towards the target
 
       const currentPosition = new THREE.Vector3(0, 0, 0);
-      console.log(camera.position, targetPosition, currentPosition);
       currentPosition.copy(camera.position); // Copy current camera position
 
       currentPosition.lerp(targetPosition.current, 0.05); // 0.05 is the speed factor
@@ -55,7 +54,6 @@ function LungModel({ points, currentKey, historyIndex }) {
     resetCamera();
 
     setTimeout(() => {
-      console.log("Rotating to point:", points[currentKey]);
       rotateToPoint(points[currentKey].x, points[currentKey].y, points[currentKey].z);
     }, 200)
   }
